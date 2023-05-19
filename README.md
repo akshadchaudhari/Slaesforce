@@ -1,2 +1,2 @@
-# Slaesforce
+# Salesforce
 Salesforce Notes 
