@@ -1,0 +1,1085 @@
+- Proprietry
+ 
+ ---> More dependent on framwork whereas less proprietry means less dependent on framework.
+ ---> if want to implement some feature not supported by LWC then do the development in LWC and Wrap it with the Aura.
+ ---> LWC cannot contain an Aura but Aura can contain an LWC i.e LWC as a child and Aura as a wrap.
+ ---> Create an Aura lightning app, then an lighnting compoennt in Developer console And retrive it from org to VS Code.
+ ---> To disable LLC (Lightning Locker Service) just use VS Code and set the api version to 39 or below in the meta-xml file.
+ 
+ ---> Export in ES6  
+    ---> The export declaration is used to export values from a JavaScript module.Exported values can then be imported into other programs 
+         with the import declaration or dynamic import [Syntacx --> import(moduleName)].The value of an imported binding is subject to change in the module that exports 
+         it — when a module updates the value of a binding that it exports, the update will be visible in its imported value.  
+
+ ---> While exporting from a particular file as a default only one thing can be exported.
+ ---> Whatever is exported as a default is imported as directly b y its name and others are imported in { } braces.
+      eg. import defaultExport from "module-name";
+          import { export1 } from "module-name";  
+
+- To See Which components  within our Org
+
+ ---> org-domain URL/docs/component-librabry.
+
+- Creating a Lightning web Component [HelloWorld] (Contains Normal Variable)
+
+ ---> open command pallete and search for command 'Create lightning web component'. 
+
+- helloWorld.js
+ 
+    import { LightningElement } from 'lwc';
+    import backgroundUrl from '@salesforce/resourceUrl/Image1[static resource name]'
+    export default class HelloWorld extends LightningElement {
+          
+         // Private trackable property
+         greeting = 'World'; 
+         salesForceImage = backgroundUrl;             // backgroundUrl is a Variable
+
+         changeHandler(evt) {
+            this.greeting = evt.target.value; // as we modify the source target would get reflected in the title   
+                                               [Also called as unidirectional data flow
+         } 
+    }
+
+- helloWorld.html
+
+ <template>
+      <lightning-card title="Hello World"> // To display
+          <div class='slds-m-around_medium'> // here m means margin i.e margin aroung medium
+             <p>Hello {greeting}!</p>   
+             <lightning-input label='Greeting'
+                              value={greeting}
+                              onchnage={changeHandler}>
+             </lightning-input>  
+             <img src={salesForceImage} alt='Sachin'></img>       
+          </div>
+      </lightning-card>           
+ </template> 
+
+- helloWorld.css
+
+ p {
+       color:indigo;
+       background-color:aqua;
+       font-size: xx-large;
+ }
+
+ :host {  // for whole componentf
+         color:maroon;
+         font-size: xx-large;
+         font-style: italic;    
+  }
+  
+  img {
+        border-radius: 50%;
+        width: 200;
+        height: 200;f gf   
+  }
+
+ - helloWorld.js-meta.xml
+
+ <?xml version="1.0" encoding="UTF-8"?>
+ <LighntingComponentBundle xmlns="https://soap.sforce.com/2006/04/metadata">
+    <apiVersion>55.0</apiVersion>
+    <isExposed>true</isExposed> 
+    <targets>
+          <targets>lightning__HomePage</targets> 
+          <targets>lightning__AppPage</targets> 
+          <targets>lightning__RecordPage</targets> 
+    </targets>
+  </LightningComponentBundle>
+
+ ---> Deploy it to the Org and go to Org homepage and edit it and drag the helloWorld Component.
+      Now to change the contents of the text box then use onchange helper. 
+
+ ---> Deploy it to the Org. 
+ ---> Use an image from the external source into App in Org then use static resource.
+      Again edit the page and save it.
+ 
+- ConditionalRenderingIteration.js
+
+ import { LightningElement, track } from 'lwc';
+
+ export default class ConditionalRenderingIteration extends LightningElement {
+       
+       @track // by deafult no need to write  [NOTE: In case of object we need to write the @tarck annotation compulsory]
+       displayDiv = false;  
+ 
+       cityList = ['Jaipur','Pune,'Delhi','Hyderabad','Mumbai','Karnal','Nagpur'];;
+
+       showDivHandler(evt) {
+           this.displayDiv = evt.target.checked; 
+       }
+ }
+
+- ConditionalRenderingIteration.html
+
+ <template>
+      <lightning-input type="checkbox" 
+                       label="Show Div!"
+                       onchange={showDivHandler}>
+      </lightning-input>
+
+      <!-- Conditional Rendering-->
+      <template if:ture={displayDiv}>
+         <div>
+            I am here!
+         </div>    
+       </template>
+       <br/>
+       <!-- for:each directive -->
+       <div class='customDiv'>
+            <template for:each={cityList} for:item='city'>
+                <p key={city}>{city }</p> 
+            </template>  
+       </div>
+       <br/> 
+       <!-- Iterator -->
+       <!-- Iterator has some advantages over for:each directives. 
+       You can identify first, last element from the list using iterator variable 
+       Iterator can be useful if you want to apply special rendering on your elements, dynamically based 
+       on their index -->
+       <div class='customDiv'>
+            <template iterator:it={cityList}>
+                <p key={it.value}>{it.value} {it.index} {it.last} {it.first}</p> 
+            </template>  
+       </div>     
+ </template>
+
+
+- ConditionalRenderingIteration.css
+
+ div {
+     color:peachpuff;
+     background-color: maroon;
+     font-size: xx-large;
+ }
+
+ .customDiv {   // for collection different styling takes place
+     backgound-color: peachpuff;
+     color: maroon;
+     font-size: x-large;
+     margin: 20px;     
+ }
+
+- ConditionalRenderingIteration.js-meta.xml
+
+ <?xml version="1.0" encoding="UTF-8"?>
+ <LighntingComponentBundle xmlns="https://soap.sforce.com/2006/04/metadata">
+    <apiVersion>55.0</apiVersion>
+    <isExposed>true</isExposed> 
+    <targets>
+          <targets>lightning__HomePage</targets> 
+          <targets>lightning__AppPage</targets> 
+          <targets>lightning__RecordPage</targets> 
+    </targets>
+  </LightningComponentBundle>
+
+---> Deploy it to the Org and go the app for which it is activated and edit the home page.
+---> Do not use id selector in lwc|css,as when lwc components are rendered might have dynamic ids.
+
+=========================================================================================================================================
+
+- LWC 2
+
+- Creating a Lightning Web Component [HelloWorld] (Conatins An Object)  
+
+- ObjectTesting.js
+
+ import { Lightning, track } from 'lwc';
+ export default class ObjectTesting extends LightningElement {
+      
+        @track[decorator] --> Needed to write as in case of object it is required compulsory
+        person = {     // Here Person is an Object
+
+           name: 'Aditya',
+           age: '10',
+           city: 'Allahabad'
+        }
+      
+        changeNameHandler(evt) {
+              this.person.name = evt.target.value;
+        }
+         
+        changeAgeHandler(evt) {
+              this.person.name = evt.target.value;  
+        }  
+ }
+
+- ObjectTesting.html
+
+ <template>
+    <lightning-card title='trackable object'>
+       <div class="slds-m-around_medium">
+           <p>Hello {person.name}</p>
+           <lightning-input label="Name" value={person.name} onchange={changeNamehandler}>
+           </lightning-input>  
+           <p>Age {person.age}!</p>
+           <lightning-input label="Age" value={person.age} onchange={changeAgehandler}>
+           </lightning-input>         
+       </div> 
+    </lightning-card>  
+ </template>
+
+- ObjectTesting.js-meta.xml
+
+ <?xml version="1.0" encoding="UTF-8"?>
+ <LighntingComponentBundle xmlns="https://soap.sforce.com/2006/04/metadata">
+    <apiVersion>55.0</apiVersion>
+    <isExposed>true</isExposed> 
+    <targets>
+          <targets>lightning__HomePage</targets> 
+          <targets>lightning__AppPage</targets> 
+          <targets>lightning__RecordPage</targets> 
+    </targets>
+  </LightningComponentBundle>
+
+- ObjectTesting.css
+
+  p {
+     color: yellow;
+     background-color: green;
+     font-size: xx-large;    
+  } 
+
+---> Deploy them and go to the app[activated for] and edit the home page.
+---> Now we have noticed that everytime we have to edit the page and it can't just be done by refreshing only.
+     To do this by just refreshing we have to go to home page and search for session in quick search 
+     and disable the 'Enable secure and persistent browser caching to improve performance' under the Caching section
+     and it works for all css,..etc.
+---> @track should be applied to user defined data types only provided you make dynamic changes to.
+     And not to the primitive data types And the property sepcified as @tarck i.e private can be modified from inside the class only.
+
+- Child Component Rendering Inside Parent Component [By using Public property]
+
+ ---> The value of this property can be changed from outside the component/class also.
+
+---> go to command pallete and search for command 'create lightning web component'.
+
+- todoitem.js [Child Component]
+ 
+  import { LightningElement } from 'lwc';
+ 
+  export default class TodoItem extends LightningElement {
+      
+      @api  // public reactive property by using @api decorator
+      itemName= 'default';  // @track i.e private property - if you want to modify from outside of the component/class.
+    
+      @api // public reactive property
+      showtodo = false;  // public reactive properties which are boolean, you should mark(default) their value as false.
+                         // If parent component passing value for it, then it should be as a true by just specifying kabab case
+                         // of that attribute. 
+      // Public properties are read-only from child components. only default value can be assigned but
+      // cannot change further. public properties can only supply value to it from parent component.     
+  } 
+ 
+- todoitem.html [Child Component]
+ 
+// here template under template because we want conditional rendering [Note: cna be used for another thing also]
+<template>  
+  <template if:true={showtodo}>        
+      <div class='slds-m-around_medium'>   
+          <lightning-tile label='Todo Item'> 
+             <p>{itemName}</p>
+          </lighnting-tile>
+      </div>
+  </template>
+</template>
+
+- todoitems.js [Parent Component]
+ 
+  import { LightningElement } from 'lwc';
+ 
+  export default class TodoItems extends LightningElement {
+      
+      todos = [ 'Go to gym', 'Play chess' , 'Watch Movie', 
+               'Coding'
+              ]  
+  } 
+ 
+- todoitems.html 
+
+ <template>
+     <h1>Todo Items</h1>
+     <ul style='background-color:white; // Inline styling
+                color: maroon;'> 
+        <template for:each={todos} for:items='todo'>
+             <li key={todo} style='padding:10px'>
+                 // here <c-todo-item> is called kebhab case and 'c' denotes custom 
+                 <c-todo-item item-name={todo} show-todo></c-todo-item> // here it automatically initializes show-todo as true.          
+             </li>
+        </template>
+     </ul>  
+ </template>
+
+- todoitem.js-meta.xml
+
+<?xml version="1.0" encoding="UTF-8"?>
+ <LighntingComponentBundle xmlns="https://soap.sforce.com/2006/04/metadata">
+    <apiVersion>55.0</apiVersion>
+    <isExposed>true</isExposed> 
+    <targets>
+          <targets>lightning__HomePage</targets> 
+          <targets>lightning__AppPage</targets> 
+          <targets>lightning__RecordPage</targets> 
+    </targets>
+  </LightningComponentBundle>
+
+- todoitems.js-meta.xml
+
+ <?xml version="1.0" encoding="UTF-8"?>
+ <LighntingComponentBundle xmlns="https://soap.sforce.com/2006/04/metadata">
+    <apiVersion>55.0</apiVersion>
+    <isExposed>true</isExposed> 
+    <targets>
+          <targets>lightning__HomePage</targets> 
+          <targets>lightning__AppPage</targets> 
+          <targets>lightning__RecordPage</targets> 
+    </targets>
+  </LightningComponentBundle>
+ 
+ ---> update sfdx cli by command 'sfdx update'.
+
+
+- Installing Local Developer Server
+
+ ---> In terminal command 'sfdx plugins:install @salesforce/lwc-dev-server'.
+ 
+- Custom component Tab [LWC Part]
+
+ ---> In terminal command 'sfdx force:lightning:lwc:start And will start local dev server.
+      As we do this a local https host id will be generated, search that host id in browser. 
+
+- Parent Decides What Should Get Rendered Inside Child / Passing Merkup from Parent to Child 
+
+Usecase : Parent will decide what will the logged user will be seeing.
+       
+ ---> It can be achieved with the help of 'slot'.
+
+- hotelRoom.js
+
+  import { LightningElement } from 'lwc';
+
+  export default class HotelRoom extends LightningElement {
+         
+        @api
+        hotelRoomInfo = {roomName:'A-01',roomCapacity:4}
+ 
+        @api 
+        showRoomInfo = false;
+  }
+
+- hotelRoom.html
+  <!-- Without Slots -->
+ <template>
+      <template if:true={showRoomInfo}>
+         <div class='slds-p-around_medium'>
+             <lightning-tile label={hotelRoomInfo.roomName}>
+                <p class='truncate' title={hotelRoomInfo.roomCapacity}>
+                    Room Capacity :- {hotelRoomInfo.roomCapacity}
+                </p> 
+             </lightning-tile>
+         </div>
+       </template>   
+ </template>
+
+<!-- With Slots -->
+- hotelRoom.html
+
+ <template>
+      <template if:true={showRoomInfo}>
+         <div class='slds-p-around_medium'>
+           <slot name='roomInfo'></slot>   <!-- Named Slot -->
+         </div>
+         <div class='slotDiv'>   
+           <slot></slot>   <!-- UnNamed Slot -->
+         </div>
+       </template>   
+ </template>
+
+- hotelRoom.js-meta.xml
+
+ <?xml version="1.0" encoding="UTF-8"?>
+ <LighntingComponentBundle xmlns="https://soap.sforce.com/2006/04/metadata">
+    <apiVersion>55.0</apiVersion>
+    <isExposed>true</isExposed> 
+    <targets>
+          <targets>lightning__HomePage</targets> 
+          <targets>lightning__AppPage</targets> 
+          <targets>lightning__RecordPage</targets> 
+    </targets>
+  </LightningComponentBundle>
+
+- hotelRooms.js
+ 
+ import { LightningElement } from 'lwc';
+ 
+ export default class HotelRooms extends LightningElement {
+  
+    hotelRoomsInfo = [
+           {roomName:'A-01',roomCpacity:4},
+           {roomName:'A-02',roomCpacity:2},
+           {roomName:'A-03',roomCpacity:1},
+           {roomName:'A-01',roomCpacity:6},
+           {roomName:'A-02',roomCpacity:2},
+           {roomName:'A-01',roomCpacity:4},
+           {roomName:'A-02',roomCpacity:3}, 
+    ]
+ }
+
+- hotelRooms.html
+
+<!-- With Slots --> 
+ <template>
+    <lightning-card title='Hotel Rooms'>
+       <lightning-layout>
+            
+            <lightning-layout-item size='10' 
+                                   padding='around-small'>
+                <ul>
+                    <template for:each={hotelRoomsInfo} for:item='room'>
+                       <li key={room.roomName} style='padding:10px'>
+                           <c-hotel-room hotel-room-info={room} show-room-info> // it is blank so <p> is used to display
+                               <lightning-tile label={room.roomName} slot='roomInfo'> // Named Slot contents
+                                   <p class='truncate' title={room.roomCapacity}>
+                                       Room Capacity:- {room.roomCapacity}
+                                   </p>
+                               </lightning-tile>  
+                              // Above part will be executed for the Named Slot while the below Part will be Executed for the UnNamed Slot.
+                               <div> Additional Markup</div>  ----> UnNamed Slot Content
+                           </c-hotel-room>  // show-room-info is a property of hotelRoom                           
+                       </li>   
+                    </template>
+                </ul>    
+            </lightning-layout-item>   
+       </lightning-layout> 
+    <lightning-card>      
+ </template>
+
+- hotelRooms.html
+
+<!-- Without Slots -->
+ <template>
+    <lightning-card title='Hotel Rooms'>
+       <lightning-layout>
+            
+            <lightning-layout-item size='10' 
+                                   padding='around-small'>
+                <ul>
+                    <template for:each={hotelRoomsInfo} for:item='room'>
+                       <li key={room.roomName} style='padding:10px'>
+                           <c-hotel-room hotel-room-info={room} show-room-info>          
+                           </c-hotel-room>  // show-room-info is a property of hotelRoom
+                       </li>   
+                    </template>
+                </ul>    
+            </lightning-layout-item>   
+       </lightning-layout> 
+    <lightning-card>      
+ </template>
+
+- hotelRooms.css
+
+ .slotDiv {
+      
+      background-color: peachpuff;
+      color: maroon;
+      font-size: xx-large;     
+ }
+
+- hotelRooms.js-meta.xml
+
+ <?xml version="1.0" encoding="UTF-8"?>
+ <LighntingComponentBundle xmlns="https://soap.sforce.com/2006/04/metadata">
+    <apiVersion>55.0</apiVersion>
+    <isExposed>true</isExposed> 
+    <targets>
+          <targets>lightning__HomePage</targets> 
+          <targets>lightning__AppPage</targets> 
+          <targets>lightning__RecordPage</targets> 
+    </targets>
+  </LightningComponentBundle>
+
+ ---> There are two types of slots 
+   1. Named 
+   2. UnNamed
+
+ ---> Here we are trying to pass markup from parent to child whenever a specified user logs into.
+ ---> If we want to call the child method in Parent Component Then it is done by using Aura Method in Lightning Aura [Aura Point and not LWC Point].
+ ---> If we want to call the child method in Parent Component Then it is done by making child method as public method in LWC.
+ ---> So Slot is a placeholder for any markup which the parent component passes to the body of child component.
+ 
+-  Calling Child Method in Parent Component       
+
+ ---> If we want to call the child method in Parent Component Then it is done by making child method as public method in LWC.
+
+- publicMethodChild.js
+
+    import { LightningElement } from 'lwc';
+  
+    export default class PublicMethodChild extends LightningElement {
+           
+         value = ['red'] 
+
+         options = [
+                 {label: 'Red Marker', value:'red'},
+                 {label: 'Green Marker', value:'green'},
+                 {label: 'Blue Marker', value:'blue'},
+                 {label: 'Black Marker', value:'black'}
+         ] 
+       
+         @api   // To make the method public
+         selectCheckbox(checkboxValue) {     // This method is written and selects the checkbox value corresponding to the checkbox value
+ 
+            // array's find method
+    
+            const selectedCheckbox = this.options.find(checkbox =>{
+                      return checkbox.value === checkboxValue;
+            }) 
+
+            if(selectedCheckbox) {
+                this.value = selectedCheckbox.value;
+                return 'Sccessfully Checked!'       
+            } esle {
+                this.value = '';            
+                return 'No Checkbox found!'
+            }  
+         }
+    } 
+
+- publicMethodChild.html
+ 
+ <template>
+    <lightning-checkbox-group name ='Checkbox Group'
+                              label="Marker Group"
+                              options={options}
+                              value={value}>
+    </lightning-checkbox-group>
+    
+    <div> I am a div in child component</p>
+    <p>{value}</p> 
+ </template>
+
+- publicMethodParent.js
+
+ import { LightningElement } from 'lwc';
+ 
+ export default class PublicMethodParent extends LightningElement {
+
+       value='red'
+       
+       onInputChangeHandler(evt) {
+           this.value(property in publicMethodParent.js) = evt.target.value(property in publicMethodParent.html);
+       }
+
+       oncheckBoxSelectHandler() {
+          const childComponent = this.template.querySlector('c-public-method-child'); // Finding the child component and storing it.
+          const returnedMessage = childComponent.selectComponent(this.value.toLowerCase());  // here fetching value with help of stored thing.
+          console.log('Returned Message:- ',returnedMessage);
+       }  
+ }
+
+- publicMethodParent.html  
+
+ <template>
+     <lighnting-card title="Call Methods on Child Component">
+        <lightning-input value={value} 
+                         label="Checkbox value"
+                         onchange={onInputChangeHandler}>  
+        </lighnting-input>
+        <lightning-button label='Select Checkbox' // So when we select the checkbox the input text's(color) checkbox will be checked in the child checkbox
+                          onclick={oncheckBoxSelectHandler}>
+        </lightning-button>
+
+        <div> I am a div in Parent component</p>
+        <p>{value}</p>
+        <br/><br/>
+ 
+        <c-public-method-child> </c-public-method-child> 
+     </lightning-card>
+ </template>
+
+- publicMethodParent.css
+
+ :host {
+    padding-left: 30px;
+    padding-left: 30px;
+ }
+
+ div {
+    color: aqua;
+    background-color: indigo;
+    font-size: xx-large; 
+ }
+
+- Applying Styling At Component Level [Help of Shadow DOM]
+
+ ---> Applying styling,events,slots,etc to the component and not to its child components.
+ ---> Every Component has its own shadow tree/CSS property,events,accessibilities,slots,etc.
+ ---> Because of the shadow tree the CSS property of parent component does not cross shadow tree of that component.
+      It encapsulates everything it into a component in a bundle from the rest of the DOM.So when an event travel from
+      one component to another some of its property get hidden and parent cannot change it.
+ ---> Shadow DOM allows to access child component events from child component only.
+      Shadow DOM is very specific to respective Component.
+ ---> We handle the events with the help of 'onclick' and 'onchange' helper.
+ 
+===========================================================================================================================================
+
+- LWC 3(A)
+
+- Component LifeCycle / Component Hooks 
+
+- Need? 
+---> Scenario: if we are watching movie on youtube and suddenly recieve an whatsapp message then when we use whatsapp
+               it of no use to buffer the movie video on youtube in the background as it is using network bandwidth even 
+               when user is not using it.
+  
+Used for: Optimization purpose.
+
+---> There is screenshot of the Component LifeCycle in which: 
+ 1. connectedCallback()[Hooks] is called 
+ ---> The moment the component is connected to the DOM this life cycle hook is invoked. By the time this method is invoked, all 
+     the @api properties would have received the data from the parent and we can use that data to make a call to Apex method. 
+ 2. renderedCallback() 
+ ---> Once the component is completely rendered that's when this Life Cycle Hook in LWC gets invoked. Since the complete 
+      component is rendered we can have some business logic that involves the DOM. 
+ 3. disconnectedCallback()
+ ---> When you want to have some logic that has to be executed when the component is destroyed this Life Cycle Hook in LWC comes handy.
+ Usecase : One situation where I can think of using this Life Cycle Hook in LWC is when you want to unsubscribe to the message channel.
+
+ 4. errorCallback()
+ ---> This is pretty much straight forward when there is an error in the process of instantiating the component, connecting or rendering 
+      the component this Life Cycle Hook gets fired up.
+
+    
+- lifecycleDemoChild.js
+ 
+   import { LightningElement } from 'lwc';
+
+   export defualt class LifecycleDemoChild extends LightningElemnet {
+         simpleText; 
+               
+         constructor() {
+            super();
+            this.simpleText = 'default'; 
+            console.log("Child's Constructor is called");    
+         }       
+
+         changeHandler(evt) {
+            this.simpleText = evt.target.value;
+         }  
+  
+         connectedCallback() {
+            // Though here DOM is inserted, but not yet rendered, so you can
+            // change the attribute values but you cannot manipulate the DOM.
+            // You can programmatically add or rmove any element
+            console.log("Child Component's Connected callback is called"); 
+            throw new Error('Oops, Something is wrong!');      
+         }  
+        // ErrorCallback() will be written in parent and it will automatically take care of the child error.
+         
+         renderedCallback() {
+             // Use it to perform logic after a component has finished the rendering.
+             // Don't update a public property or field in renderedCallback().
+             // Don't update @wire adapter configuration object property in rendering.
+             console.log("Child Component's rendered callback is called");
+         }  
+         
+         disconnectedCallback() {
+             // You can free / release all the resources here
+             console.log("Child Component's disconnected callback is called");
+         }
+     }
+
+-  lifecycleDemoChild.html
+
+ <template>
+     <lightning-card title='Child Comp'>
+         <div class='slds-m-around_medium'>
+             <lightning-tile label="Lightning Component LifeCycle Hooks">
+                 <p>
+                   Life CycleDemo Child! 
+                 </p>  
+             </lightning-tile>
+             <lightning-input type='text' 
+                              name='input1'
+                              label="Enter a Text"
+                              value={simpleText}
+                              onchange={onchangeHandler}>
+             <lightning-input> 
+             <br/>
+             <p>{simpleText}</p>  
+          </div>
+      <lightning-card>     
+ </template>
+
+- lifecycleDemoParent.js
+
+  
+   import { LightningElement } from 'lwc';
+
+   export defualt class LifecycleDemoChild extends LightningElemnet {
+        show;
+        constructor(){
+           super();
+           this.show=false; 
+           console.log("Parent's Constructor is called");
+           // Acquire resources 
+           // Open Data Connection 
+         }     
+     
+         handleChange(evt) {
+             this.show = evt.detailed.checked;[checkbox] // here it is the case of boolean value  
+         }  
+       
+         connectedCallback() {
+            // Though here DOM is inserted, but not yet rendered, so you can
+            // change the attribute values but you cannot manipulate the DOM.
+            // You can programmatically add or rmove any element
+            console.log("Parent Component's Connected callback is called");       
+         }  
+        // ErrorCallback() will be written in parent and it will automatically take care of the child error.
+         
+         renderedCallback() {
+             // Use it to perform logic after a component has finished the rendering.
+             // Don't update a public property or field in renderedCallback().
+             // Don't update @wire adapter configuration object property in rendering.
+             console.log("Parent Component's rendered callback is called");
+         }  
+         
+         errorCallback(error,stack) { // For Handling the Error thrown from Child Component
+             // It captures error that may happen in all the child components lifecycle hooks
+             // It has two parameters error and stack. The error argument is a javascript native error object
+             // and the stack argument is a string.
+             // Error in a parnet shows in UI no boundary component for it.This means if error in child then 
+             // parent handles the error but if there is error in parent then it is shown in UI.      
+             // This method works like a javascript catch() block for catching the errors.
+
+             console.log('stack-parent')
+             console.log(stack)
+             console.log('error-parent')
+             console.log(error)
+             throw error;   // The error thrown by the parent is taken care by UI if deployed on Org.    
+         }
+
+         disconnectedCallback() {
+             // You can free / release all the resources here
+             console.log("Parent Component's disconnected callback is called");
+         }
+   }
+ // To see the results after adding the various callback check the console.
+
+- lifecycleDemoParent.html  [Becuase we are rendering here]
+
+  <template>
+      <lightning-card title="Life Cycle Hooks">
+         <lightning-input type="checkbox" 
+                          label='Show Child'
+                          onchange={handleChange}> 
+         </lightning-input>
+         
+         <c-lifecycle-demo-child if:true={show}></c-lifecycle-demo-child>
+      </lightning-card>  
+  </template>
+
+- lifecycleDemoParent.js-meta.xml
+
+ <?xml version="1.0" encoding="UTF-8"?>
+ <LighntingComponentBundle xmlns="https://soap.sforce.com/2006/04/metadata">
+    <apiVersion>55.0</apiVersion>
+    <isExposed>true</isExposed> 
+    <targets>
+          <targets>lightning__HomePage</targets> 
+          <targets>lightning__AppPage</targets> 
+          <targets>lightning__RecordPage</targets> 
+    </targets>
+  </LightningComponentBundle>
+
+---> Here deploy the child first and then parent as parent contains child and it won't work.
+---> open the app, edit the home page. 
+---> For Debugging purpose inspect the page and see in console tab.
+
+- ES5
+
+ ---> Standard on which JS is implemented where Creating class using function, 
+      Inheritance using Prototype Chaining / Classical Inheritance / Psudo Classical
+      Inheritance.
+
+- ES 2015
+   
+ ---> Standards on which JS is implemented Creating class using class
+      Inheritance using extends
+
+- ES5 Person [Creating Person Class]
+
+  function Person() {
+      this.age = 0;              // here this is actually Person
+      setInterval(function growUp() {
+           this.age++;           //  here this is actually growUp
+           console.log(this.age); 
+      },100)   
+  }
+                              // Problem is about 'this'
+  var p1 = new Person();
+  console.log(p1.age); 
+
+ // The setInterval Function is used for repetative task[like loop].
+ // Has two Parameters (function,time in milliseconds) ---> (growUp,100)
+   
+O/p: 0
+     NaN
+     NaN and so on. 
+         
+// ES5 - solution 1 by using another variable
+
+- function Person() {
+      var that = this;
+      that.age = 0;
+      setInterval(function growUp() {
+           that.age++;
+           console.log(that.age); 
+      },100)   
+  }
+ 
+  var p1 = new Person();
+  console.log(p1.age);
+
+O/p: 0
+     1
+     2 and so on.
+
+// ES5 - solution 2 by using bind function
+
+- function Person() {
+      var that = this;
+      that.age = 0;
+      setInterval(function growUp() {
+           that.age++;
+           console.log(that.age); 
+      }.bind(this),100)   
+  }
+
+  var p1 = new Person();
+  console.log(p1.age);
+
+O/p: 0
+     1
+     2 and so on.
+
+// ES 2015 solution 3 by using arrow function
+ 
+- function Person() {
+      this.age = 0;  // here age has lexical scope, i.e where variable defined their accessible directly.
+      setInterval(() =>{
+          this.age++;  // here this belongs to Person [Because arrow fumction does not have its own 'this']
+          console.log(this.age);   
+      },100)   
+  
+  var p1 = new Person();
+  console.log(p1.age);
+
+O/p: 0
+     1
+     2 and so on.
+
+===============================================================================================================================
+
+- LWC 3 (B)
+
+ ---> When our child component wants to communicate with the parent component then go for Component Event(Having Relationship)
+      and Application Event when two component want to communicate with each other but do not have any relationship.
+ 
+- Communication Between Components Having Relationship [Component Event]
+
+- hotelRoom.html [Parent]
+
+<!-- Events -->
+<template>
+    <template if:true={showRoomInfo}>
+        <div class='slds-m-around_medium'> 
+[**Child**] <lightning-tile label={hotelRoomInfo.roomName}
+                            onclick={tileClickHandler}>  
+               <p class='truncate' title={hotelRoomInfo.roomCapacity}>
+                   RoomCapacity:- {hotelRoomInfo.RoomCapacity}
+               </p> 
+            </lightning-tile>
+        </div>
+    </template> 
+</template> 
+
+- hotelRoom.js 
+
+ import { LightningElement } from 'lwc';
+
+ export default class HotelRoom extends LightningElement {
+
+      @api
+      hotelRoomInfo = {roomName: 'A-01', roomCapacity:4}
+ 
+      @api
+      showRoomInfo = false;
+
+      tileClickHandler() {
+          console.log("Hotel Room Component Click Event of Lightning-Tile (Child)");   
+      }
+ }
+
+ - O/P :- When we click on lightning tile the console.log statement is printed.
+
+--------------------------------------------------------------------------------------------------------------
+
+ ---> Now here I want that child should communicate with parent component.This can be achieved as
+     Event is in child and is handled by the Parent Component.
+---> <lightning-tile> is a Child component which is going to have onclick [event] and [tileClickHandler] event listner is in the Parent
+     hotelRooms which handles the event. 
+- Event Listner are used to handle the Events.
+---> Events are handled in JavaScript in two ways
+
+ 1. Events are handled in JS with the help of helper like 'on' followed by event name.eg) onclick,onblur,etc.
+ 2. By using the addListner function. 
+
+- hotelRoom.html [Parent]
+
+<!-- Events -->
+<template>
+    <template if:true={showRoomInfo}>
+        <div class='slds-m-around_medium'> 
+[**Child**] <lightning-tile label={hotelRoomInfo.roomName}
+                            onclick={tileClickHandler}>  
+               <p class='truncate' title={hotelRoomInfo.roomCapacity}>
+                   RoomCapacity:- {hotelRoomInfo.RoomCapacity}
+               </p> 
+            </lightning-tile>
+        </div>
+    </template> 
+</template> 
+
+- hotelRoom.js 
+
+ import { LightningElement } from 'lwc';
+
+ export default class HotelRoom extends LightningElement {
+
+      @api
+      hotelRoomInfo = {roomName: 'A-01', roomCapacity:4}
+ 
+      @api
+      showRoomInfo = false;
+
+      tileClickHandler() {
+          console.log("Hotel Room Component Click Event of Lightning-Tile (Child)");   
+          // Create a component event and raise that event here
+          // 'tileClick' event (custom event of HotelRoom comp) and dispatch it here.
+          // While passing event data along with the event, you should have
+          // a property named as a 'detail  ' only.
+
+      // Custom Event
+      
+      // bubbles: true is required only when at the parent side (listner or handler) 
+      // is handled using the addEventListner (imperatively) and not using onevent handler (declaratively)
+      const tileClickedEvent = new CustomEvent(
+          'tileclick',
+           {deatil:this.hotelRoomInfo,bubbles:true});
+
+      // DISPATCH / RAISE the Event
+      
+      this.dispatchEvent(tileClickedEvent);  // Event listner for this Event is in hotelRooms.html  
+      } 
+ }
+
+- hotelRooms.html [Parent]
+ 
+<!--  Events --> 
+ <template>
+    <lightning-card title='Hotel Rooms'>
+       <lightning-layout>   
+            <lightning-layout-item size='6' padding='around-small'>
+                <ul>
+                    <template for:each={hotelRoomsInfo} for:item='room'>
+                       <li key={room.roomName} style='padding:10px'>
+                       // Providing Declarative(declared) Event Listner (here from child to parent[bubbling]
+                           <!--c- hotel-room                [**Child**]
+                                hotel-room-info={room} 
+                                show-room-info>
+                                ontileclick={tileSelectHandler} // here the name is ontileclick is given as 'on(event name)' event name is tileclick                  
+                           </c-hotel-room -->            
+                       // Not Providing Declarative (declared) Event Listner here.Provided Imperatively i.e within JS Code
+                         <c- hotel-room               //   Event Listner is provided inside constructor Within the JS Code.
+                                hotel-room-info={room} 
+                                show-room-info>
+                         </c-hotel-room -->              [**Child**]
+                       </li>   
+                    </template>
+                </ul>    
+            </lightning-layout-item>  
+            <lightning-layout-item size='6' padding='around-small'>
+               <h3>
+                  <p>You Have Selected: </p>
+                  <b>{selectedHotelRoom}</b>
+               </h3>
+            </lightning-layout-item>    
+       </lightning-layout> 
+    <lightning-card>      
+ </template>
+
+- hotelRooms.js 
+ 
+ import { LightningElement } from 'lwc';
+ 
+ export default class HotelRooms extends LightningElement {
+   
+    selectedHotelRoom;
+
+    constructor() {
+      super();
+
+      this.selectedHotelRoom = 'default';
+       
+      // Imperatively Providing Event Listner of the Child Component's Event            /OR    Down implementation
+      // Adding event Listner to template                                              
+      // bubbles: true is required only when at the parent side (listner or handler) 
+      // is handled using the addEventListner (imperatively) and not using onevent handler (declaratively)
+
+      this.template.addEventListner('tileclick',(evt)=>{
+          const hotelRoomInfoLocal = evt.detail;
+          this.selectedHotelRoom = "Room Name"+hotelRoomInfoLocal.roomName;     
+      })
+    }
+       
+    hotelRoomsInfo = [
+           {roomName:'A-01',roomCpacity:4},
+           {roomName:'A-02',roomCpacity:2},
+           {roomName:'A-03',roomCpacity:1},
+           {roomName:'A-01',roomCpacity:6},
+           {roomName:'A-02',roomCpacity:2},
+           {roomName:'A-01',roomCpacity:4},
+           {roomName:'A-02',roomCpacity:3}, 
+    ]
+
+    tileSelectHandler(evt) {
+       const hotelRoomInfoLocal = evt.detail;
+       this.slectedHotelRoom = 'Room Name '+hotelRoomInfoLocal.roomName;  
+    }
+ }
+
+- hotelRooms.css
+
+ b {
+      color: indigo;
+      background-color: aqua;
+      border: gray 5px solid;
+ }
+
+ --> Here in HotelRoom.html is acting as Parent and the <lightning-tile label> is acting as child and has onclick event and event listner named as 'tileClickHandler'.
+     which is handled in HotelRoom.js [Parent] and within it a custom event name as 'tileclick' is raised and dispatched. Then in the HotelRooms which acts as Parent 
+     and <c- hotel-room >  acts as child here and event listner named as 'tileSelectHandler' for the tileclick event in the HotelRooms.js.
+ --> So in this way the event raised in the HotelRoom [child]  is handled by the event listner in HotelRooms [Parent].
+ 
+==================================================================================================================================================================================
+
+- Part 4 A 
+
+ --> To start the local development server for LWC command 'sfdx force:lightning:lwc:start' in the terminal.
+   
+- Communication Between Two Components Which are Not Related To Each Other
+
+ --> For Achieving this we need to use Application Event for communication between two Unrelated Components.     

@@ -1,0 +1,46 @@
+- An object has states,attribute,etc.
+- data of an specific/individual object - instance data.
+- data common to objects of same class - static data -->represented by underlined attribute and operations.
+- static operation should be called on class name only and it scan access static data only.
+- derived attributes are represented as eg) /x where /-->indicates derived attribute.
+their values are calculated from the variables they are derived.No need to save these derived values as they can be retrived.
+- Common attributes are common ot all classes and proprietary attributes are specific to every class.
+- code reuse laws-
+1. segregate(combine) what is common.
+2. separate what is varying.
+
+- operation overloading/overruling/rewriting/overwriting-
+
+1. same name different parameter types(signature) or listing of parameters.
+2. cna be achieved in same class and child class.
+ syntax --> + add(d1:double,d2:double):double.
+ here d1--> variable name, ': double'-->denotes primary data data types.
+ and ():double<-- denotes return type.
+3. Always while calling local/derived operation is preferred.
+
+object creation in polymorphism-
+1. parent p = new parent();  -->valid.
+2. parent p = new child();  -->valid.
+3. child p = new child();  -->valid.
+4. child p = new parent();  -->invalid. As a parent cannot be a child. but a child can be a parent.
+(instance of base class never be made)
+Internally refrence 'p' is pointing to the object(new parent,...) and when this reference 'p' is passed to any function
+it is replaced by object and the methods of object are called.
+
+Abstract method are wriitten in 'italics'.
+1. if even one method abstract make that class abstact.(stereo-type declaration <<abstract>>).
+2. We can make a class abstract even if all methods inside the class are non-abstract.
+Coventional rule/industrial rule --> Always make base classes as abstract.
+
+-Interface-
+1. dotted line is shown with triangle towards interface class(stereo-type declaration) called as realization
+ as the class which implements it gives implementation (i.e realization).
+2. intefaces are used to bind contracts with the classes.
+
+
+- data prone to change in future should be encapsulated.
+- inheritance is used to create new classes from existing classes.
+
+Encapsulation -
+ 1.It is a way of combining various data members and member functions that operate 
+   on those data members into a single unit.

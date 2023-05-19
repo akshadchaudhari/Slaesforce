@@ -1,0 +1,103 @@
+- How to use comboBox, Attributes for value Passing,Button,card.
+
+<aura:component implements="flexipage:availableForAllPageTypes" access="global">
+    
+       <aura:attribute name="gameStart" type="String" default="Start New Game"/> 
+       <aura:attribute name="modes" type="List" default="[
+         {'label': 'Easy', 'value': 'easy'},
+         {'label': 'Medium', 'value': 'medium'},
+         {'label': 'Hard', 'value': 'hard'},
+         ]"/>
+     <lightning:card title="Word Shuffle">
+         <lightning:combobox name="Game Mode" 
+                             label="Game Mode" 
+                             value="inProgress"
+                             options="{!v.modes}" 
+                             placeholder="Select Game Mode"/>
+         <lightning:button variant="brand" label="{!v.gameStart}" title="Start New Game" />
+         <lightning:button label="ReShuffle" title="ReShuffle"/>
+    </lightning:card>
+</aura:component>
+
+--> Aura Supports 12 grid layout i.e divides Horizontal space into 12 different grid.No decimals allowed only whole number.
+eg) lightning:layoutItem              lightning:layoutItem                lightning:layoutItem 
+      Size = 4                          Size = 4                               Size = 4
+      
+--> Just total of the division should be 12.
+--> Layout is used for arranginf the position of elements on page.Where Layout is parent and Layout-Item is child.
+
+--> Go to Lightning Design System Website for full information about Elements and then in Salesforce we use the Elements.
+
+- Access attributes in javascript 
+
+--> As we get their values in javascript set them here.
+
+--> For applying custom CSS in javascript 
+
+.THIS.board {        // If the Element is direct child of the component 
+
+} 
+ 
+.THIS .board {    // If the Element is child of other component (Give Space between 'This' and element name) 
+
+}
+
+--> To bulid 
+
+1) Classic Salesforce -> VisualForce Page
+2) Lightning Salesforce -> Aura OR LWC Framework.
+
+--> Salesforce Interacts with backend i.e Database through Apex Language.
+--> In Salesforce we can interact with Object / Database through 
+  1) Apex Language 
+  2) Declarative Tools like 
+   i)   Workflow
+   ii)  Process Builder
+   iii) Visual Flows
+   iv)  Approval Process
+
+--> valueOf(object) can convert any object into String
+    Integer.valueOf(object) can convert any object into Integer 
+    here in place of String we can put any Primitive Data Type.
+
+--> In Apex the Private Access Modifier works as :-
+  1. The Inner class cannot access the Outer class private Things.
+  2. The members of the outer Class i.e var,methods,inner classes cannot be accessed outside outer class by any other class.
+
+--> Protected Access Modifier works as :-
+  1. The Inner class or the class which extends the outer class can access the outer class methods and variables.
+
+--> Inner Containers cannot have less restrictive modifier than outer container.
+ i.e In Public class we cannot have Global Methods.
+Concept :- Inner class cannot have less restrictive modifier than Outer Class.
+
+--> Global access modifier use when we want class to be accessed within same namespace and outside in another namespaces.
+--> Variables declared in a method cannot be used in another methods due to function scope.
+--> A method can have multiple return statement but atleast one of the statement must be last statement of the method.
+--> We cannot use static keyword with class instances in Apex. Eg) Object.static Variable is not allowed.
+--> Apex is Case Insensitive i.e write capital or small but spelling should be correct.
+--> Wrapper Class are used when we want A class should be accessed by some Specific Class only.
+
+
+List<Contact> contacts = [SELECT Name,Department,(SELECT CaseNumber,Subject FROM Cases) FROM Contact WHERE Department = 'Financial' ORDER BY Case];
+
+for(Contact con : contacts){
+      System.debug('Contact Name '+con.Name+', con.Department');
+   for(Case caseObj : con.Cases){
+     System.debug('Case Number'+caseObj.CaseNumber);
+   }
+}
+
+- Dynamic SOQL Query
+
+--> String accountClass = 'Class1';
+    
+    String queryString = 'SELECT Id,Name,Phone<Rating FROM Account';
+    if(accountClass == 'Class1') {
+        queryString += ' WHERE Rating = \'Hot\' AND Type =\'Prospect\'';   
+    } else if(accountClass == 'Class2') {
+        queryString += ' WHERE Rating = \' Hot \' AND Type =\'Other\'';
+    } else {
+        queryString += ' WHERE Rating =\' Hot\'';   
+    }
+    

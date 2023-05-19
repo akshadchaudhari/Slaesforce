@@ -1,0 +1,161 @@
+- DML [Data Manipulation Language] -
+
+1. DML is used to add,update and delete data.
+2. DML statements are:
+i.  INSERT
+ii. UPDATE
+iii.DELETE
+iv. MERGE
+
+3. A Collection of DML statements is called a transaction.
+4. Transaction start with DML statement and finishes with a commit or rollback.
+5. Transactions are used for data integrity,security and consistency.
+
+- INSERT Statement -
+
+1. Adding one or more new rows into a table is performed using the INSERT statement.
+Query - 
+INSERT INTO table_name(col1,col2...coln)
+VALUES (val1,val2...valn);
+
+2. While inserting a new row into a table,we don't have to specify all the columns of the table.
+INSERT INTO table_name(col1,col2,col3)
+VALUES (val1,val2,val3);
+
+3. Unspecified columns will be filled with NULL or DEFAULT value if they have any.
+4. We can insert a new row without specifying  column names.
+BUt Condition here is we have to give values for all columns of the table then only possible.
+Query - 
+INSERT INTO table_name
+VALUES (val1,val2...valn);
+
+5. The order of the columns and values must match.
+
+- ALTERNATIVES TO INSERT Statement - 
+
+1. We can add new row without specifying column names and without writing all set of values.
+Query -
+INSERT INTO department_copy
+VALUES (280,'Customer Relations',null,null);
+
+2. Passing NULL values to a column having a default value will prevent the use of DEFAULT value.
+3. We can create columns having values using single-row functions (functions which return single output.)
+and functions with multiple output are not allowed.
+Query -
+INSERT INTO job_history(employee_id,start_date,end_date,job_id,department_id)
+VALUES (120,to_date('01/05/03','DD/MM/YY'),sysdate,'IT_PROG',60);
+
+4. Every operation is started with new transaction in database.
+
+- INSERT INTO SELECT Statement - 
+
+1. The INSERT INTO SELECT statement is used to add data into a table base on the result of a SELECT statement.
+Query -
+INSERT INTO target_table(col1,col2,...coln)
+SELECT (col1,col2,....coln) FROM source_table;
+
+2. We can use INSERT INTO SELECT Statement with or without column list. 
+i. Without column list
+Query -
+INSERT INTO employees_copy
+SELECT * FROM employees;
+
+ii. With column list
+Query -
+INSERT INTO employees_copy(col1,col2,col3)
+SELECT (col1,col2,col3) FROM employees;
+
+3. We can copy specific rows from a table into another table.
+INSERT INTO it_programmers
+SELECT * FROM employees WHERE job_id = 'IT_PROG';
+
+4. We can insert new rows by using multiple tables.
+INSERT INTO employees_addresses
+SELECT employee_id,first_name,last_name,city||'-'||street_address AS address
+FROM employees
+JOIN departments USING (department_id)
+JOIN location USING (location_id);
+
+5. We can create new table by using multiple tables.
+CREATE TABLE employees_addresses AS
+SELECT employee_id,first_name,last_name,city||'-'||street_address AS address
+FROM employees
+JOIN departments USING (department_id)
+JOIN location USING (location_id);
+
+- INSERT data into multiple tables - 
+
+1. Multiple rows can be inserted into a table or multiple tables by using only one SQL statement instead of writing severeal INSERT statements.
+2. INSERT ALL statement is used to insert multiple rows into a table or multiple tables.
+3. Increases performance and saves time.
+4. Multitable inserts are generally used in data warehousing.
+
+- Multitable Insert Types -
+
+1. Unconditional
+2. Conditional
+
+- Conditional are classified into -
+
+1. Conditional INSERT ALL Statements.
+2. Conditional INSERT FIRST Statements.
+
+- UPDATE Statement - 
+
+1. We use UPDATE statement to modify existing rows in a table.
+Query - 
+UPDATE table_name
+SET column_name = value/[,col2=value,col3=value]
+[WHERE conditions];
+
+2. We can update all of the values in one column of a table in one step.
+Query - 
+UPDATE employees_copy
+SET salary = 50000;
+
+3. We can upadte only specific rows in column of a table using the WHERE clause.
+Query -
+UPDATE employees_copy
+SET salary = 50000
+WHERE job_id = 'IT_PROG';
+
+4. We can update multiple columns of a table in an UPDATE Statement.
+Query - 
+UPDATE employees_copy
+SET salary = 50000,
+    department_id = null
+WHERE job_id = 'IT_PROG';
+
+5. We can update one or more columns of a table using a subquery.
+Query - 
+UPDATE employees_copy
+SET (salary,commission_pct) = (SELECT MAX(salary),MAX(commission_pct) FROM employees)
+WHERE job_id = 'IT_PROG';
+
+6. Subqueries can also be used in the WHERE clause of an UPDATE statement.
+Query - 
+UPDATE employees_copy
+SET salary = 100000
+WHERE hire_date = (SELECT MAX(hire_date) FROM employees);
+
+- DELETE Statement - 
+
+1. The DELETE statement is used to delete one or more rows from a table.
+Query -
+DELETE [FROM] table_name
+[WHERE conditions];
+
+2. We can delete  all of the rows in a table.
+Query - 
+DELETE [FROM] employees_copy;
+
+3. We can delete specific rows of a table.
+Query - 
+DELETE [FROM] employees_copy
+WHERE job_id = 'IT_PROG';
+
+4. We can delete rows based on subquery.
+Query - 
+DELETE [FROM] employees_copy
+WHERE department_id IN (SELECT department_id FROM departments WHERE UPPER(department_name)
+                        LIKES '%SALES%'); 

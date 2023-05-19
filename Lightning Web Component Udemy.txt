@@ -1,0 +1,74 @@
+- Fundamentals of Web Technology
+
+- Basics Of HTML
+
+---> <a> anchor tag for adding hyperlinks.
+---> <p> will give space between two lines automatically.
+---> <div> will not give space between two lines automatically 
+
+- Attribute
+
+---> data-* :- Is used to store custom data private to the page or application.
+     Syntax :- <div data-name="nikhil">Username</div>
+
+- HTML Block And Inline Element
+
+- Block Level 
+
+ ---> Elements always starts on a new line and takes up the full width available.
+  eg) <div>,<p>,<h1>-<h6><ul>,<header>,<article>
+
+- Inline Level
+
+ ---> Elements does not start on a new line and it only takes up as much width as necessary.
+  eg) <span>,<img>,<a>,<label>,<strong>
+
+- Basics Of CSS
+
+ ---> CSS Syntax
+    selector {property:value}
+  --> Selector :- It is used to "find" the HTML Element.
+  --> Property :- CSS property you want to apply like color,border,etc.
+  --> Value :- It's the value assigned to property like for color property value is red. 
+ 
+- CSS Selectors
+
+ ---> CSS Selectprs are used to "find"(or select) the HTML elements you want to style. 
+ ---> Element Selector 
+   --> use of html tags for styling
+      eg)   p{color:blue}
+ ---> ID Selector 
+   --> Uses the id attribute of an HTML element to select a specific element.To 
+       select an element with a specific id, write a hash(#) character,followed by the
+       id of the element.The id of an element should be unique within a page.
+       eg)  #idname{color:red}  
+ ---> Class Selector
+   --> Uses the class attribute of an HTML element to select a specific element.
+       To select an element with a specific class,write a dot(.) character, followed 
+       by the class of the element.
+       eg) .classname{color:blue}   
+
+- Types of CSS
+ 
+ 1.  Internal CSS - Not used in LWC
+ 2. Inline CSS
+ 3. External CSS or Third party Library - Bootstrap,salesforce lightning design system[SLDS].
+
+- CSS Box Model
+
+             Margin
+             Border
+             Padding
+         
+             Content   
+
+             Margin
+             Border
+             Padding
+
+
+ ---> .abc, .xyz{
+
+      }
+     // Appling style to multiple classes.
+

@@ -1,0 +1,267 @@
+- Security
+
+ ---> User License
+   --> Every user has exactly 1 user license
+   --> System Admin has Salesforce license(Full CRM License) which enable him to do anything on CRM platform(Salesforce).
+   Full CRM License - Can do anything on saleforce and accessibility. 
+ ---> Permission Set License
+   --> We have to assign.
+ ---> Feature License
+   --> Gets automatically assigned to the Users(by enabling certain options like marking,etc).No way to assign.
+To see Licenses go to Company Information/Users
+
+ ---> Profile [For giving access to user,etc]
+   --> Every User License has 1 or more profile(s)
+   --> Every User has exactly 1 profile
+   --> Is used to configure access to apps,tabs,objects,fields,record types,page layouts,etc.
+   --> 1 profile can have many Users.
+   eg) we can give these profiles to a team so when a change is done it is reflected to everyone profile.
+   --> Create Profile then Create User.
+   Freeze - Blocks user from loging into org but license is not released.
+   Deactivate - Releases the license of user.
+
+NOTE:- Profile Level Configurations are visible to everyone.
+
+---> An option which is used to bypass or override the sharing configurations is view all/modify all.
+---> Configuration that allows a user to bypass or override all the sharing configurations in the Org is view all data/modify all data.
+- Object Level Security
+ 
+ ---> Configuring it at profile Level.
+   --> page layout is editable through 2 ways 1. in profile 2. in page layout tab.
+   --> granting permission to perform CRUD opeartions on a object.
+
+- Field Level Security
+
+ ---> Configuring it at profile Level.
+ ---> Granting permission to read  and edit a field in an object'
+
+- Record Level Security
+
+ --->eg) Only i should be able to see my salary records and not anyone else.
+ 
+
+- Permission Sets [For specific granting / To Overcome Profile Configuring Drawback](Used for object level and field level configurations)
+
+ ---> Is used to grant additional access over and above a profile Level
+ ---> You cannot withdrawn access through Permission Sets
+ ---> First select permissions to be granted and then select the users to grant access.
+   
+- Process Automation
+=====================================================================================================================
+
+- Record Level Security
+
+ --->eg) Only i should be able to see my salary records and not anyone else.
+ ---> Four level of record level security
+  1. Organization Wide Deafults [Users excluding the System Admin]              ^
+  2. Role Hierarchy                                                             |
+  3. Sharing Rules                                                              | Visbility(Access) Opens Up 
+  4. Manual Sharing                                                             | 
+
+   1. Organization Wide Deafults [Users excluding the System Admin]  
+   ---> So when we want that a particular user (configure record level security) should see only his recods then go to 'Sharing setting' and also if
+      someone exteranal wants the access to a records of an object.
+      And Set the Visibility of the record to 'private'.
+   
+   2. Role Hierarchy
+   ---> A manager can access a sub-ordinate's records.
+  
+   3. Sharing Rule
+   ---> Used to share records based on a certain criteria or ownership.[creating rules for sharing records on basis of criteria or owner of the record].
+   Go to Sharing Setting.
+  
+   4. Manual Sharing 
+   ---> A user can share his own records to anyone through Manual Sharing.
+
+- Permission Set Groups 
+
+ ---> It is used to create a group of permission sets and all the combined permissions are granted to the group.
+
+- Public Group 
+
+ ---> It is collection of users or groups.eg) Group of librarians in the library.
+
+- Queues
+
+ ---> A queue of users. and associate object with the queue. eg) Customers raise request to the customer services(Case Object record is created) here
+      customer executives answer the calls.So executives are associated with the Case record of customers in queue.
+ 
+ ---> [Places where queues can be used] Web Queue and Email Queue is used to create a Case.[Service Cloud Part].
+
+- Setup Audit Taril 
+ 
+ ---> Used to see the time and chengeds done on the Setup page[Logs of activity on setup screen].
+
+- Login Access Policies 
+
+ ---> It is used to give login access to System admin and Organizations.
+
+- Login History 
+
+ ---> Keeps logs of Who and Which User logged in Which account in Org.
+
+==================================================================================================================================
+
+- Process Automation[Business] 
+
+ Q) What is a process?
+ ---> A process is a sequence of steps which leads to outcome.
+ Q)What are the tools available?
+ ---> Approval process
+    --> Applying for a leave
+    --> Applying for a loan at a bank
+ ---> Workflow (outdated)
+ ---> Process Builder(retire by 2023)
+ ---> Flow(Future)
+
+ ---> Approval process
+    --> Search for Approval process two options available 
+      1. Use jump Start wizard - fastest creation.(few questions asked)
+      2. Use Standard Setup wizard - standard creation (lot of questions asked)
+    --> We send a request and the delegated approver will approve our request so we have this many options 1 and 2.
+    --> Approval Action and Rejection actions are applied and work after these actions are executed completely.
+    --> Final Approval and Rejection actions used when multiple users are required for approaval and take action after completely executed of actions.
+    --> Recall actions are used to undo and correct the wrong rquest raised even after submitted state.
+        It unlocks the record for editing.
+
+- Process Bulider
+
+ ---> Search for Process Builder.
+ ---> We will implement Lead Conversion Process.(Lead is standard object) name of some person or individual.
+  i.e all the opportunities or project which the company gets through its eg)home page, will be created as lead record.
+  Opportunity means an offer to do business with existing client.
+ ---> Lead Conversion - Converting a Lead into account and opportunity.
+
+
+====================================================================================================================================
+
+- Flow 
+
+---> We can call autolaunch flow from the 1)apex classes 2)Process Builder. 
+---> To create record of book_copy(which has a master detail relationship with book) the relationship field(here book_copy) has to be initialized first.
+we can't leave it blank.
+
+
+---> Then assignment of book quantity to variable(creating it).
+---> Then decision operation and checking condition over there.
+---> And then depending according to the decision operation we create a record.
+
+---> Assignments are not for declaring statements its wrong assumption.
+we first declare the variable and then perform assignment on that.
+
+---> In flow if we go to actions then in apex action we can call apex method if that method is static and anotated with invokable anotation.
+---> We can also call object specific actions from flow.
+---> We can call flows and they are the autolaunch flows.
+
+---> Looping element is used for looping but these are not the for,while loop keep in mind.They are more similar to for each loop.
+They are used to iterate over arrays,collections only.
+
+- Creating Flow which can be called from Process Builder
+
+--> Declare a variable so that it can trigger the Process Builder which will call the flow.As the flow will associate the book_copy record with the book record we have to pass the
+book record id from process to flow because flow doesn't know it as it is indirectly called i.e from process builder and not from record creation of book record.
+---> Then get the records and store them in variables.
+---> Then assignment of book quantity to variable(creating it).
+---> Then decision operation and checking condition over there.
+---> And then depending according to the decision operation we create a record copy.
+---> Then reducing the book quantity.And connect this stage to the decision stage to form a loop.
+
+---> Now create a process in process builder so it will call the flow.
+---> In this when we create a process we can set flow variables whoes 'Available for Input' is checked [Under the Availability outside the flow].
+
+Note : Unless the flow is not activated it will not be visible to process in the Process Builder.
+
+- Availability for input means it can be initialized from outside the flow when a process builder call a flow.
+- Availability for output means it can be accessed from outside the flow when a process builder call a flow.[Mostly useful in Subflow scenarios i.e when we want to access variables values of subflow from  parent flow]
+
+---> Record data type is used to store and retrive Record variables.
+
+======================================================================================================================================================================================================================================
+
+ June 6 2nd Lecture
+
+- Data Management
+
+---> Data Management is about managing data i.e import and export of data in the org.
+
+- Tools for data management 
+
+---> There are three tools for data management 
+
+1. Data Import Wizard
+2. Data Export 
+3. Data Loader [Has an advantage over Data import wizard on supporting number of objects].
+
+1. Data Import Wizard
+
+---> Search for Data Import Wizard in quick search.
+---> Upload data in CSV format.Clean up the data i.e only valid data should be present in excel sheet and no error.
+---> Our Field names matches the Salesforce fields name.
+---> Don't import too many record at once.
+
+---> It supports a limited number of standard objects and all custom objects created by us.
+   Match Account Name <-- field
+---> Here the SalesforceID.com means the account id records.<--- Value.
+---> It data import limit is Max 50000 records.
+---> Update Existing Account Information
+This option is used to update information in Account when another column is present which contains information regarding account other than contact.
+
+---> Trigger workflow rules and processes
+This option is used when we want the automatic Processes[Process builder] or flows for contact/Account object to be triggered automatically.
+
+NOTE : A lot of Salesforce Developer will recommend to not to select this option.[Reason: if something goes wrong in flows/processes then it will hamper the import operation]
+
+2. Data Export 
+ 
+---> In this we can export data and we have to schedule data export time and details or we can export it right now also.
+After the scheduled export is completed we will receive an email alert and we can download the exported data.
+---> In developers Edition we can export only once in 29 days.
+
+3. Data Loader [This tool is used for importing as well as exporting]
+
+---> Its a Java Tool. 
+---> Upsert means either insert or update.
+---> So if we want to add filter like SOQL Query on data import or export then use the Data Loader. 
+---> The limit for data export for Data Loader is Max 5 million records.
+---> If we use the delete operation then success and  error files are created at the specified directory.
+
+---> Don't Use Workbench in live projects as its not a official tool by salesforce.
+[Used like SQl for query execution,data operation and so on].
+
+- Reports
+
+---> Graphical representation of data in your org is called reports.
+---> We can remove columns and rows from the left side of the report page.
+
+- Report Types
+
+---> It is used to decide which objects (and related object) and their fields will be available in the report. 
+---> Search for report type in quick search and create a report type.
+---> If report type is already created for an object then we can directly make its report.
+---> If while creating custom object if we select the 'Allow Request' optional feature then while creation/configuration of object the salesforce
+simulthanously creates an report type of the object. 
+
+---> If we create record types using two primary and secondary object objects then the report created by them 
+will have access to both records of the objects.i.e we can use both the records of primary and secondary object on that report.
+---> We can create report type of only primary object as well as report type of primary and secondary object also.
+
+---> Record Types is also used to decide the records of the object that will be available in the report.
+---> After making report if i want to show it to my team members/specific users so i should create a folder so that it will easy for me to share it to other team members.
+---> We can configure columns also by using filters on the left side.
+---> Current FQ --> Current financial Quater.If the record satisfies Current FQ then it will be displayed in the list on beside it.
+---> In tabular report we cannot add Charts.
+---> We can use group option to group records by rows and columns.[Use charts when grouping is done].
+---> Fiscal Period --> financial Period.When we group the report by column and rows it becomes Matrix Report.
+---> We can join two report types also eg)Opportunity and Case by using the choose format option in the reptort button on the left upper corner in the report
+page here though they do not have any relation with each other but they both have relationship with Accounts object.
+---> We can also group Across blocks i.e Blocks of Opportunity and Case by using the Account Name as it is the common between them.
+
+- Dashboard
+
+---> Collection of reports.
+---> These are used to group reports so it becomes easy for us to analyze the reports.
+---> They are stored in the folders and we can share these folders with other users as well. 
+---> We can display Dashboard on Homepage also by editing the Home Page.
+---> There are many backend changes in the data and if you want to keep your Dashboard Updated then subscribe it so it will get refreshed everytime when there 
+is changes in the backend.
+---> If we edit the Dashboard then we can configure it in such a way that different will be shown different Data by using the 'View Dashboard As' Option.

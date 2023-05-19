@@ -1,0 +1,120 @@
+- Github -
+Github is a platform/service that hosts Git repositories in the cloud and makes it easier to collaborate with other people.
+
+- Why to use Github?
+-->1. Open Source Project.
+   2. Exposure.
+   3. Stay Up To Date(in terms of projects and tools).
+   4. Collaboration.
+   
+- CLoning Repository -
+1. When we want to get a repo which is on github then we use
+  >>git clone [URL] 
+ So this clones the repo on the github onto our personal machine and retrives all the files associated with the repository.
+
+- Github Setup SSh Config -
+
+follow website instructions.
+
+- Git Remotes -
+1. In github we refer destination as remotes.where we push our code.
+>>git remote -v(verbose) 
+To view any existing repository.and to display a list of remotes.
+
+- Make A New Remote -(Connect our system to github)
+>>git remote add [name] [url]
+git remote origin https://ijfwfokfo.git
+Origin is default remote name.
+
+- Rename and Remove remotes -
+>> git remote rename [remote_old_name] [remote_new_name]
+renames remote.
+>>git remote remove [remote_name]
+removes remote.
+
+- Git Push -
+>>git push [remote] [branch]
+eg) git push origin master/main
+
+- Set Upstream branch -
+Stes the upstream of the local master branch so that it tracks the master branch on the origin repo.
+i.e connecting local branch(master) to master branch of the github.
+so then it tracks it and we use only git push rather than git push origin master.
+>>git pudh -u origin [branch-name]
+>>git push --set-upstream origin [branch-name]
+And if u want to connect a local branch master to a diiferent github branch say dogs then use
+>>git push -u origin master:dogs
+
+- For Existing Github Repository -
+
+- Pushing local branches to another branches on github -
+>>git push [remote] [local-branch]:[remote-branch] 
+eg) git push origin pancake:waffle
+
+- Rename remote branch -
+
+>>git branch -M [new_name]
+
+- Remote Tracking Branches -
+
+1. origin/master is a pointer which is resposible for tracking the commit on the github repo i.e it knows state of the master branch of repo. 
+2. commit int github repo.here is where 'x' branch was pointing
+3. it references to the state of the master branch on the remote repo named origin.
+4. upstream/logoRedesign references to the state of the logoRedesign branch on the remote named upstream. 
+>>git remote -r 
+Shows the remote tracking branches.
+
+- Checking out Remote Tracking Branches - 
+1.git checkout remote-branch-name
+we go into detached HEAD state and to make the rmote tracking branch 'origin/master' point to master branch of github repo as it is ahead of it 
+use >>git push origin master
+
+use >>git switch branch-name
+so the git makes a local branch and connects it to the remote branch of same name.
+like the master on our computer is automatically connected to the origin/master of the github repo.
+Similarly to make this happen use >>git switch branch-name. 
+[Condition Applied:the branch should be present on the github repo]
+
+- Fetching -
+1. It allows us to download changes from a remote repository,But those changes will not be automatically integrated into our work files.
+>>git fetch [remote]-->to fetch branches and history from a specific repository.
+>>git fetch -->to fetch changes from origin only. 
+>>git fecth [remote] [branch] -->to fetch particular branch.
+2. Changes are downloaded but they are shown in working tree.
+
+- Pulling -
+1. We can use to retrive changes from a remote repository.Pull actually updates our HEAD branch with whatever changes are retrived from the remote.
+i.e it downloads changes from the github repo and integrates them with our working tree.
+git pull = git fetch + git merge.
+>>git pull origin master
+it matter from where we run this command as it merges the changes in the associated command.
+
+- Git pull and merge conflicts -
+
+1. Similar to resolve conflicts. 
+
+- Shorter Syntax Of Pull -
+>>git pull 
+it pull from the default branch origin or it will pull from the remote branch it has established connection.
+connection are established by simply switching to the branch automatically.
+Follow as:
+1. >>git switch branch-name
+2. >>git pull
+
+
+ git fetch                                                  git pull
+1. Gets changes from the remote branches.      1. Gets changes from remote branches.
+2. Updates the remote-tracking branches        2. Updates the current branch with the new changes
+   with the new changes.                          merging them in working tree.
+3. Does not merge changes onto your current    3. Can result in merge conflicts. 
+   HEAD branch.                                4. Not recommended if you have uncommited changes.  
+4. Safe to do at any time.                       
+
+- Consider if you as an individual working in an organization wants to see information regarding the commit or you Need to see who else checked in
+specific files, in that case, what command you would use to sort it out.
+
+--> gitk.
+
+- How do you create a copy of a lab under your own GitHub account so that you can solve the lab?
+-->Forking it via the GitHub interface.
+

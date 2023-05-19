@@ -1,0 +1,192 @@
+- DDL Statements [Data Definition Language] -
+1. These commands create,modify and maintain the database objects int the database.
+2. DDL commands are:
+i.   CREATE --> Creates objects in the database.
+ii.  ALTER  --> Modifies the structure of the database and its objects.
+iii. DROP   --> Deletes objects from the database.
+iv. TRUNCATE--> Removes all data from the table including spaces allocated for the removed rows.
+v.  COMMENT --> Adds explanatory comments to the table and its column.
+vi. RENAME  --> Rename an existing object.
+
+3. These DDL commands are auto-commited.
+***NOTE***
+1. Differece between the Delete and Truncate command is that Truncate command cannit be rolled back.whereas Delete command
+can be rolled back(as it stores log for every entry in the table)
+
+- NAMING CONVENTIONS IN DATABSE -
+1. They should start with letter.
+2. Can contain only A-Z,a-z,0-9,_,$,# characters.
+3. Can be upto 128 charcters in length.
+4. Cannot have the same name as another existing object in the same schema.
+but can have same name in another schema.similarly for tables also(objects also).
+5. Things written without quoted marks "" are considered in Upper case while things written in the Quoted 
+marks "" are case sensitive(not recommended) i.e we can have mixed cases in quoted marks and while refering to such quoted objects we should call them with quoted marks,it behaves like
+a string here whatever we write it is named as it is written in quoted marks.
+
+6. Reserved words like SELECT,FROM,UPDATE,DELETE,WHERE,HAVING,etc cannot be used for object creation.
+
+- NAMING CONVENTIONS FOR COLUMNS AND TABLES -
+1. Tbale names shuld be in plural form.(employees,departments,etc).
+2. If a table name has more than one word,they  should be separated by an underscore.
+Column name should include alias of the related table undercore the column name.(adr_street,usr_name).
+3. Column names should be in Singular Form.
+4. The primary key name should end with _ID.(usr_id,asr_id,etc).
+5. The logical alias of both tables should be used while naming a foreign key column.(usr_adr_id)
+here usr-->primary key(Parent table),adr-->foreign key(child table).
+
+- CREATE TABLE Statement -
+1. This statement is used to create a new table.
+Syntax -
+ CREATE TABLE schema.table_name/table_name
+( column_name_1 datatype [DEFAULT default_value] [NULL | NOT NULL]
+  ....
+  upto 1000 columns only and column name upto 128 character length.
+);
+2. The DESC[RIBE] and INFO[RMATION] commands return structure of the table.
+3. DEFAULT keyword allows to set up a default value which will be inserted instead of NULL values.
+
+- CREATE TABLE AS SELECT Statement -
+1. A table can be created using queries and populated with the rows returned by the specified query.
+Query - 
+CREATE TABLE table_name[(col1,col2...)]
+AS select_query;
+
+2. A table can be copied with all its table structure and its data.
+Query - 
+CREATE TABLE employee_copy
+AS SELECT * FROM employees;
+
+3. A table's structure can be copied without any data.
+Query - 
+CREATE TABLE employees_copy
+AS (SELECT * FROM employees WHERE 1=2);
+
+4. A table can be created by copying some specific data from another table.
+Query - CREATE TABLE employees_copy
+AS (SELECT * FROM employees WHERE job_id = 'IT_PROG');
+
+5. A table can be created from another table,using some of the columns.
+Query - CREATE TABLE employees_copy
+AS SELECT first_name,last_name,salary FROM employees.
+
+6. Column names can be defined differently from the SELECT list while creating the table.
+Query - CREATE TABLE employees_copy(name,surname,annual_salary)
+AS SELECT first_name,last_name,salary*12 FROM employees;
+
+7. The number of specified columns must match with the number of columns in the SELECT list.
+Query -  CREATE TABLE employees_copy(name,surname) --> error
+AS SELECT first_name,last_name l_name,salary*12 FROM employees; here l_name is the alias name of the last_name.
+
+****NOTE****
+1. While creating a table from a SELECT query,the only constraints that are inherited are the NOT NULL constraints.
+All other constraints needs to be added expicitly.
+
+- ALTER TABLE Statements - 
+It changes the structure of an existing table.
+we can -
+1. add,modify,drop,rename,much more one or more existing columns of a table.
+
+- ALTER TABLE ADD Statement - 
+1. We can add one or more new columns to an existing table.
+
+2. Adding single column -
+ALTER TABLE employees_copy
+ADD ssn VARCHAR(20);
+
+3. Adding multiple columns -
+ALTER TABLE employees_copy                                /ALTER TABLE employees_copy 
+ADD (date_of_birth DATE,                                  ADD(column_name1 datatype [DEFAULT default_value] [NULL | NOT NULL] 
+     password VARCHAR(20) DEFAULT 'Abc_123@');                ......,
+                                                              ......);
+     
+- ALTER TABLE MODIFY Statements -
+1. We can modify one or more existing column's data type,size,dafault value and nullability.
+2. We can modify single column of a table. 
+Query - 
+ALTER TABLE employees_copy MODIFY password VARCHAR2(50);
+                                                        
+3. We can modify multiple columns of a table at the same time.
+Query - 
+ALTER TABLE employees_copy
+MODIFY(employee_id NUMBER(10),
+       password VARCHAR2(60) DEFAULT 'abc@123');    
+
+4. Setting a default value on an existing column will affect only the new inserts.The existing rows will not be affected.
+
+- ALTER TABLE DROP Statements -
+1. The ALTER TABLE DROP statement is used to remove columns that we no longer need from an existing table.
+2. We can drop a single column of a table.
+Query - 
+ALTER TABLE employees_copy DROP COLUMN ssn;
+
+3. We can drop multiple columns of a table in a single statement.
+Query - 
+ALTER TABLE employees_copy DROP (fax_number,password,salary);
+
+4. Dropped columns cannot be recovered easily.
+
+- DROP Table Statement -
+1. The DROP TABLE Statement removes an existing table with all its data from the database and moves it to the recycle bin.
+Query - i. DROP TABLE table_name; --> Normal Delete.
+        ii.DROP TABLE table_name PURGE; -->Permanent Delete.
+
+2. After dropping a table,we can restore it for a short time using the FLASHBLACK TABLE statement.
+Query - 
+FLASHBACK TABLE table_name TO BEFORE DROP;
+
+3. If we wnat to DROP any table form another schema or from anywhere use DROP ANY TABLE to drop a table.
+4. After dropping a table,all the bojects related to that table will also be deleted or become invalid. 
+5. We can only drop a single table with a drop statement.
+
+- TRUNCATE TABLE Statement - 
+1. The DELETE statement deletes all data row by row whereas the TRUNCATE statement deletes all rows from a table more quickly.
+Query -
+TUNCATE TABLE [schema.]table_name; where [schema.] is used to when table is from another schema.
+
+2. The TRUNCATE statement is one of the DDL statements so it will auto-commit changes immediately after removing data.
+
+3. TRUNCATE does not allow rollback.
+4. Fater than DELETE statement.
+5. You need to have DROP ANY TABLE rights to truncate a table other users tables.
+
+- COMMENT Statement -
+1. Used to add explaination to a table or column.
+2. Adding comment to a column of a table.
+Query - 
+COMMENT ON employees.job_id IS 'This column stores abbreviations of job titles'
+here employees --> table_name and job_id --> column_name.
+
+3. Adding comment to a table itself.
+Query - 
+COMMENT ON employees IS 'This table stores all employees data of the company'
+
+4. We caanot directly drop a comment,instead,we create a new comment with no text.
+Query - 
+COMMENT ON COLUMN employees_copy.job_id IS '' -->dropping comment on column of a table.
+COMMENT ON COLUMN employees_copy IS '' -->dropping comment of a table.
+
+5. We can see comments on a table or column from the user_tab_comments and user_col_comments views.
+Query - 
+SELECT * FROM user_tab_comment WHERE table_name = 'EMPLOYEE_COPY'
+SELECT * FROM user_col_comment WHERE table_name = 'EMPLOYEE_COPY'
+OR 
+INFO table_name;
+OR 
+shift+f4;
+
+- RENAME Statement -
+1. The RENAME  statement is used to change the name of an existing column or table.
+2. We can change the name of the column.
+Query - 
+ALTER TABLE table_name RENAME COLUMN old_name TO new_name.
+
+3. We can change name of a table.
+Query - 
+i. RENAME employees_copy TO employees_backup;
+OR
+i. ALTER TABLE employees_copy RENAME TO employees_backup;
+
+4. To rename table or column,you must be the owner of the table or have required rights.
+
+
+

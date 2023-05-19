@@ -1,0 +1,646 @@
+- Unit Test
+
+ --> A unit test is very small method that we write to test some part of our code.
+
+- Why Write Unit Test?
+ 
+ --> Make sure that the code
+ --> Code works with valid and invalid input parameters
+ --> Code works now and in the future
+ --> Other code still works even after you made changes.If not then it is called Regreesion and we
+     have to weite Regression tests.[Called As Regression Testing].
+
+- F.I.R.S.T Principle
+
+ - F --> Fast            -> Unit tests run fast
+ - I --> Independent     -> Unit test are independent of each other, environment, etc.
+ - R --> Repeatable      -> Unit test are repeatable i.e produce same result when run on other machine.
+ - S --> Self-validating -> this means that to learn if unit has passed or not develop or should not be doing 
+         any additional manual checks after the test completes, units will validate the result.
+         That method under test has produced itself and it will itself make a decision whether this unit test 
+         is bouncing or is failing.
+
+ - T --> Thorough & Timel-> Cover edge cases.
+
+
+- Test Code in Isolation
+
+ --> It's very important to understand that when our code under test has dependencies on other objects, 
+     we need to use dependency injection and inject mock implementations of the subjects so that                      
+     we can test our code in isolation from those dependencies.
+
+- Testing Pyramid
+
+ 1. Unit Tests        // Testing isolated small pieces of code with Fake or Mock dependencies.
+ 2. Integration Tests // Application code is tested without mocking database or HTTP connections.
+ 3. End-To-End Testing / UI Testing //  Testing software functionality from beginning to end.
+
+ --> Pyramid is like 3->2->1.
+
+- What code should we test with Unit Tests?
+--> We should write Unit Tests only for the code that we have written.
+
+- What is JUnit?
+--> Unit Testing Franework for the Java Programming Language.
+
+- What is JUnit 5? 
+--> JUnit 5 = JUnit Platform + JUnit Jupiter + JUnit Vintage.
+
+--> Jupiter is the name of API and Jupiter API is what we use to write Unit Testing in Java.
+
+--> JUnit PLatform -> The JUnit Platform Serves as a foundation for launching testing frameworks on the JVM.
+--> JUnit Jupiter  -> Is the combination of the new programming model and extension model for writing tests and extensions in JUnit 5.
+--> JUnit Vintage  -> TestEngine fo rrunning the JUnit 3 and JUnit 4 based tests on the platform.
+   
+  IDEs                             Build Tools
+1. InthelliJ IDEA                     Maven
+2. Eclipse                            Gradle
+3. NetBeans                           Ant  
+4. Visual Studio Code
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+- Create new Maven project [Setup JUnit] (Using IntelliJ Environment)
+
+ --> When we add dependencies or plugins in Maven project we need to reload the project.
+ --> Add the JUnit Jupiter API, JUnit Jupiter Engine, JUnit Jupiter Params And Maven Surefire Plugin(Used to run Test automatically when build project).
+ --> JUnit jupiter Aggregate dependency is the combination of JUnit Jupiter API, JUnit Jupiter Engine, JUnit Jupiter Params.So only JUnit Jupiter Aggregate is enough. 
+ --> If you want to run test from terminal first do mvn package, then do mvn test. 
+ --> If you want to skip your Test run then 'mvn package -Dmaven.test.skip=ture'. 
+
+- Create Gradle Project  [Setup JUnit] (Using IntelliJ Environment)
+
+ --> Add the JUnit Jupiter API, JUnit Jupiter Engine, JUnit Jupiter Params And Maven Surefire Plugin(Used to run Test automatically when build project).
+ --> JUnit jupiter Aggregate dependency is the combination of JUnit Jupiter API, JUnit Jupiter Engine, JUnit Jupiter Params.So only JUnit Jupiter Aggregate is enough. 
+ --> To Enable Standard stdout and stderror in th ebuild.gradle file under the test { useJUNitPlatform 
+                                                                                    (Add) testLogginf.showsSrandardStreams =ture }
+  
+ --> This will clean the project will remove any leftovers from previous builds and will execute the test task.
+     The test task will automatically detect and automatically execute all unit tests.
+
+
+- Create new Java project [Setup JUnit] (Using IntelliJ Environment)
+                    
+ --> If we want to use a directory for test purpose then we have to mark directory as Test Sources Root.
+ --> right click in file and choose generate->test for genrating test class.
+ --> We can use fail() to show message when the test fails.
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+- Basic Java project with Eclipse
+
+ --> When working in eclipse we hav eto manually create a source folder.
+ 
+----------------------------------------------------------------------------------------------------------------
+
+- Creating First Unit Test method In Eclipse
+
+- CalculatorTest.java
+
+ --> import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class CalculatorTest {
+    @Test
+    public void  TestResult() {
+        Calculator c = new Calculator();
+        int result = c.integerDivision(4,2);
+        assertEquals(2,result);
+    }
+}
+
+- Calculator.java
+
+--> public class Calculator {
+      public int integerDivision(int dividend, int divisor) {
+          return dividend/divisor;
+      }
+    }
+
+---------------------------------------------------------------------------------------------------------------------
+
+-  Assertions And Assertion message
+
+ --> assertEquals(expected output, actual output, message); 
+    // The message is printed if the test fails.
+
+- Other Assertions
+
+ --> fail() 
+  // It unconditionally or intentionally fails test method without checking for any conditions.
+  // This assertions are actually static methods that come from Jupyter API package, assertion class.
+  // They are imported from org.junit.jupiter.api.Assertions.*; class.
+ --> assertNull() 
+  // Check if object is null.
+ --> assertNotNull()
+  // Check if object is not null.
+ --> assertTrue() and assertfalse()
+  // If true is passed test is passed otherwise test failed.
+ --> assertThrows()
+  // And there is also a assertion that helps us to check if the method under test has thrown an expected
+     exception and that assertion is called assert throws.
+ --> assertDoesNotThrow()
+  // If we want to validate that our method does not throw an exception, then we will use.
+     Assert does not throw.
+
+-------------------------------------------------------------------------------------------------------------------------
+
+- Lazy Assert Messages
+
+ -->public void integerSubtraction() {
+        Calculator c1 = new Calculator();
+        int minued = 33;
+        int subtrahend = 1;
+        int expectedResult = 32;
+
+        int actualResult = c1.integerSubtraction(minued, subtrahend);
+          
+        assertEquals(expectedResult, actualResult, minued + "-" + subtrahend + "did not produce" + expectedResult); 
+    }
+ // Issue here was whether the test failed or passed the message was compulsory computed
+
+- Optimizing Test Class Performance
+ 
+  So as to optimize the test developers use lambda function.
+
+  assertEquals(expectedResult, actualResult, 
+                ()-> minued + "-" + subtrahend + "did not produce" + expectedResult); 
+ // So the message now will be only computed when the test fails otherwise not computed.
+
+- Naming Unit Test Methods
+
+ --> The pattern of naming Unit Test Method is :
+   Naming Convention :- test<system / Method Under Test>_<Condition or State Change>_<Expected Result> 
+ 
+- @DisplayName Annotation
+ 
+ --> It is used to when we want to display name of the test in small.
+ 
+- @DisplayName("Math Operation Test Class")
+  class CalculatorTest {
+
+     @DisplayName("Integer Division 4/2 = 2")
+     @Test
+     public void  testintegerDivison_WhenFourDividedByTwo_ShouldReturnTwo() {
+         Calculator c = new Calculator();
+         int result = c.integerDivision(4,2);
+         assertEquals(2,result);
+     }
+
+     @DisplayName("Integer Subtraction 4-2 = 2")
+     @Test
+     public void testintegerSubtraction_WhenFourSubtractedByTwo_ShouldReturnTwo() {
+         Calculator c1 = new Calculator();
+         int res1 = c1.integrSubtraction(4, 2);
+         assertEquals(2,res1);
+     }
+  } 
+
+- Pattern Used To Structure Code in Test Classes
+
+ --> There are Two Patterns Used to Structure Code In Test Classes
+
+ 1.AAA 
+  --> Arrange , Act, Assert
+  --> Arrange
+    -> Is where you prepare and initialize all the needed variables and objects that are needed by your system and their test or by your method
+       under test to work and return expected result.
+    -> if input parameters are complex object, then it is better to prepare them in the arrange section.
+  
+  --> Act
+    -> In this section you will actually invoke the methods you are testing.
+  
+  --> Assert
+    -> So in the assert section, you will write Java code that will validate the retained value
+       from the Test method.
+    -> If the returned value is what is expected and is correct, then test method will pass.
+       If the returned value is not what it was expected, then test method will fail. 
+ 
+     
+eg)  @DisplayName("Integer Division 4/2 = 2")
+    @Test
+    public void  testintegerDivison_WhenFourDividedByTwo_ShouldReturnTwo() {
+       
+        // Arrange Section
+        Calculator c = new Calculator();        |
+        int dividend = 4;                       |
+        int dividend = 2;                       |----> Arrange Section
+        int expectedResult = 2;                 |
+               
+        // Act Section    
+        int actualResult = c.integerDivision(4,2); |----> Act Section
+  
+        // Assert Section                            
+        assertEquals(expectedResult,actualResult);  |----> Assert Section
+    }
+
+ 2.GWT
+   --> Given, When, Then  
+
+ eg)  @DisplayName("Integer Division 4/2 = 2")
+    @Test
+    public void  testintegerDivison_WhenFourDividedByTwo_ShouldReturnTwo() {
+       
+        // Arrange Section // Given
+        Calculator c = new Calculator();        |
+        int dividend = 4;                       |
+        int dividend = 2;                       |----> Given Section
+        int expectedResult = 2;                 |
+               
+        // Act Section  // When   
+        int actualResult = c.integerDivision(4,2); |----> When Section
+  
+        // Assert Section  // Then                          
+        assertEquals(expectedResult,actualResult);  |----> Then Section
+    }
+
+- JUnit Test LifeCycle
+
+ --> BeforAll() 
+   -> The method which is annotated with this annotation is executed before any method is executed
+      but only once.[For Common Data Setup Required for All Test MEthods]
+   -> Used for Setup Resource Purpose like Database,etc.
+   -> This method needs to be static. 
+  eg) @BeforeAll()
+      static void setup() {
+ 
+      }          
+
+ --> AfterALl()
+   -> The method which is annotated with this annotation is executed at last after all methods are executed
+      but only once.
+   -> Used for CleanUp Resource Purpose like Database,etc.
+   -> This method needs to be static. 
+  eg) @AfterAll()
+      static void setup() {
+ 
+      }    
+ --> BeforeEach()
+   -> The method which is annotated with this annotation is exetcued before each method execution.
+   -> Used to Setup Resource Purpose like Specific Objects,etc for every method after execution completion.  
+   -> This method need not to be static. 
+
+ --> AfterEach()
+    -> The method which is annotated with this annotation is exetcued after each method execution.
+    -> Used to CleamUp Resource Purpose like Specific Objects,etc for every method after execution completion.  
+    -> This method need not to be static. 
+
+
+
+==========================================================================================================================================================
+
+-  Introduction to Integration Testing of Web Layer
+
+ --> Sometimes we do need to test if our code is properly integrated with Sprint framework and this is when we will start writing integration tests.
+ --> We can test each layer separately with help of intergration testing.
+
+--> import org.junit.jupiter.api.*;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+@DisplayName("Math Operation Test Class")
+class CalculatorTest {
+
+
+    Calculator calculator;           // Remember this technique
+
+    @BeforeAll
+    static  void setup() {
+        System.out.println("Executing @BeforeAll Method");
+    }
+
+    @AfterAll
+    static  void clean() {
+        System.out.println("Executing @AfterAll Method");
+    }
+
+    @BeforeEach
+    void SetupBE() {
+        calculator= new Calculator();
+        System.out.println("Executing @BeforeEach Method");
+    }
+
+    @AfterEach
+    void cleanupAE() {
+        System.out.println("Executing  @AfterEach Method");
+    }
+
+    @DisplayName("Integer Division 4/2 = 2")
+    @Test
+    void  testintegerDivison_WhenFourDividedByTwo_ShouldReturnTwo() {
+        System.out.println("Executing Integer Division 4/2 = 2 method");
+        int result = calculator.integerDivision(4,2);
+        assertEquals(2,result);
+    }
+
+    @DisplayName("Integer Subtraction 4-2 = 2")
+    @Test
+    void testintegerSubtraction_WhenFourSubtractedByTwo_ShouldReturnTwo() {
+        System.out.println("Executing Integer Subtraction 4-2 = 2 method");
+        int res1 = calculator.integrSubtraction(4, 2);
+        assertEquals(2,res1);
+    }
+}
+
+- O/P :- Executing @BeforeAll Method
+         Executing @BeforeEach Method
+         Executing Integer Subtraction 4-2 = 2 method
+         Executing  @AfterEach Method
+         Executing @BeforeEach Method
+         Executing Integer Division 4/2 = 2 method
+         Executing  @AfterEach Method
+         Executing @AfterAll Method
+
+- Disable Unit Test
+
+ --> To disable a test just Add @Disabled Annotation over it.
+  eg) @Disabled("TODO: Still working on it")
+      @Test 
+      void setup() {
+
+      } 
+
+- Assert An Exception
+
+ -->  @DisplayName("Divide By Zero")
+    @Test
+    void testintegerDivide_WhenDividedByZero_ShouldReturnArithmeticException() {
+        System.out.println("Executing Divide By Zero method");
+
+        int n1 = 4;
+        int n2 = 0;
+        String expectedException = "/ By Zero";
+
+        ArithmeticException arith = assertThrows(ArithmeticException.class, ()-> {
+             calculator.integerDivision(n1,n2);
+        }, "Divided by Zero should throw Exception");
+
+        assertEquals(expectedException, arith.getMessage(),"Unxpexted Exception thrown");
+    }
+}
+
+ --> here arith.getmessage() // Will return the Exception Name.
+          arith.getLocalizedMessage() // Will return the customized message given to the exception. 
+
+========================================================================================================================================================
+
+- Advanced Junit 5
+
+- @ParameterizedTest. Multiple Parameters with @MethodSource
+
+ --> @ParameterizedTest
+     @MethodSource() is used to pass arguments to the test method.
+
+
+  @DisplayName("Divide By Zero")
+    @ParameterizedTest
+    @MethodSource("ParameterOfTest")
+    void testintegerDivide_WhenDividedByZero_ShouldReturnArithmeticException(int n1, int n2, String expectedException) {
+        System.out.println("Executing Divide By Zero method");
+
+        ArithmeticException arith = assertThrows(ArithmeticException.class, ()-> calculator.integerDivision(n1, n2),"Divided by Zero should throw Exception");
+
+        assertEquals(expectedException, arith.getLocalizedMessage(),"Unexpected Exception thrown");
+    }
+
+    private static  Stream<Arguments> ParameterOfTest() {
+
+      return Stream.of( Arguments.of(4,0,"Teko Division nhi atta kya re"),
+              Arguments.of(10,0,"Teko Division nhi atta kya re"),
+              Arguments.of(12,0,"Teko Division nhi atta kya re"));
+
+    }
+}
+
+ --> If the name of the argument passing method[MesthodSource("name ofargument passing method")] is exactly the same as a test method name to use, it allows us to remove
+     this name from a method source annotation.
+eg)
+    @DisplayName("Divide By Zero")
+    @ParameterizedTest
+    @MethodSource()
+    void testintegerDivide_WhenDividedByZero_ShouldReturnArithmeticException(int n1, int n2, String expectedException) {
+        System.out.println("Executing Divide By Zero method");
+
+        ArithmeticException arith = assertThrows(ArithmeticException.class, ()-> calculator.integerDivision(n1, n2),"Divided by Zero should throw Exception");
+
+        assertEquals(expectedException, arith.getLocalizedMessage(),"Unexpected Exception thrown");
+    }
+
+    private static  Stream<Arguments> testintegerDivide_WhenDividedByZero_ShouldReturnArithmeticException() {
+
+      return Stream.of( Arguments.of(4,0,"Teko Division nhi atta kya re"),
+              Arguments.of(10,0,"Teko Division nhi atta kya re"),
+              Arguments.of(12,0,"Teko Division nhi atta kya re"));
+
+    }
+}
+
+- @ParameterizedTest. Multiple parameters with @CsvSource.
+
+ --> When we pass an list of arguments then we use @CsvSource
+
+@DisplayName("Divide By Zero")
+    @ParameterizedTest
+    @CsvSource( {"4 , 0 ,Teko Division nhi atta kya re",
+                "10 , 0 ,Teko Division nhi atta kya re",         // List of parameters
+                "12, 0, Teko Division nhi atta kya re"
+               } )
+     void testintegerDivide_WhenDividedByZero_ShouldReturnArithmeticException(int n1, int n2, String expectedException) {
+        System.out.println("Running Test" + n1 + "/" + n2 +"="+expectedException );
+
+        ArithmeticException arith = assertThrows(ArithmeticException.class, ()-> calculator.integerDivision(n1, n2),"Divided by Zero should throw Exception");
+
+        assertEquals(expectedException, arith.getLocalizedMessage(),"Unexpected Exception thrown");
+    }
+}
+
+- @ParameterizedTest + CSV file
+
+--> You can also store these parameter values in a separate file in a resource folder.
+     And we can read inputs from a file.
+
+--> @DisplayName("Divide By Zero")
+    @CsvFileSource(resources = "/integerDivision.csv")
+    void testintegerDivide_WhenDividedByZero_ShouldReturnArithmeticException(int n1, int n2, String expectedException) {
+        System.out.println("Running Test" + n1 + "/" + n2 +"="+expectedException );
+
+        ArithmeticException arith = assertThrows(ArithmeticException.class, ()-> calculator.integerDivision(n1, n2),"Divided by Zero should throw Exception");
+
+        assertEquals(expectedException, arith.getLocalizedMessage(),"Unexpected Exception thrown");
+    }
+
+
+- @ParameterizedTest + @ValueSource annotation
+
+ --> @ValueSource annotation let us supply only one single array of values as a parameter to our test method.
+ --> @ParameterizedTest
+     @ValueSource(strings = {"Akshad","Subhod","Atharv","Swapnil","Sanket","Yash"})
+     void parametertest(String firstname) {
+        assertNotNull(firstname);
+        System.out.println("Friends Name:-"+firstname);
+     }
+
+- @RepeatedTest
+
+- public class DemoRepeatedTest {
+
+    Calculator calculator;
+
+    @BeforeEach
+    void SetupBE() {
+        calculator = new Calculator();
+        System.out.println("Executing @BeforeEach Method");
+    }
+
+
+    @DisplayName("Integer Subtraction 4-2 = 2")
+    @RepeatedTest(value=3, name = "{displayName} Repetition {currentRepetition} of" + "{totalRepetition}") // Changes are reflected in Run Bar 
+    void testintegerSubtraction_WhenFourSubtractedByTwo_ShouldReturnTwo(RepetitionInfo repinfo, TestInfo testInfo) {
+        System.out.println("Running "+ testInfo.getTestMethod().get().getName());
+        System.out.println("Repetition #"+ repinfo.getCurrentRepetition()+ "of" + repinfo.getCurrentRepetition()); // Changes are reflected in Console.
+        System.out.println("Executing Integer Subtraction 4-2 = 2 method");
+        int res1 = calculator.integrSubtraction(4, 2);
+        assertEquals(2,res1);
+    }
+  }
+
+ --> Repeated test annotation allows us to repeat the same test method multiple times and make sure that
+     if it is repeated again, then it still passes. 
+ --> Number of repetitions are specified as argument to @RepeatedTest like @RepeatedTest(3) here # times repetition.
+ --> Now, if needed, we can also get access to reputation information inside of our test method.
+     And to do that unit allows us to inject repetition, information object as a method argument to our test
+     method.                    
+ --> Give the method methodName(RepetitionInfo repetitionInfo) as object and
+   1. To access current repetition information do repetitionInfo.getCurrentRepetition().
+   2. To access Total repetition information do repetitionInfo.getTotalRepetition().
+ --> To get the information of Test create TestInfo object and pass as argument to the method.
+     methodname(TestInfo testInfo)
+   1.To ge the Current Test Infomation do testInfo.getTestMethod().get().getName().
+
+ // Here the {displayName},{currentRepetition},{totalRepetition} are called Template Variables.  
+
+- Method Order - Random Order
+
+ --> Unit tests typically should not rely on the order in which they're executed, there                                           
+     are times when we do need to enforce a specific test method execution order.
+ --> Use @TestMethodOrderer annotation and interface MethodOrder as a parameter to it on the Class.
+ --> @TestMethodOrder(MethodOrderer.Random.class) means run the methods in this class in Random Order.
+
+- @TestMethodOrder(MethodOrderer.Random.class)
+  public class MethodRandomOrderTest {
+
+     @Test
+     void testA (){
+         System.out.println("Running Test A");
+     }
+
+     @Test
+     void testB (){
+         System.out.println("Running Test B");
+     }
+
+     @Test
+     void testC (){
+         System.out.println("Running Test C");
+     }
+
+     @Test
+     void testD (){
+         System.out.println("Running Test D");
+     }
+  }
+
+--> O/P Test are run in Random Order.
+
+- Method Order - Order By Name
+
+@TestMethodOrder(MethodOrderer.MethodName.class)
+public class MethodOrderByNameTest {
+
+        @Test
+        void testD (){
+        System.out.println("Running Test D");
+    }
+
+        @Test
+        void testB (){
+            System.out.println("Running Test B");
+        }
+
+        @Test
+        void testA (){
+        System.out.println("Running Test A");
+    }
+
+        @Test
+        void testC (){
+            System.out.println("Running Test C");
+        }
+
+    }
+
+--> O/P :-
+           Running Test A
+           Running Test B
+           Running Test C
+           Running Test D
+
+- Methods Order - Random by order index
+
+ @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+ public class MethodOrderedByOrderIndexTest {
+
+    @Order(2)               // Here 2 is the index
+    @Test
+    void testA (){
+        System.out.println("Running Test A");
+    }
+
+    @Order(1)
+    @Test
+    void testB (){
+        System.out.println("Running Test B");
+    }
+
+    @Order(4)
+    @Test
+    void testC (){
+        System.out.println("Running Test C");
+    }
+
+    @Order(3)
+    @Test
+    void testD (){
+        System.out.println("Running Test D");
+    }
+ }
+  
+ // Methods Run in the Order we specify.
+       
+- Order Of Unit Test Classes
+
+ --> We're going to order the execution of test methods in these three classes.Now, although those classes typically should not rely on the order in which 
+     they're executed, there are times when it is desirable to enforce a specific test class execution order.You might want to specifically indicate that 
+     this class should execute unit tests in a random order.
+ --> For example, this is to ensure that there are no accidental dependencies between this test classes or when doing integration testing.You might want to 
+     control which this class executes first and which this class gets executed second.You might also want to consider execution of your test classes just 
+     to make your test reports look more organized.
+ --> Now instead of configuring execution order for method or a class in each class g unit allows us to provide this configuration for entire project globally.
+ --> Create resources folder under Test folder and mark it as Test Resource, then create an file named junit-platform.properties(just name it extension is applied automatically)
+     and do configurations in it as follows :
+   1. junit.jupiter.  
+
+
+
+==============================================================================================================================================================================================
+
+- Mockito 
+
+ --> Test Double
+
+  1. Mock     |
+  2. Fake     |
+  3. Spy      |---> Objects
+  4. Stub     |
+

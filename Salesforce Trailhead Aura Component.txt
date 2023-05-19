@@ -1,0 +1,88 @@
+- My Domain
+
+--> My Domain lets you create a subdomain unique to your organization.
+--> My Domain is required to create custom Lightning components and set up single sign-on (SSO) in an org.
+
+- Lightning Component Framework
+
+--> The Lightning Component framework is a UI framework for developing web apps for mobile and desktop devices. 
+    It’s a modern framework for building single-page applications with dynamic, responsive user interfaces for Lightning Platform apps. 
+    It uses JavaScript on the client side and Apex on the server side.
+--> The Lightning Component framework is a framework for developing web apps.It’s a modern framework for building single-page applications.
+
+-->  built-in components can come from a variety of different namespaces, such as aura: (as here), or force:, lightning:, or ui: .
+--> <lightning:card> creates a container around a group of information.
+--> <lightning:formattedDateTime> displays formatted date and time.
+--> <lightning:relativeDateTime> displays the relative time difference between the current time and the provided time
+
+--> With the help of Lightning Out e can run our Lightning Components Apps on other Platforms.eg) Heroku..,etc.
+
+- Bundle in Developer Console
+
+--> A bundle is sort of like a folder. It groups the related resources for a single component.
+--> Auto-wiring just means that a component definition can reference its controller, helper, etc., and those resources can reference the component definition.
+    They are hooked up to each other (mostly) automatically.
+--> At runtime .THIS is replaced with a style scoping string named for your component. It limits style rules to only this component, so that you can create styles 
+    that are specific to the component, without worrying about how those styles might affect other components.
+
+- Component Attributes
+
+--> Attributes on components are like instance variables in objects. 
+--> An attribute is defined using an <aura:attribute> tag, which requires values for the name and type attributes, and
+    accepts these optional attributes: default, description, required.
+
+-> 
+<aura:component>
+    <aura:attribute name="message" type="String"/>
+    <p>{!'Hello! ' + v.message}</p>
+</aura:component>
+
+--> moving the greeting text inside the expression lets you use labels which makes it easier to update (and translate) your components.
+For example:
+
+{!$Label.c.Greeting + v.message}
+
+--> Here’s a new component that passes in a custom value to the helloMessage component.  
+    Passing the value to the other component overrides the value on that component.
+eg)
+<aura:component>
+    <aura:attribute name="customMessage" type="String"/>
+    <p> <c:helloMessage message="{!v.customMessage}"/> </p>
+</aura:component>
+
+--> v is something called a value provider.In our component, v is a value provider for the view, which is the helloMessage component itself.
+--> Values in a value provider are accessed as named properties. To use a value, separate the value provider and the property name with a dot (period).
+    For example, v.message, as we’ve seen.
+
+- Attribute Data Types
+
+Primitives data types, such as Boolean, Date, DateTime, Decimal, Double, Integer, Long, or String. The usual suspects in any programming language.
+Standard and custom Salesforce objects, such as Account or MyCustomObject__c.
+Collections, such as List, Map, and Set.
+Custom Apex classes.
+Framework-specific types, such as Aura.Component, or Aura.Component[]. These are more advanced than we’ll get to in this module, but you should know they exist.
+
+eg)
+<aura:component>
+    <aura:attribute name="messages" type="List"
+        default="['You look nice today.',
+            'Great weather we\'re having.',
+            'How are you?']"/>
+    <h1>Hello Playground</h1>
+    <p>Silly fun with attributes and expressions.</p>
+    <h2>List Items</h2>
+    <p><c:helloMessage message="{!v.messages[0]}"/></p>
+    <p><c:helloMessage message="{!v.messages[1]}"/></p>
+    <p><c:helloMessage message="{!v.messages[2]}"/></p>
+    <h2>List Iteration</h2>
+    <aura:iteration items="{!v.messages}" var="msg">
+        <p><c:helloMessage message="{!msg}"/></p>
+    </aura:iteration>
+    <h2>Conditional Expressions and Global Value Providers</h2>
+    <aura:if isTrue="{!$Browser.isIPhone}">
+        <p><c:helloMessage message="{!v.messages[0]}"/></p>
+    <aura:set attribute="else">
+        <p><c:helloMessage message="{!v.messages[1]}"/></p>
+        </aura:set>
+    </aura:if>
+</aura:component>

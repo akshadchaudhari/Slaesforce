@@ -1,0 +1,158 @@
+1. It was developed to acquire requirement changes and it like multiple waterfall models inside each other.
+2. split rquirements into core+incremental feature addition.
+i.e to deploy the first iteration requirements to client server which needs to be fullfilled(core requirements that could be 15,18%only).
+so as there are many iterations having same steps the RA teams can works parallely on another RA of other iteration.
+and the defects of previous iterations are solved by next iteration. it is collaborative as functinalities can be split into groups and  work on it simulthaneously and collaboratively.
+
+Object Oriented Development-
+
+1. Two types of abstraction (Real World + Programmatic(implentating Data structures)).
+2. Aim is to identify and organize the abstractions and relationships.
+3. life cylcle nature is iterative + incremental.
+
+Stages of development-
+
+1. System conception.
+2. Requirement analysis.
+3. Analysis modelling.
+i. Domain model.     -(real world objects)
+ii.Application model -(application concepts)
+4. System Design.
+5. Class design.
+6. Implementation.
+7. Validation at all stages.
+
+1. System Conception (This step is done only once in iterative development)
+
+i. Bussiness analysts
+ii. Architecs
+iii. domain experts
+iv. Focus on business value
+v. Set of tentative requirements(not complete)
+(developers and testers not involved)
+
+2. Requirement Analysis
+
+i. Domain experts
+ii.Solution Architects
+iii.System Analysist
+iv. Focus of scrunity and restarting requirements
+v. Query resolution meetings
+vi. Concise and precise picture of"what is expected".
+vii.Domain and application models
+here domain means the classes identified/decomposed from the requiremets from the domain
+itself.(i.e list of classes from domain vocabulary)
+we add few classes to this to make it an application model.
+so domain modle is input to application model and both of these are exercised in requirement analysis stage.
+(developers and testers not involved)
+
+3.Essential Characteristics of model-
+
+1. simple
+2. Unambiguous but avoid inessential deatils.
+3. UML notations.
+4. Implementation should be language independent.
+5. Platform independent.
+6.Potential stakeholders need to understand.
+(developers and testers not involved)
+
+4.System Design-
+
+- It is the stage where we take overall decisions about the application or project. 
+1. Architects.
+2. Technical Leaders.
+3. Architecture[Monolithic/distributed/service based,..].(non-reversible decisions)
+4. Performance characteristics.
+5. Communication protocols[Real time systems].
+6. Architectural patterns.
+(domain experts,developers,testers not involved)
+guides us about the parameters for further development and happens on overall system.
+(Talks about Architectural level decisions)
+5.Class Design-
+
+- we take classes from domain and application model came from the vocabulary of domain 
+ and go on detailing them to convert them into design classes.
+- Focuses on data structures.(algorithms).
+1. Detailing application model.
+2. System design as a guide line.
+3. Focuses on data structures,algorithms.
+4. Fixing Violations(eg.Broken encapsulation).
+5. Proxy object,indirectional layers.<-- security to access actual objects.
+6. design patterns.
+7. Canges get influenced by the implementation platform as some design patterns may get biased towards
+ some implementation platforms.
+
+- Implementation- 
+
+1. Design model translated to
+i. Implementation language. -->eg. programming language logic.
+ii. database. -->eg. triggers.
+iii. hardware.-->eg. thumb impression system.
+2. Good class design makes it simple translation.
+3. Software engineering practices.-->(task management systems,jira systems,git,etc are applicable in implementation stage)
+4. Tracebility req->design->impl.-->mapping req-design-impl. to loacte and solve defects.
+
+- UML Models - Introduction -
+
+1. Class model.-->most popular.
+2. State model.
+3. Interaction model.
+4. All separate but complementary.-->provides input and depends on each other.
+
+- Class Model -
+
+1.Static structures of classes and objects.
+2. Context for Software development.
+3. Class deatils and relationships.
+4. Realized using-
+i. Class Diagram.
+ii. Object diagram.
+
+here static means no reference to time , no reference to sequence the autonomus agents
+and what is the relationship between them.
+we get class deatils from object oerientation decomposition.
+into the autonomous agents.
+
+- State Model -
+
+1. Aspects of object which change over time.
+2. Realized by state chart diagram.
+3. States and state transitions.
+
+- Interaction Model -
+
+1. Interaction between outside-world and system.(captures)
+2. Interaction between objects.
+3. Use case diagram.(first diagram to capture functionality)
+4. Sequence diagram.
+5. Activity diagarm.(captures overall process and workflows)
+   useful in very early stages
+
+- Use case diagram - 
+
+1. Interaction between outside-world and system.(captures).
+2. Supproted by descriptive scenarios.
+3. Actors and use cases.
+
+we mark boundaries for scope of development.
+i. inside scope of development.
+ii. outside scope of development.(Actors)
+-->refer to omages in screenshots.
+
+- Sequence diagram - 
+
+1. Interactions between actors,object.
+2. Provides time sequence.
+we know the order/sequence of execution of methods.
+
+horizontal axis --> participants.
+vertical axis --> time sequence. runs top to bottom.
+not every object/class will participate.
+it provides us the algorithmic nature as it contains time sequencing.
+
+- Overall development process - 
+
+1. Analysis to implementation in iterations.
+2. same notation at different levels.
+3. Object oriented concepts throughout.
+4. Validate model at every stage.

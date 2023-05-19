@@ -1,0 +1,261 @@
+Setup :
+Git 
+Github account
+VS CODE
+SFDX CLI
+Salesforce Extension Pack For VS CODE
+
+Prerequisites : 
+Basic of cloud computing
+basic of web application development
+1 OO language : Java
+SQL
+CSS,HTML,Javascript
+
+What is cloud computing?
+--> It is leveraging the power and reach of the internet.
+-->to Deliver 3 categaories of services
+   1. IAAS - Infrastructur As A Service eg)EC2,S3 Services in AWS 
+   2. SAAS - Software As A Service eg) Provided by Google like presentation app,Salesforce Clouds.
+   3. PAAS - Platform As A Service eg) Salesforce,force.com
+
+These all services are interdependent on each other.
+
+What is Salesforce?
+-->World's No.1 CRM - Customer Relationship Management Platform. 
+  and application development platform.
+
+MVC Architecture used in salesforce.
+M - Data model
+V - View (User interface)
+C - Controller (Business Logic)
+
+Data models are created in:
+1. Backend database.
+2. On Salesforce by configuring Objects.
+
+SOQL --> Salesforce DML language.
+and apex DML statements we use.
+
+Salesforce does not allow us to do more than 150 DML statements in a single  transaction.(called governer limit)
+Multi-tenant Architecture - An Architecture in which resources are shared among all entities present in that Architecture.
+eg) A server which can run multiple single software instances on it by sharing resources among them.   
+
+Bulk DML Operation - which updates a list of records at once. 
+
+What is an Org?
+--> It is a collection of data,metadata and configurations used for building,deploying and hosting applications on the Salesforce platform.
+Its Editions are:
+ ->Performance
+ ->Unlimited
+ ->Developer(DE) -->free of cost 
+ ->Database
+ ->Enterprise
+
+1. We want your experience to be fun. If you’re running into an issue, whether it has to do with logging in, completing a challenge, or something else 
+completely, the first place to turn is Trailhead Help.
+2. What if you're absolutely stuck, like you’re certain you nailed a challenge, but Trailhead isn't agreeing? Well, your best bet is to check the 
+Trailhead Hands-On Challenge page in Trailhead Help, or ask a question in the #Trailhead Challenges topic page.
+3. What if you’re having trouble with a Trailblazer Community group you were sure you were a member of? 
+You can post a question to the topic #TrailblazerCommunityHelp. 
+4. If you want a birds-eye view of Trailhead and Sales Enablement badges earned across your org, install Trail 
+Tracker from the AppExchange. 
+5. Keep the learning going, even when you're away from your computer. Download Trailhead GO from the App Store 
+on your iPhone and iPad or on Google Play for your Android device to earn points and badges anywhere you are.
+
+6. Whenever Installing Package or App in Playgroung do it in Incognito Window Only.
+Two methods:
+1. Click,copy and paste the ID of App or Package.
+2. Installation link is been provided to us.
+
+To use 2. method we have to do this Whenever Installing Package or App in Playgroung do it in Incognito Window Only.
+
+===============================================================================================================================================================
+
+UI/UX --- User Interface / User Experience 
+ 1. Lightening Experience 
+ 2. Classic Experience
+
+Field Label - It is the column name in a table.  -->Accounts. Visible On UI.
+Field Name  - It is the column name in a table associated with an entity.-->Accounts Name "here Name is the field name"
+ "and Accounts is the field label".(API Name used for accessing things in object during coding)
+So whenever doing operations like writing query,etc Always use API Name.
+In case of Standard objects the API Name and Field label are same.
+
+Custom fields/objects have an API name with suffix '__c' and API Names cannot have space in between words.
+Reuse Standard objects by adding custom fields to these objects.
+
+What is a Record?
+--> Is same as row in a table.
+
+Customising Custom Objects - 
+
+- In Salesforce entity is translated into object. 
+- Standard fields like 'Name' is by default their we cannot remove it.
+- Status of an object is set to 'deployed' if we want it to deploy to another org.(customer org -->live org)
+most of the time the object should be in deployed status to do useful things.
+- Objects created are available to all the apps on the org. 
+
+- Formula field
+
+--> Is a read only field which  value is calculated automatically.
+--> Cross-object formula - It is a formula field which tries to access value of a field which is present in differnet object.(i.e inheriting from parent use formula field).
+
+- Validation Rule 
+
+--> is used to ensure legal and correct data entry while creating/updating records.
+--> if any complex logic is required is written in front end.
+
+We cannot make Tabs for Standard objects but we can do minor changes to them.
+
+================================================================================================================================================================
+
+Relationships
+   one-to-many
+   many-to-one
+   one-to-one
+   many-to-many
+
+Relationships between onjects in Salesforce
+   Master-Detail
+   Lookup
+
+For any relationship there is a parent/master (one) side and child/detail (many) side
+In Salesforce the relationship field is always created on the child/detail/many side.i.e configure relationship on child side.  
+
+- Lookup Relationship [Loosely Coupled Relationship]
+
+--> In this relationship we may or may not associate the child record with the parent then also we can save the record.
+--> The owner of the parent record and the child record can be different users.
+--> No impact of Any DML operations.i.e If we delete a record from parent then record associated with it in child will not get deleted automatically 
+but their relationship field will get nullified..
+
+- Master-Deatil Relationship [Tightly Coupled Relationship]
+
+--> In this relationship we have to associate the child record with the parent than only we can save the record.
+--> Owner - User in the Org.
+--> The owner of the parent record is also the owner of the child records.
+--> A Standard object cannot be on the child side of a Master-Detail Relationship.
+--> Some DML operations like DELETE will cascade from parent to child. i.e If we delete a record from parent then
+ record associated with it in child will also get deleted automatically.
+--> An object can have maximum of 2 Master-Detail relationships.
+--> In case of 2 Master-Detail relationship; the first relationship is considered the primary relationship.
+
+- Junction Object 
+
+--> Are commonly used to represent many-to-many relationships.[Used to connect two objects]
+--> Is considered to be an object with 2 Master-Detail relationships.
+
+- Rollup Summary
+
+--> Is a field that is created on the parent/master object.
+--> Is a field created in your custom objects only if the relationship is Master-Deatil.
+--> There are some standard objects that support this field even though the relationship is Lookup.(Only Applies to Standard Objects).
+Eg) Account,opportunity,etc.
+--> Summarized Object --> Child Object.
+
+- If we are confused about relationship? choose a lookup relationship.
+
+- Hirarchical Relationships
+
+--> Are supported only in User Satndard Object.
+--> Usecase is i am employee of persistent systems and use PI and access all things on PI.
+
+- Self Relationships
+
+--> Is a flavour of lookup relationship wherein an object can be related to itself. 
+--> Usecase is heplfull in associating bug records with itself.
+
+Case --> complaint/issue/ticket.
+
+--> Salesforce has no striaght way to represent one-to-one relationship.
+--> Many-to-many relationships are represented by Junction Object.
+
+- SCHEMA BUILDER  is a tool used to visualize graphically the objects we have created.
+
+- In Salesforce custom relationship fields have an API Name suffixed with '__r'. 
+
+==========================================================================================================================
+
+- Converting Relationships 
+
+  -->Convert Lookup Into Master-Detail Relationship
+     --> Existing Child records must be associated with a parent record. 
+  -->Converting Master-Detail Into Lookup Relationship
+     --> No Rollup Summaries in the master/parent.(i.e Delete the Rollup Summary field permanently(from recycle bin also)).
+
+- Record ID
+ 
+ --> Is a 18 character case sensitive alphanumeric string automatically generated by Salesforce.
+ --> Is unique across salesforce.com.
+ --> Is used to uniquely identify a record.
+ --> It is stored in a field which has an API name Id.(We can it in URL)
+
+- GLobal Value For Picklist Value Set
+
+ --> Choose Global value set (but we first have to define global value set--> Quick search for Global value set and define it).
+
+- Field dependencies/Dependency Fields
+
+ --> eg) Countries and cities - if we want if someone selects country - india ,it should show cities related to india only and not other counteries we have configured in globally,etc.
+     Then Countries is the 'controller field' and Cities is the 'dependency field'.
+
+- Record Type
+
+ --> Helps us to categorize records of an object.
+ --> When we want to display different UI for Different Users we need to configure Record type field.
+ --> In Salesforce, Tables -> object and Columns -> Fields.
+ --> For different record we will show different Layouts(UIs) to the User.(By going to Page Layout Assisgnment)
+ --> We can customize picklist of records also.
+
+- What are Accounts?
+--> Customer (Kotak)
+--> Partner  (Salesforce)
+
+- To Create Lightining App
+
+--> Use App Manager (Serach it in quick search)
+--> Utility item - The bar present at the bottom of the App or Browser.
+
+- Tab,List View and Lightining Experience App are a part of configuring UI.
+
+============================================================================================================================
+
+- Record Detail Page
+ 
+ --> It shows us the Record full information.
+
+- Related List
+
+ --> It shows us the whether the object has relationships with some other objects or not.
+
+- Layouts
+ 
+ --> Page Layout [Large Screen]
+  -> Quick Save - Like Crtl+S and Save - Saves And Closes and goes to page layout section.
+  -> Different User can get to see Different UIs through Page Layout Assignment.
+
+ --> Comapact Layout [Mobile/Small Screen]
+  -> It is the layout which renders the records on Mobile Phone. i.e For rendering on mobile phones compact layout is used.
+
+- Object Specific Actions 
+
+ --> Go to Button Links and Actions to create them.
+
+- Global Actions
+
+ --> They are present in the plus icon on the Home Tab.
+ --> To Add the Action Button to Global Action list  , go to publisher layout.
+
+- Lookup Filter
+
+ --> It filters records visible in a relationship field.
+ --> Can be applied on lookup and Master-detail relationship.
+ --> eg) we can filter and show only active users in the borrow this book button.
+
+- Email Templates
+
+ --> To create email templates search email templates have to stored in folder so we can share the folder.
+{!Campaign.Name} --- {!API name of object.API name of field}
+   --> Merge Filed Sytax
+   

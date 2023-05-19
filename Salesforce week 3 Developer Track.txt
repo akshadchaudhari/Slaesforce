@@ -1,0 +1,1968 @@
+June 8 
+
+Developer Track
+
+ ---> UI Frameworks
+    --> Visual Force
+      -> Is a server-side framework
+      -> Is a similear frameworks like jsp, asp.net, php,etc.
+      -> Componet-based framework
+      -> Can be Intermixed with HTML.
+    --> Aura 
+    --> LWC 
+ ---> Apex 
+    --> Apex DML
+    --> Apex Triggers
+ ---> SOQL , SOSL
+ ---> Unit Testing
+ ---> Asynchronous Apex
+ ---> Integration
+ 
+
+- Local Envoronment/Setup Required 
+  
+ ---> SFDX CLI 
+ ---> Visual Studio Code
+ ---> Salesforce Extension Pack [Plugin Used execute different SFDC cli commands]
+ ---> GIT
+ ---> Github Account
+
+- Project Environment
+
+ ---> Production org (owned by customer / live environment)
+ ---> Developer Sandbox (org)
+ ---> Developer Console 
+    --> VCS not supported.
+    --> LWC not supported.
+ ---> SFDX CLI is help us to deploy code onto the org.   
+ ---> It Aura Component which we develop here.
+   
+ ---> VSCode code ---> GIT ---> Dev Sandbox (org) -- Follow this flow when on project while deploying code onto org.
+
+- Development and Deployment Model on Salesforce
+  
+  ---> Org-based Development Model.[Used in the Salesforce Training Now by Santosh Narayan]
+  ---> Package-based Development Model.
+
+- Commands 
+
+ ---> Open Command pallete by crtl+shift+p[Important]
+
+/*Step 1: To create project in vs code
+
+---> Create a project with manifest.
+*/
+
+Note: To Configure Salesforce Login URL go to sfdx-project.json File and configure it[i.e put your Salesforce login URL their].
+
+- Manifest File
+ 
+ ---> package.xml is the manifest file.It contains all meta data configurations to either retrive from or deploy to an org.
+ eg) If some developer deploys an apex classes,etc on the org and we want to retirve/deploy it then we can do it through the package.xml file by configuring it.
+
+<types>
+   <members>*</members>            --> here * indicates retrive/deploy (Custom object) [for retriving custom object content]
+   <name>CustomeObjects</name>         
+</types> 
+
+<types>
+   <members>Account</members>            --> To retrive/deploy (for retriving Satndard Object) Here API Name should be mentioned eg)Account as mentioned here. 
+   <name>CustomeObjects</name>         
+</types> 
+
+<types>
+   <members>*</members>            --> here * indicates retrive/deploy (Custom object)  [for retriving custom object content]
+   <name>CustomField</name>         
+</types> 
+
+NOTE : Salesforce uses REST / SOAP API.
+
+- How to retrive something by using package.xml
+
+  ---> We can configure the apex class which we want to retrive in package.xml
+  Step 1)---> Open Command Pallete and search for Authorize an Org and give Alias.
+  Step 2)---> After Authorization search for Command 'Retrive Source in Manifest'  From Org.
+       We will find meta-data in object folder.
+--> So here we are accessing the Salesforce extension pack through command pallete which is executing the 
+sfdx cli command in the background (internally).
+
+- Deploying we will see after some time only retrive been taught to us till now.
+
+- Creating Visual Force Page
+
+ Method 1 ---> Search for visual force page in quick search.
+ Method 2 ---> Through Developer Console.
+ Command :- In command pallete -- Create visualforce page.
+
+
+- Name Component --> <apex:page> </apex:page>
+ here apex is 'namespace' and page is the component.
+ So we can say page component comes under apex namespace.
+---> Everything we write in page component is written on visualforce page.
+{!$User.firstname} ---> Called as merge field syntax.[They are case-insensitive].
+
+- Deploy Single Visualforce Page To Org
+ 
+ ---> search in command pallete for : Deploy this source to org.
+
+- Deploy multiple elements to org [visual force page]
+
+ ---> Configure meta-data(apexpage) in package.xml and search for command 'Deploy Source in manifest to org'.
+     
+- How to Google Salesforce Components
+
+---> Search for Standard [Component Name] Component
+   eg) Standard Visualforce Component.
+
+- Ways To Use A Deployed Visualforce Page [Not All Ways Listed]
+
+1. Configuring a tab. 
+
+- Creating Visualforce Page [View_Deatiled Page]
+
+1. apex:detail [component used]
+
+---> But question here is how does the apex:detail component know which record of 
+which object to dispaly detail on visualforce page.
+---> So here we give query in the link of the visualforce page.
+eg) https://persistentsystems-4ff-dev-ed.lightning.force.com/lightning/setup/ApexPages/home?id=[RecordID of a particular record].
+Here the link should be of visualforce page but this link is for reference only.  
+---> Unless we do not deploy the changes we will not be able to see them.
+<apex:page>
+<apex:detail  inlineEdit="true" relatedList="false"/>  here the 'inlineEdit is the Attribute'
+</apex:page>                       i.e we can write attribute here.       
+---> inlineEdit Attribute allows us to edit the values of the fieldsn records in the visualforce page.
+---> relatedList Attribute - used when we want to not show any related records/members of the object.
+---> Attribute Usage impacts the rendering(how it would be rendered) of the component on the page
+and how the output would be produced on the page.
+
+- Static Resources
+
+---> Any External files like javascript, css, csv, images,etc are called as static resources.
+---> Search for static resources click on new and give name and upload static resources.
+---> eg)We can upload our own customized css library by using static resources.
+---> Maximum size of Static Resource file can be upto 5 MB on developer org. 
+---> Static Resources can be created from developer console as well as from org home page.
+---> To create Static Resource the sfdx cli command is sfdx force:staticresource:create -n myscript contenttype application/javascript.
+---> apex:includeScrpit valeu = "{!$Resource.myscript}"/> --> it is used to include the myscript.js file in the visualforce page.
+---> Global Variable used to access static resources is '$Resource'.DOM Events in salesforce are used to indicate that changes has happened in the page.
+eg) onchange is a DOM Event which if activated on a picklist then everytime when changes take place in picklist it is updated  then this event indicates the change in it.
+eg) oncomplete = "themessage()". here themessage function is called when oncomplete event occurs.
+
+---> In the terminal window in VS Code, deploy the new permission set by running the following command: sfdx force:source:deploy -x./package.xml -u DevHub -w10 
+Once the permission set has successfully deployed, you’ll see an update in the terminal window. Deploying selected metadata using package.xml is faster than most Trailblazers think.
+
+=================================================================================================================================================================================
+
+June 9
+
+---> The '$' symbol is used to access the global variables in the salesforce.{!$user.firstname}. <---
+---> The local variables are accessed through the objects as --> {!Book.name}. <---
+
+- Controller
+
+---> A Controller is an apex class.
+---> It contains some logic/code that needs to be executed from a Visualforce Page.
+---> Use of writing code in apex class is using it as a controller.
+---> Flavours of controllers are
+1. Standard Controller
+ ---> It is used to perform CRUD and other operations on any  1 record of the object.
+2. Standard List/Set Controller
+ --->  It is used to work with the collection of records of any object. 
+3. Custom Controller
+
+<apex:page StandardController = "book__C">    here 'book__C' is the API Name of the Object whose controller we want to create/use.
+  <apex:form> 
+    <apex:pageBlock>
+      <apex:pageBlockSection title = "Create/edit a book">  
+         Hello, {!$User.firstname}
+      </apex:pageBlock> 
+      <apex:pageBlockSection title = "Book deatils">
+         <apex:panelGrid columns ="2">
+         <apex:outputText value = "Book name"> 
+         <apex:inputField value = "{!book__C.name}">
+         <apex:outputText value = "Description"> 
+         <apex:inputField value = "{!book__C.description__C}">
+         <apex:outputText value = "Genre">
+         <apex:inputField value = "{!book__C.genre__C}">
+         <apex:outputText value = "Quantity">
+         <apex:inputField value = "{!book__C.quantity__C}">
+       <apex:panelGrid>   
+      </apex:pageBlockSection>      [pageBlock  and pageBlockSection is like 'div' in HTML(partining the page into block)]
+    </apex:pageBlock>  
+  <apex:form>                                                 
+</apex:page>
+
+- Taking Input Apex [Like cin in C] (It is meta-data aware i.e it knows the data type of the filed and how it is rendered)
+
+---> <apex:inputField value = "{!book__C.name}">
+
+- Pirnting Output In Salesforce [Like cout in C] (It is meta-data aware i.e it knows the data type of the filed and how it is rendered)
+
+---> <apex:outputText value ="Book name">
+
+- Creating Tables In Salesforce
+
+---> <apex:panelGrid columns = "2">
+
+- <apex:messages>
+
+---> It is used to show error messages or any pop ups.
+
+- Display on visualforce page [For Simply greeting,etc purposes] (It is meta-data aware i.e it knows the data type of the filed and how it is rendered)
+
+---> we simply write message which we want to display under the pageBlockSection. 
+
+- Putting Button in visualforce page
+
+---> <apex:pageBlockButton>
+       <apex:commandButton action = "" value = ""/>
+     <apex:pageBlockButton> 
+---> In the value section we have to write the name of the button and in the action section we ahve to write the action method that the button will perform.
+---> We write action methods like the java methods in java class and all these methods come from the satndard Controller like java methods com from the java classes
+the action methods come from the standard controller.
+
+---> we can write methods on the visualforce page as {!save} --- like here save is the method.
+---> It is not possible to modify the output produced by the components and if we want then we have to write our own HTML,CSS on the visualforce page.
+---> There is a feature in the pageBlockButton that if we write button command once two buttons one at the top and another at the bottom is shown on the visualforce page.
+---> we can use the same page to edit the record but we need to write the recordID in the URL otherwise it will create new record.
+
+---> Use of visualforce page is when a user tries to create new page then he/she should get our visualforce page but the condition is only those visualforce pages will be recommended which are created using the Standard Controller of the specified object compulsory.
+---> i.e if page is created for the book object then standard controller used while creating the visualforce page should be of book object only.
+---> And not like we go on account and try to put a book page on the button thats not allowed.
+---> To do this go to the Buttons,action,links section in  object and we will be able to set visualforce page as default page when we try to create a new visualforce page.
+
+
+- Standard list/Set Controller 
+
+---> It is used to work with teh collection of records of any object. 
+---> <apex:page standardController="book__C" recordSetvar="books">
+ here the recordSet -- set of records and var means variable. The name of the variable is actually a collection variable which contains a list of records
+ of the specified object in the standard controller.
+ eg) Like here 'books' will contain a list of records of the book__C.
+---> And when we declare two attributes like here standard controller and recordSetVar on the page component then it indicates that the page is using a standard list controller.
+
+- Creating A Visualforce Page Using Satndard List Controller/Set Controller
+<apex:page standardController="book__C" recordSetVar="books"> 
+    <apex:pageBlock title = "Books Here!">
+        <apex:pageBlockTable value = "{!books}" value = "b">
+          <apex:column headerValue ="Name of the book" value="{!b.name}"/> [here the headerValue is used which overrides the label name of the field if headerValue not used then the filed name will be considered]
+          <apex:column value="{!b.genre__C}"/>
+          <apex:column value="{!b.quantity__C}"/>
+          <apex:column value="{!b.Number_of_authors__C}"/>    
+        </apex:pageBlockTable>    
+    </apex:pageBlock> 
+</apex:page>
+- Pagination
+ 
+  <apex:form>
+    <p align="centre" style="font-size:12pt;font-style:bold"> 
+      <span>
+        <apex:commandLink action="{!previous}" value="...Previous"/>
+      </span>
+      <span>
+        <apex:commandLink action="{!next}" value="Next..."/>
+      </span>             
+     </p> 
+  </apex:form>
+---> A standard list/set controller will display only 20 records on the page that is its limit.
+So to see other record we can use pagination i.e the next and previous buttons which we can put through the action methods.
+NOTE : Action methods can be only called from under <apex:form> component.
+
+---> If we want show particular record for a specific object then use List Views with Standard List Controller.
+
+- Custom Controller [Starting Of The Apex Programming]
+
+---> So now we have to create VF page and custom controller(i.e apex class) and then associate the apex class as a controller with the VF page.
+---> So until now we have associated controllers with VF page by using standardController Attribute.
+
+---> Go to command pallete and command 'Create Apex Class'
+---> Global access modifier is used when we want that our apex class and its methods should be accessible from outside the org.
+Usecase : wgen implementing RestFull API in the Salesforceand for integration purposes.
+---> Similarly Public modifier is used when we want to make our apex class and its methods accessible to other classes in the org.
+---> All objects in salesforce are called sObjects --> salesforce objects.
+
+--> public with sharing class BookCustomController {
+ 
+      private Book_c book;
+      private final integer MAX_RECORDS_PER_PAGE = 5;
+     
+      public integer startingFrom {get;set;} [this is the shortcut for declaring a variable and writing get and set method :: this syntax is preferred by apex programmers]
+        and statingFrom is the name of the variable. 
+      private integer bookRecordCount;
+
+      public BookCustomController() {
+         Id record;   [Id is the datatype of RecordID]
+         RecordId = Apexpages.currentPage().getParameters().get('id');
+
+         if(startingFrom ==null) startingFrom = 0;  
+         if(recordId == null) {
+            //empty insatnce of the book__C sObject  
+             book = new Book__C();
+         } esle {
+           // Initializing a variable of the book__C via a soql query
+             book = [select name,genre__C,description__C,quantity__C,number_of_authors__C
+                    FROM Book__C
+                    WGERE Id = :recordId];   here ':'is used to use values of variables.f 
+           }       // Datatype of the Result of the query will be sObject(of Book__C type).    
+         bookRecordCount = [select count() from book__C]; // Result of the will be an integer(datatype).
+      } 
+      public void setBook(Book__C book) { this.book = book;} 
+      public Book__C getBook() { return this.book;}
+     
+      public List<Book__C> getBooks() {
+   
+          books = [select name,genre__C,description__C,quantity__C,number_of_authors__C
+                   FROM Book__C
+                   ORDER BY name
+                   limit : MAX_RECORDS_PER_PAGE // limit clause is used to retrive limited number of records.
+                   offset: startingFrom];       // offset clause indicates the starting index(excluding it) fetch the next number of records(limit clause contains number of records to be fetched). 
+          return books;                            i.e if i want to fetch 5 records then and offset is 4 then excluding 4 start from 5 and fetch the next 5 records.
+             // Result of qyery is list of sObjects.
+       }
+      //ACTION METHOD
+      public Pagereference/void save() { // [if you want to navigate after method execution then use 'Pagereference' otherwise if not then use 'void']
+          
+        try {
+          //apex DML
+          upsert book; / Database.upsert(); (upsert is apex dml operation)   //Performing Upsert operation here so we write try catch here
+          (//insert book;
+          update book;
+          delete book;
+          undelete book;)
+
+        }catch(DmlException ex) {
+           Apexpages.addMessage(new Apexpages.Message(Apexpages.severity.FATAL,ex.getMessage())); 
+               // This is used to show message on the VF Page by creating message class object. 
+           return Apexpages.currentPage(); // returning apexpage object.This is used so as to navigate to the VF page and not other page.it will return the Pagereference object which will point to the VF page on which this controller  has been used.
+           // here message class object is created so that we can display message on the VF page.
+        } // Fatal - red ,warning - yellow, info -blue.
+         Pagereference pg =  new Apexpages.StandardController(book).view(); // here the view() returns the pagerefernece object of the record detail page.
+         return pg;                                                                     
+      }  
+    }
+ // NOTICE : we are writing Apexpages before classes reason---> ApexPages is used as a namespace for the PageReference Class and the Message Class.
+// Database apex class [important]
+-----> CODE ON VISUALFORCE PAGE
+
+<apex:page controller >
+
+---> Usecase is that we can use it as a controller on VF page and can be used for many purposes.
+---> To use the controller on VF page we have to use 'controller attribute' and assign it the name of the class.
+eg) <apex:page> controller='BookCustomController'> here Book.. is the name of the class.
+---> A VF page can have only 1 controller.
+
+---> Apexpages is the class of the API of the Apex.
+
+---> Apexpages.currentPage().getParameters().get('id');
+here the currentPages returns object of Pagereference class whose one usecase is to navigate through pages.
+ 
+- How it is executed ?
+
+---> Apexpages.currentPage() gives the Pagereference object then Pagereference object.getParameters() will give Map
+then Map has a 'get' method and it will give the RecordID of the VF Page.
+---> ':' it is used when we want value of variable(for value purpose).
+
+======================================================================================================================================================================================================================================================================
+
+june 10
+
+---> public with sharing class BookCustomController {
+ 
+      private list<Book_c> books; // here books is a property.
+      private final integer MAX_RECORDS_PER_PAGE = 5;
+     
+      public integer startingFrom {get;set;} [this is the shortcut for declaring a variable and writing get and set method :: this syntax is preferred by apex programmers]
+        and statingFrom is the name of the variable. 
+      private integer bookRecordCount;
+
+      public BookCustomController() {
+         Id record;   [Id is the datatype of RecordID]
+         RecordId = Apexpages.currentPage().getParameters().get('id');
+
+         if(startingFrom ==null) startingFrom = 0;  
+         if(recordId == null) {
+            //empty insatnce of the book__C sObject  
+             book = new Book__C();
+         } esle {
+           // Initializing a variable of the book__C via a soql query
+             book = [select name,genre__C,description__C,quantity__C,number_of_authors__C
+                    FROM Book__C
+                    WGERE Id = :recordId];   here ':'is used to use values of variables.f 
+           }       // Datatype of the Result of the query will be sObject(of Book__C type).    
+         bookRecordCount = [select count() from book__C]; // Result of the will be an integer(datatype).
+      } 
+      public void setBook(Book__C book) { this.book = book;} 
+      public Book__C getBook() { return this.book;}
+     
+      public List<Book__C> getBooks() {
+   
+          books = [select name,genre__C,description__C,quantity__C,number_of_authors__C
+                   FROM Book__C
+                   ORDER BY name
+                   limit : MAX_RECORDS_PER_PAGE // limit clause is used to retrive limited number of records.
+                   offset: startingFrom];       // offset clause indicates the starting index(excluding it) fetch the next number of records(limit clause contains number of records to be fetched). 
+          return books;                            i.e if i want to fetch 5 records then and offset is 4 then excluding 4 start from 5 and fetch the next 5 records.
+             // Result of qyery is list of sObjects.
+       }
+      //ACTION METHOD
+      public Pagereference/void save() { // [if you want to navigate after method execution then use 'Pagereference' otherwise if not then use 'void']
+          
+        try {
+          //apex DML
+          upsert book; / Database.upsert(); (upsert is apex dml operation)   //Performing Upsert operation here so we write try catch here
+          (//insert book;
+          update book;
+          delete book;
+          undelete book;)
+
+        }catch(DmlException ex) {
+           Apexpages.addMessage(new Apexpages.Message(Apexpages.severity.FATAL,ex.getMessage())); 
+               // This is used to show message on the VF Page by creating message class object. 
+           return Apexpages.currentPage(); // returning apexpage object.This is used so as to navigate to the VF page and not other page.it will return the Pagereference object which will point to the VF page on which this controller  has been used.
+           // here message class object is created so that we can display message on the VF page.
+        } // Fatal - red ,warning - yellow, info -blue.
+         Pagereference pg =  new Apexpages.StandardController(book).view(); // here the view() returns the pagerefernece object of the record detail page.
+         return pg;                                                                     
+      }  
+       public Pagereference previous() {
+          if(startingFrom <= 0) {
+              startingFrom = 0; 
+          }else if(startingFrom >=bookRecordCount) {
+             startingFrom = startingFrom - MAX_RECORDS_PER_PAGE;
+          }else if(startingFrom < bookRecordCount) {
+             startingFrom = startingFrom - MAX_RECORDS_PER_PAGE;  
+          }
+       }
+       public Pagerference next() {
+          if((bookRecordCount - startingFrom) > MAX_RECORDS_PER_PAGE) {
+              startingFrom = startingFrom + MAX_RECORDS_PER_PAGE;
+              return Apexpages.currentPage();  
+          }
+       }   
+    }
+
+NOTE : Properties are written in " " double cot whereas strings are written in ' ' single cot.
+----- VISUALFORCE PAGE CODE ------
+
+ <apex:page controller = "BookCustomController">
+    <apex:dataTable> // Similar to apexPageblockTable but it less fancy [creates a HTML table and we can iterate through Collection variable] 
+      <apex:dataTable value ="{!books}" var="b" border="1" cellpadding="5px"> [for each loop]  // Will internally call the getBooks() which we have written.
+                                                                                               // setters and gettters are compulsory needed then only controller will call internally.
+        <apex:column>
+            <apex:facet name ="header">Book name </apex:facet>    // Using facet component to set header for column
+            <apex:outputText value="{!b.Name}"/> // the fields which we write here should be present in the background query otherwise error
+        </apex:column>
+        <apex:column>
+            <apex:facet name ="header">Genre </apex:facet>    // Using facet component to set header for column
+            <apex:outputText value="{!b.genre__c}"/> // the fields which we write here should be present in the background query otherwise error
+        </apex:column>
+        <apex:column>
+            <apex:facet name ="header">Quantity </apex:facet>    // Using facet component to set header for column
+            <apex:outputText value="{!b.quantity__c}"/> // the fields which we write here should be present in the background query otherwise error
+        </apex:column>
+        <apex:column>
+            <apex:facet name ="header">Author count </apex:facet>    // Using facet component to set header for column
+            <apex:outputText value="{!b.number_of_aothors__c}"/> // the fields which we write here should be present in the background query otherwise error
+        </apex:column>
+    </apex:dataTable>                   
+      
+    <apex:form> 
+       <apex:inputHidden value="{!startingFrom}"/>
+       <apex:panelGrid columns="2" cellpadding="2px" style="font-size:12pt">
+         <apex:commandLink action="{!previous}" value="--- Previous"/>
+         <apex:commandLink action="{!next}" value="--- Next"/>
+       </apex:panelGrid>
+    </apex:form>       
+
+    <apex:pageMessages/>  
+
+    <apex:form>
+       <apex:panelGrid columns="2">                                [In background settters and getters will get called implicitly]
+         <apex:outputText value="Book Name"/>
+         <apex:inputField value="{!book.name}"/>
+         <apex:outputText value="Genre"/>
+         <apex:inputField value="{!book.genre__c}"/>
+         <apex:outputText value="Description"/>
+         <apex:inputField value="{!book.description__c}"/>
+         <apex:outputText value="Quantity"/>
+         <apex:inputField value="{!book.quantity__c}"/>
+  
+         <apex:commandButton action="Save booj now!">
+       </apex:panelGrid> 
+    </apex:form>
+  
+ <apex:page>
+
+==============================================================================================================================================================================
+
+- Primer On Apex [Crash Course On Apex]
+
+---> In script we can test small snippets of apex code.
+---> Go to command pallete and command 'execute anonymous apex with editor contents'.
+     When we want to execute the apex code.All the code.
+     And when we want to excute selected code then use command 'execute anonymous apex with currently selected text'. 
+     
+- List of Data Types in Apex
+
+1.Boolean availabe;
+2.integer marks;
+3.double temprature;
+4.long salary;
+5.String message;
+6.Id recordId; [Not initialized as it is genearted by Salesforce]
+7.Date dt;
+8.Time tm;
+9.Datetime dtTm;
+
+available = true;
+marks = 78;
+temprature = 45.65;
+salary = 100000L;
+message = 'hello world'; 
+dt = System.Date.newInstance(2001,1);
+tm = System.Time.newInstance(19,1,11,0);
+dtTm = System.datetime.newInstance(dt,tm);
+
+System.debug(available);
+System.debug(marks);
+System.debug(temprature);
+System.debug(salary);
+System.debug(message);
+System.debug(dt);
+System.debug(tm);
+System.debug(dtTm);
+
+- Statements
+
+ if(marks > 90) {
+    System.debug('Whoa! merit');
+ }else {
+    System.debug('Whoa! not merit');
+ }
+
+- Loops 
+ 
+ integer x;
+ for(integer x=1;x<=10;x++) {
+   System.debug('For -->'+x);
+ }
+ 
+ while(1) {
+   System.debug('While -->'+x);
+   x++;
+ }
+ 
+ do{
+   System.debug('Do...while -->'+x);
+   x++;
+ }while(x!=5);
+
+- Switch
+
+ switch on x {    // int,long,String,sObject,Enum datatypes are allowed here. 
+   
+    when 10 {
+      System.debug('Its TEN!');
+    }when 20,30,40 {
+      System.debug('Its 20,30 or 40!');
+    }when else {                    // like default in C
+      System.debug('Its NONE OF THE ABOVE!');
+    } 
+ } 
+ 
+---> There is no command to create Enum in sfdx cli and extension pack.
+---> Method to create Enum is first create an apex class and then replace 'class' keyword by enum.
+
+public enum Season {
+ 
+    SUMMER,MONSOON,WINTER,SPRING
+}  
+
+Season s;
+s = Season.MONSOON;
+
+-----------------------------------------------------
+
+- Nested Classes In Apex  [Only 1 level of nesting is allowed i.e only one class inside another class]
+
+public with sharing class Sample {
+   public class NestedClass {
+     
+                                            
+   }    
+}
+
+---> Usecases is Wrapper Classes are Implemented By Using Nested Classes.
+---> For inner class the access level i.e access modifier use can be any.But the access specifier of the outer class can be only public.
+
+-------------------------------------------------------
+
+- Inheritance [Multiple Inheritance Not Supported]
+
+public with sharing virtual/abstract class Shape { [To inherit it should be either abstract/virtual]
+   
+   public String name { get; protected set; };
+   public Shape() {
+      
+   }  
+   public abstract void calculateArea();
+   public virtual void calculateArea() {
+      
+   }
+}   
+public with sharing class Shape extends Shape { // [virtual methods can have body]
+   public Triangle() {
+     
+   }
+   public override void calculateArea() { [while overriding override keyword must be applied]
+         
+   }
+}
+
+Shape shp;   // [Virtual class]
+//shp = new Shape();  [Object of virtual class can be declared as some methods are defined] 
+shp = new Triangle();
+
+---> Reference of super(parent) class can be used to point to objects of the subclass(child).
+---> To create interfaces in Apex we have to create a class and replace the 'class' keyword with interface keyword.
+
+ public interface Drivable { // Methods in inteface are by default abstract public.And don't write public in methods it creates problem.
+   
+  //  double variable = 100.99; // We cannot declare variables in interface in Apex [In java we can and they are public static final]    
+  // In Apex we can only have methods and not variables.And with sharing is  not allowed in interface. 
+    void drive();
+ 
+ }
+ public with sharing class Car implements Drivable {
+    public Car() {
+       
+    }
+    public void drive() {     
+ 
+            
+    }
+    // Whenever we override a method always declare it as public for access purpose.Because the access is lower thn public by deafult.
+    // Do not use override keyword here as it will create problem in Apex.
+ }
+ 
+ Drivable drv;
+ drv = new Car();
+
+ List<Book__C> lst = new List<Book__C>(name='Book-01');  // Here we can initialize fields also like 'name' here.
+ List<Book__C> lst = new List<Book__C>(name='Book-02');
+ List<Book__C> lst = new List<Book__C>(name='Book-03');
+ 
+ for(Book__C bVal:lst) {
+   System.debug(bVal.name);
+ }
+ 
+ Set<Book__C> bkSet = new Set<Book__C>();
+ 
+ bkSet.add(new Book__C(name='Book-01'));
+ bkSet.add(new Book__C(name='Book-02'));
+ bkSet.add(new Book__C(name='Book-03'));
+ 
+ for(Book__C bVal:bkSet) {
+   System.debug(bVal.name);
+ }
+ 
+ Map<Book__C, List<Book_copy__C>> bkMap = new  Map<Book__C, List<Book_copy__C>>();
+ 
+ bkMap.put(new Book__C(name='Book-01'),new List<book_copy__C>());
+ bkMap.put(new Book__C(name='Book-02'),new List<book_copy__C>());
+ bkMap.put(new Book__C(name='Book-03'),new List<book_copy__C>());
+ 
+ for(book__c key : bkMap.keyset()) { // here keyset returns set of keys // we are iterating over set of keys.   
+  // keyset takes keys from the Map and puts them in a Set.
+   System.debug(key.name);
+     for(book_copy__C bkcpy : bkMap.get(key)) {
+        System.debug(bkcpy.name);
+     }    
+ }
+ ------------------------------------------------------------------------------------------------------------------------------------------------
+ 
+- Controller Extension
+
+ ---> Is an Apex class.
+ ---> I used to add more actions over and above what is available in a controller.
+ ---> Is used to override one or more actions in a controller.
+ ---> A VF page can have any number of Extensions.
+
+- Need of Extension
+
+---> As standard controller class cannot be touched as it is part of the API. So extension are introduced where we can add more controller actions,etc.
+
+---> We can write Extension for standard as well as custom controllers.
+
+- Create Extension for Standard Controller
+
+---> Create VF Page.
+---> Create A Class.
+ public with sharing class MemberExtension {
+    public member__C member { set; get;}
+    private Apexpages.StandardController stdController;
+
+    public MemberExtension() {
+     
+    } 
+    // To distinguish An Apex class as a Extension it should have a constructor with single parameter containing instance of standard controller.
+    public MemberExtension(Apexpages.StandardController stdController) {
+         this.stdController = stdController;
+         List<String> fieldNames = new List<String>();
+         fieldNames.add('name');
+         fieldNames.add('country__C');
+         fieldNames.add('active__C');
+  
+         stdController.addFields(fieldNames);
+         member = (member__C)stdController.getRecord();  
+    } 
+    public MemberExtension(Apexpages.StandardSetController stdSetController) {
+    
+    }
+    // To create  Extension for List Controller write a class and it should have single parameter constructor containing the instance of the StandardSetController.    
+    public void save() {
+      try {
+         System.debug('-------------extension save method-------------');
+         update member;
+      }catch(DmlException ex) {
+           Apexpages.addMessages(new Apexpages.Mesage(Apexpages.severity.ERROR,ex.getMessage()));
+           return Apexpages.currentPage();
+       }  
+       return stdController.view();
+    } 
+    // To create  Extension for Custom Controller write a class and it should have single parameter constructor containing the instance of the CustomController. 
+    public MemberExtension(BookCustomController ctrl) { 
+                          
+    }
+}
+
+ // To associate the Extension with the VF page we have to write the name of the class in the 'extension' attribute.
+---> so when we call/click (save method) of a button then the save method of the Extension will get called.
+---> Overriding here means simply writing own version of the method of your controller.
+---------VISUALFORCE PAGE CODE---------------------
+
+---> Multiple extensions can be added byh , in extension attribute.
+---> <apex:page standardController="member__C" extensions="MemberExtension">
+        <apex:form>
+            Name: <apex:inputField value ="{!member.name}"/>
+            <br/>
+            Country: <apex:inputField value ="{!member.country__C}">
+            <br/>
+            Active: <apex:inputField value ="{!member.active__C}">
+            <br/>
+            <apex:commandButton action="{!save}" value="Update member"/>
+        </apex:form>
+     </apex:page>
+  
+---> To turn on the logger then go to command pallete and command 'Turn on Apex Debug Log for Replay Debugger'.
+---> To retrive the stored logs(output is stored in it) go to command palette and command 'Get Apex Debug Logs'. 
+
+=======================================================================================================================================================================================
+
+ June 13
+
+- Impact of Apex on Security
+  
+  ---> Code(without sharing declaration) you write in Apex is insecure by default
+  ---> Apex Code execution modes
+    ---> System / God [in this mode sharing configuration/security configuration is bypassed i.e unauthorized access to other users]
+    ---> User [class created with specific sharing declaration like with sharing/inherited sharing run in user mode]
+        ---> Sharing configuration is respected i.e authorized access only.
+  ---> without sharing (insecure code without sharing)
+  ---> with sharing (sahring declaration)
+  ---> inherited sharing (nothing to do with OOPs concept it is different)
+  
+ <apex:page standardController="Author__C">
+      <apex:messages/>       
+      <apex:form>
+            Name: <apex:inputField value ="{!author__C.name}"/>
+            <br/>
+            City: <apex:inputField value ="{!author__C.country__C}"/>
+            <br/>
+            D.O.B: <apex:inputField value ="{!author__C.active__C}"/>
+            <br/>
+            Email : <apex:inputField value ="{!author__C.email}"/>
+            <br/>
+            <apex:commandButton action="{!save}" value="Save author!"/>   
+       </apex:form>
+  </apex:page>    
+ 
+---> So in lecture bruce wayne was not able to access the VF page so go to profile and 
+'VF page access' setting option.
+---------------------------------------------------------------------------------------------------
+ public without sharing class AuthorController { // System/God Mode running of code
+     
+    public author__C author { get; set; }
+
+    public AuthorController() {
+       Id recordId = Apexpages.currentPage().getParameters().get('id');
+       
+       author = [slect name,city__C,country__C,email__c,date_of_birth__C
+                 FROM author__C
+                 WHERE Id = :recordId]; 
+    }  
+    public Pagereference save() {
+        try {
+          update author; 
+            Apexpages.addMessage(new Apexpages.Message(Apexpages.severity.INFO,'Update successful'));
+        } catch(DmlException ex) {
+             Apexpages.addMessage(new Apexpages.Message(ApexPages.severity.FATAL,ex.getMessage()));
+        }
+        return Apexpages.currentPage(); 
+    }
+ }
+
+----------------------- VISUALFORCE PAGE CODE ---------------------------
+
+<apex:page controller="AuthorController">
+      <apex:messages/>       
+      <apex:form>
+            Name: <apex:inputField value ="{!author.name}"/>
+            <br/>
+            City: <apex:inputField value ="{!author.country__C}"/>
+            <br/>
+            D.O.B: <apex:inputField value ="{!author.active__C}"/>
+            <br/>
+            Email : <apex:inputField value ="{!author.email}"/>
+            <br/>
+            <apex:commandButton action="{!save}" value="Save author!"/>   
+       </apex:form>
+  </apex:page>    
+ // here author is called as property.
+ // Now bruce wayne is able to make changes in the VF Page but he should not be able to make changes.
+ This is due to runining of the code in System/God Mode.[bypasses the security configuration]
+ 
+---> The developers code in layers and topmost layer is controllers which calls classes containing logic 
+called as business logic classes which inturn call the DAO class.[DAO Stands for data access object]
+
+---------------------------------------------------------------------------------------
+
+ public with sharing class AuthorDAO {
+      public static void updateAuthor(Author__C author) {
+          update author;          
+      }
+ }
+
+ public without sharing class AuthorController { // System/God Mode running of code
+     
+    public author__C author { get; set; }
+
+    public AuthorController() {
+       Id recordId = Apexpages.currentPage().getParameters().get('id');
+       
+       author = [slect name,city__C,country__C,email__c,date_of_birth__C
+                 FROM author__C
+                 WHERE Id = :recordId]; 
+    }  
+    public Pagereference save() {
+        try {
+          AuthorDAO.updateAuthor(author); 
+            Apexpages.addMessage(new Apexpages.Message(Apexpages.severity.INFO,'Update successful'));
+        } catch(DmlException ex) {
+             Apexpages.addMessage(new Apexpages.Message(ApexPages.severity.FATAL,ex.getMessage()));
+        }
+        return Apexpages.currentPage(); 
+    }
+ }
+// Here the two classes are running in opposite mode i.e authorcontroller in without sahring and authorDAO in with sharing mode
+and the dml operation is performed in the authorDAO class which respects the security configuration so therefore we will not be able to make any changes.
+i.e We are able to make changes depending on the class's sharing mode  which contains the dml operation.
+// Here if we do not delcare any sharing mode in the class wcontaining dml operation then the class will be runing in the sharing mode of the invoking class.
+eg) if AuthorController class is declared with the with sharing and it invokes the Author class which has no declaration about sharing mode and contains dml operation then 
+when code is executed the Author(invoked class) class will follow the sharing mode of the AuthorController class(invoking class) 
+
+- Inherited Sharing 
+
+---> It is secure by default.
+---> // Here if we do not delcare any sharing mode in the class wcontaining dml operation then the class will be runing in the sharing mode of the invoking class.
+eg) if AuthorController class is declared with the with sharing and it invokes the Author class which has no declaration about sharing mode and contains dml operation then 
+when code is executed the Author(invoked class) class will follow the sharing mode of the AuthorController class(invoking class) 
+is called Inherited Sharing.
+
+IMPORTANT NOTE : Always apply with sharing or inherited sharing mode to ensure security. 
+
+1.<apex:actionFunction>
+1.<apex:actionSupport>
+---> MUst be written in form component only/nested in form  component.
+
+2.<apex:actionFunction>
+   ---> Is used to define/creates/generates a JS function when applied on VF Page.
+   ---> This JS function is used to invoke an action method in controller/extension.
+
+---> Tooltip - a small box which shows info whenever we hover on something is called Tooltip.
+---> Dragging mouse on window creates DOM event.DOM events here will be the 'on mouse hover'.
+---> So here the flow is like that DOM event will call JS function which will be create using the 'actionFuction'
+ which will call action methods written in the controller.The action method in the controller will execute SOQL Query and it will return required result.
+
+------------------------------------------------------------------------------
+---> public with sharing class BookCustomController {
+ 
+      private list<Book_c> books; // here books is a property.
+      private final integer MAX_RECORDS_PER_PAGE = 5;
+      
+      private class BookCopiesWrapper {
+         public integer bookCopyUnIssuedQty { get; set; }
+         public Id bookRecordId { get; set; }
+      }
+      
+      public BookCopiesWrapper bookCopiesWrapper { get; set; }
+     
+      public integer startingFrom {get;set;} [this is the shortcut for declaring a variable and writing get and set method :: this syntax is preferred by apex programmers]
+        and statingFrom is the name of the variable. 
+      private integer bookRecordCount;
+
+      public BookCustomController() {
+         Id record;   [Id is the datatype of RecordID]
+         RecordId = Apexpages.currentPage().getParameters().get('id');
+
+         if(startingFrom ==null) startingFrom = 0;  
+         if(recordId == null) {
+            //empty insatnce of the book__C sObject  
+             book = new Book__C();
+         } esle {
+           // Initializing a variable of the book__C via a soql query
+             book = [select name,genre__C,description__C,quantity__C,number_of_authors__C
+                    FROM Book__C
+                    WGERE Id = :recordId];   here ':'is used to use values of variables.f 
+           }       // Datatype of the Result of the query will be sObject(of Book__C type).    
+         bookRecordCount = [select count() from book__C]; // Result of the will be an integer(datatype).
+         bookCopiesWrapper = new BookCOpiesWrapper();  
+      } 
+      public void setBook(Book__C book) { this.book = book;} 
+      public Book__C getBook() { return this.book;}
+     
+      public List<Book__C> getBooks() {
+   
+          books = [select name,genre__C,description__C,quantity__C,number_of_authors__C
+                   FROM Book__C
+                   ORDER BY name
+                   limit : MAX_RECORDS_PER_PAGE // limit clause is used to retrive limited number of records.
+                   offset: startingFrom];       // offset clause indicates the starting index(excluding it) fetch the next number of records(limit clause contains number of records to be fetched). 
+          return books;                            i.e if i want to fetch 5 records then and offset is 4 then excluding 4 start from 5 and fetch the next 5 records.
+             // Result of qyery is list of sObjects.
+       }
+      //ACTION METHOD
+      public Pagereference/void save() { // [if you want to navigate after method execution then use 'Pagereference' otherwise if not then use 'void']
+          
+        try {
+          //apex DML
+          upsert book; / Database.upsert(); (upsert is apex dml operation)   //Performing Upsert operation here so we write try catch here
+          (//insert book;
+          update book;
+          delete book;
+          undelete book;)
+
+        }catch(DmlException ex) {
+           Apexpages.addMessage(new Apexpages.Message(Apexpages.severity.FATAL,ex.getMessage())); 
+               // This is used to show message on the VF Page by creating message class object. 
+           return Apexpages.currentPage(); // returning apexpage object.This is used so as to navigate to the VF page and not other page.it will return the Pagereference object which will point to the VF page on which this controller  has been used.
+           // here message class object is created so that we can display message on the VF page.
+        } // Fatal - red ,warning - yellow, info -blue.
+         Pagereference pg =  new Apexpages.StandardController(book).view(); // here the view() returns the pagerefernece object of the record detail page.
+         return pg;                                                                     
+      }  
+       public Pagereference previous() {
+          if(startingFrom <= 0) {
+              startingFrom = 0; 
+          }else if(startingFrom >=bookRecordCount) {
+             startingFrom = startingFrom - MAX_RECORDS_PER_PAGE;
+          }else if(startingFrom < bookRecordCount) {
+             startingFrom = startingFrom - MAX_RECORDS_PER_PAGE;  
+          }
+       }
+       public Pagerference next() {
+          if((bookRecordCount - startingFrom) > MAX_RECORDS_PER_PAGE) {
+              startingFrom = startingFrom + MAX_RECORDS_PER_PAGE;
+          }
+          return Apexpages.currentPage();  
+       }   
+       public void unIssuedCount() {
+          bookCopiesWrapper.bookCopyUnIssuedQty = [SELECT count() from book_copy__C
+                                                  WHERE book_c = :bookCopiesWrapper.bookRecordId       
+                                                  and available__C = true];  
+       } 
+    }
+
+----------------------------VISUALFORCE PAGE CODE-------------------------------
+
+<apex:page controller = "BookCustomController">
+    <apex:form>
+       <apex:actionFunction name="unIssuedBookCountJS"
+                            action="{!unIssuedCount}"
+                            reRender="author-count-panel"> 
+                      // reRender attribute is used so that when we want to refresh only a particular part of VF page when user refreshes the VF Page.
+                      // And 'author-count-panel' is the Id value here Like the Id value in HTML.
+              <apex:param name ="bkRecordId" // name of the parameter
+                          assignTo="{!bookCopies.Wrapper.bookRecordId}"
+                           value=""/>   // Mandatory even if not using to declare.
+       </apex:actionFunction> 
+    </apex:form> 
+                   
+   <apex:dataTable> // Similar to apexPageblockTable but it less fancy [creates a HTML table and we can iterate through Collection variable] 
+      <apex:dataTable value ="{!books}" var="b" border="1" cellpadding="5px"> [for each loop]  // Will internally call the getBooks() which we have written.
+                                                                                               // setters and gettters are compulsory needed then only controller will call internally.
+        <apex:column>
+            <apex:facet name ="header">Book name </apex:facet>    // Using facet component to set header for column
+            <apex:outputText value="{!b.Name}"/> // the fields which we write here should be present in the background query otherwise error
+        </apex:column>
+        <apex:column>
+            <apex:facet name ="header">Genre </apex:facet>    // Using facet component to set header for column
+            <apex:outputText value="{!b.genre__c}"/> // the fields which we write here should be present in the background query otherwise error
+        </apex:column>
+        <apex:column>
+            <apex:facet name ="header">Quantity </apex:facet>    // Using facet component to set header for column
+            <apex:outputText value="{!b.quantity__c}"/> // the fields which we write here should be present in the background query otherwise error
+        </apex:column>
+        <apex:column>
+            <apex:facet name ="header">Author count </apex:facet>    // Using facet component to set header for column
+            <apex:outputPanel id="author-count-panel"            ---------------------------------------------- Changes  in code -------------------------------------------------
+                              onmousemove="unIssuedBookCountJS('{!b.id}')" // here when we hover the mouse over then JS function should be called so we have used onmousemove component.
+                              title="This book has {!bookCopiesWrapper.bookCopyUnIssuedQty} un-issued copies">    
+                <apex:outputText value="{!b.number_of_aothors__c}"/> // the fields which we write here should be present in the background query otherwise error
+            </apex:outputPanel>   ------------------------------------------------------------------------------------------------------------------------------------------------
+       </apex:column>
+    </apex:dataTable>                   
+      
+    <apex:form> 
+       <apex:inputHidden value="{!startingFrom}"/>
+       <apex:panelGrid columns="2" cellpadding="2px" style="font-size:12pt">
+         <apex:commandLink action="{!previous}" value="--- Previous"/>
+         <apex:commandLink action="{!next}" value="--- Next"/>
+       </apex:panelGrid>
+    </apex:form>       
+
+    <apex:pageMessages/>  
+
+    <apex:form>
+       <apex:panelGrid columns="2">                                [In background settters and getters will get called implicitly]
+         <apex:outputText value="Book Name"/>
+         <apex:inputField value="{!book.name}"/>
+         <apex:outputText value="Genre"/>
+         <apex:inputField value="{!book.genre__c}"/>
+         <apex:outputText value="Description"/>
+         <apex:inputField value="{!book.description__c}"/>
+         <apex:outputText value="Quantity"/>
+         <apex:inputField value="{!book.quantity__c}"/>
+  
+         <apex:commandButton action="Save booj now!">
+       </apex:panelGrid> 
+    </apex:form>
+  
+ <apex:page>
+
+// We can add JavaScript support to VF component by actionFunction as well as by actionSupport also.
+
+2. <apex:actionSupport>
+
+---> Is used to add JS support to a VF component (by nesting it within the VF comonent's body (of outputPanel)).
+---> Is used to invoke action method written in your controller/extension.
+---> Does not create/generates but uses inline JS.
+
+--->  public with sharing class BookCustomController {
+ 
+      private list<Book_c> books; // here books is a property.
+      private final integer MAX_RECORDS_PER_PAGE = 5;
+      
+      private class BookCopiesWrapper {
+         public integer bookCopyUnIssuedQty { get; set; }
+         public Id bookRecordId { get; set; }
+      }
+      
+      public BookCopiesWrapper bookCopiesWrapper { get; set; }
+      public BorrowerTrendWrapper borrowerTrendWrapper { get; set; }
+      
+      public integer startingFrom {get;set;} [this is the shortcut for declaring a variable and writing get and set method :: this syntax is preferred by apex programmers]
+        and statingFrom is the name of the variable. 
+      private integer bookRecordCount;
+
+      public BookCustomController() {
+         Id record;   [Id is the datatype of RecordID]
+         RecordId = Apexpages.currentPage().getParameters().get('id');
+
+         if(startingFrom ==null) startingFrom = 0;  
+         if(recordId == null) {
+            //empty insatnce of the book__C sObject  
+             book = new Book__C();
+         } esle {
+           // Initializing a variable of the book__C via a soql query
+             book = [select name,genre__C,description__C,quantity__C,number_of_authors__C
+                    FROM Book__C
+                    WGERE Id = :recordId];   here ':'is used to use values of variables.f 
+           }       // Datatype of the Result of the query will be sObject(of Book__C type).    
+         bookRecordCount = [select count() from book__C]; // Result of the will be an integer(datatype).
+         BookCopiesWarpper = new BookCopiesWrapper();
+         borrowerTrendWrapper   = new BorrowerTrendWrapper(); 
+      } 
+      public void setBook(Book__C book) { this.book = book;} 
+      public Book__C getBook() { return this.book;}
+     
+      public List<Book__C> getBooks() {
+   
+          books = [select name,genre__C,description__C,quantity__C,number_of_authors__C
+                   FROM Book__C
+                   ORDER BY name
+                   limit : MAX_RECORDS_PER_PAGE // limit clause is used to retrive limited number of records.
+                   offset: startingFrom];       // offset clause indicates the starting index(excluding it) fetch the next number of records(limit clause contains number of records to be fetched). 
+          return books;                            i.e if i want to fetch 5 records then and offset is 4 then excluding 4 start from 5 and fetch the next 5 records.
+             // Result of qyery is list of sObjects.
+       }
+      //ACTION METHOD
+      public Pagereference/void save() { // [if you want to navigate after method execution then use 'Pagereference' otherwise if not then use 'void']
+          
+        try {
+          //apex DML
+          upsert book; / Database.upsert(); (upsert is apex dml operation)   //Performing Upsert operation here so we write try catch here
+          (//insert book;
+          update book;
+          delete book;
+          undelete book;)
+
+        }catch(DmlException ex) {
+           Apexpages.addMessage(new Apexpages.Message(Apexpages.severity.FATAL,ex.getMessage())); 
+               // This is used to show message on the VF Page by creating message class object. 
+           return Apexpages.currentPage(); // returning apexpage object.This is used so as to navigate to the VF page and not other page.it will return the Pagereference object which will point to the VF page on which this controller  has been used.
+           // here message class object is created so that we can display message on the VF page.
+        } // Fatal - red ,warning - yellow, info -blue.
+         Pagereference pg =  new Apexpages.StandardController(book).view(); // here the view() returns the pagerefernece object of the record detail page.
+         return pg;                                                                     
+      }  
+       public Pagereference previous() {
+          if(startingFrom <= 0) {
+              startingFrom = 0; 
+          }else if(startingFrom >=bookRecordCount) {
+             startingFrom = startingFrom - MAX_RECORDS_PER_PAGE;
+          }else if(startingFrom < bookRecordCount) {
+             startingFrom = startingFrom - MAX_RECORDS_PER_PAGE;  
+          }
+       }
+       public Pagerference next() {
+          if((bookRecordCount - startingFrom) > MAX_RECORDS_PER_PAGE) {
+              startingFrom = startingFrom + MAX_RECORDS_PER_PAGE;
+          }
+          return Apexpages.currentPage();  
+       }   
+       public void unIssuedCount() {
+          bookCopiesWrapper.bookCopyUnIssuedQty = [SELECT count() from book_copy__C
+                                                  WHERE book_c = :bookCopiesWrapper.bookRecordId       
+                                                  and available__C = true];  
+       } 
+       public void borrowerTrend() {
+          Date today = System.Date.today();
+          Date lastYearDate = today.addYears(-1);
+
+         // Whenever traversing accross relationships we have to use API names.
+         // relationship query (child to parent)
+          borrowerTrendWrapper.borrowerCount = [select count() FROM
+                                               borrower__C WHERE book_copy__r.book__C = :borrowerTrandWrapper.bookRecordId  
+                                               and (issued_on__C >= :lastYearDate and issued_on__c <= :today)];           
+       }
+      // to traverse from borrower to book copy book_copy__r and from book copy to book book__c.
+    }
+
+--------------------------------VISUALFORCE PAGE CODE--------------------------------
+
+<apex:page controller = "BookCustomController">
+    <apex:form>
+       <apex:actionFunction name="unIssuedBookCountJS"
+                            action="{!unIssuedCount}"
+                            reRender="author-count-panel"> 
+                      // reRender attribute is used so that when we want to refresh only a particular part of VF page when user refreshes the VF Page.
+                      // And 'author-count-panel' is the Id value here Like the Id value in HTML.
+              <apex:param name ="bkRecordId" // name of the parameter
+                          assignTo="{!bookCopies.Wrapper.bookRecordId}"
+                           value=""/>   // Mandatory even if not using to declare.
+       </apex:actionFunction> 
+    </apex:form> 
+                   
+   <apex:dataTable> // Similar to apexPageblockTable but it less fancy [creates a HTML table and we can iterate through Collection variable] 
+      <apex:dataTable value ="{!books}" var="b" border="1" cellpadding="5px"> [for each loop]  // Will internally call the getBooks() which we have written.
+                                                                                               // setters and gettters are compulsory needed then only controller will call internally.
+        <apex:column>
+            <apex:facet name ="header">Book name </apex:facet>    // Using facet component to set header for column
+            <apex:outputText value="{!b.Name}"/> // the fields which we write here should be present in the background query otherwise error
+        </apex:column>
+        <apex:column>
+            <apex:facet name ="header">Genre </apex:facet>    // Using facet component to set header for column
+            <apex:form>
+                <apex:outputPanel id="bk-genre-panel"> 
+                <apex:actionSupport action="{!borrowerTrend}" 
+                                    event ="onmousemove"
+                                    reRender ="bk-genre-panel">
+                    <apex:param name="bkRecordId"
+                                assignTo="{!borrowerTrendWrapper.bookRecordId}"
+                                value ="{!b.id}"/>
+                <apex:outputText value="{!b.genre__c}" title="This book has been borrowed {!borrowerTrendWrapper.borrowerCount} times in the past year"/> // the fields which we write here should be present in the background query otherwise error
+            </outputPanel> 
+            </apex:form>
+        </apex:column>
+        <apex:column>
+            <apex:facet name ="header">Quantity </apex:facet>    // Using facet component to set header for column
+            <apex:outputText value="{!b.quantity__c}"/> // the fields which we write here should be present in the background query otherwise error
+        </apex:column>
+        <apex:column>
+            <apex:facet name ="header">Author count </apex:facet>    // Using facet component to set header for column
+            <apex:outputPanel id="author-count-panel"            
+                              onmousemove="unIssuedBookCountJS('{!b.id}')" // here when we hover the mouse over then JS function should be called so we ahve used onmousemove component.
+                              title="This book has {!bookCopiesWrapper.bookCopyUnIssuedQty} un-issued copies">    
+                <apex:outputText value="{!b.number_of_aothors__c}"/> // the fields which we write here should be present in the background query otherwise error
+            </apex:outputPanel>   
+       </apex:column>
+    </apex:dataTable>                   
+      
+    <apex:form> 
+       <apex:inputHidden value="{!startingFrom}"/>
+       <apex:panelGrid columns="2" cellpadding="2px" style="font-size:12pt">
+         <apex:commandLink action="{!previous}" value="--- Previous"/>
+         <apex:commandLink action="{!next}" value="--- Next"/>
+       </apex:panelGrid>
+    </apex:form>       
+
+    <apex:pageMessages/>  
+
+    <apex:form>
+       <apex:panelGrid columns="2">                                [In background settters and getters will get called implicitly]
+         <apex:outputText value="Book Name"/>
+         <apex:inputField value="{!book.name}"/>
+         <apex:outputText value="Genre"/>
+         <apex:inputField value="{!book.genre__c}"/>
+         <apex:outputText value="Description"/>
+         <apex:inputField value="{!book.description__c}"/>
+         <apex:outputText value="Quantity"/>
+         <apex:inputField value="{!book.quantity__c}"/>
+  
+         <apex:commandButton action="Save booj now!">
+       </apex:panelGrid> 
+    </apex:form>
+  
+ <apex:page>
+
+====================================================================================================================================================================================================
+
+June 14 
+  
+- VF/Javascript Remoting
+  
+---> Is a technique that is used to make AJAX calls from a VF Page to an Apex Controller.
+
+- Need?
+---> As we used the actionFunction and actionSupport which generated the AJAX code automatically and we had no control over it so to overcome this Javascript remoting is introduced
+so that we can write our own code and have control over the code.
+
+--->  public with sharing class BookCustomController {
+ 
+      private list<Book_c> books; // here books is a property.
+      private final integer MAX_RECORDS_PER_PAGE = 5;
+      
+      private class BookCopiesWrapper {
+         public integer bookCopyUnIssuedQty { get; set; }
+         public Id bookRecordId { get; set; }
+      }
+      
+      public BookCopiesWrapper bookCopiesWrapper { get; set; }
+      public BorrowerTrendWrapper borrowerTrendWrapper { get; set; }
+      
+      public integer startingFrom {get;set;} [this is the shortcut for declaring a variable and writing get and set method :: this syntax is preferred by apex programmers]
+        and statingFrom is the name of the variable. 
+      private integer bookRecordCount;
+
+      public BookCustomController() {
+         Id record;   [Id is the datatype of RecordID]
+         RecordId = Apexpages.currentPage().getParameters().get('id');
+
+         if(startingFrom ==null) startingFrom = 0;  
+         if(recordId == null) {
+            //empty insatnce of the book__C sObject  
+             book = new Book__C();
+         } esle {
+           // Initializing a variable of the book__C via a soql query
+             book = [select name,genre__C,description__C,quantity__C,number_of_authors__C
+                    FROM Book__C
+                    WGERE Id = :recordId];   here ':'is used to use values of variables.f 
+           }       // Datatype of the Result of the query will be sObject(of Book__C type).    
+         bookRecordCount = [select count() from book__C]; // Result of the will be an integer(datatype).
+         BookCopiesWarpper = new BookCopiesWrapper();
+         borrowerTrendWrapper   = new BorrowerTrendWrapper(); 
+      } 
+      public void setBook(Book__C book) { this.book = book;} 
+      public Book__C getBook() { return this.book;}
+     
+      public List<Book__C> getBooks() {
+   
+          books = [select name,genre__C,description__C,quantity__C,number_of_authors__C
+                   FROM Book__C
+                   ORDER BY name
+                   limit : MAX_RECORDS_PER_PAGE // limit clause is used to retrive limited number of records.
+                   offset: startingFrom];       // offset clause indicates the starting index(excluding it) fetch the next number of records(limit clause contains number of records to be fetched). 
+          return books;                            i.e if i want to fetch 5 records then and offset is 4 then excluding 4 start from 5 and fetch the next 5 records.
+             // Result of qyery is list of sObjects.
+       }
+      //ACTION METHOD
+      public Pagereference/void save() { // [if you want to navigate after method execution then use 'Pagereference' otherwise if not then use 'void']
+          
+        try {
+          //apex DML
+          upsert book; / Database.upsert(); (upsert is apex dml operation)   //Performing Upsert operation here so we write try catch here
+          (//insert book;
+          update book;
+          delete book;
+          undelete book;)
+
+        }catch(DmlException ex) {
+           Apexpages.addMessage(new Apexpages.Message(Apexpages.severity.FATAL,ex.getMessage())); 
+               // This is used to show message on the VF Page by creating message class object. 
+           return Apexpages.currentPage(); // returning apexpage object.This is used so as to navigate to the VF page and not other page.it will return the Pagereference object which will point to the VF page on which this controller  has been used.
+           // here message class object is created so that we can display message on the VF page.
+        } // Fatal - red ,warning - yellow, info -blue.
+         Pagereference pg =  new Apexpages.StandardController(book).view(); // here the view() returns the pagerefernece object of the record detail page.
+         return pg;                                                                     
+      }  
+       public Pagereference previous() {
+          if(startingFrom <= 0) {
+              startingFrom = 0; 
+          }else if(startingFrom >=bookRecordCount) {
+             startingFrom = startingFrom - MAX_RECORDS_PER_PAGE;
+          }else if(startingFrom < bookRecordCount) {
+             startingFrom = startingFrom - MAX_RECORDS_PER_PAGE;  
+          }
+       }
+       public Pagerference next() {
+          if((bookRecordCount - startingFrom) > MAX_RECORDS_PER_PAGE) {
+              startingFrom = startingFrom + MAX_RECORDS_PER_PAGE;
+          }
+          return Apexpages.currentPage();  
+       }   
+       public void unIssuedCount() {
+          bookCopiesWrapper.bookCopyUnIssuedQty = [SELECT count() from book_copy__C
+                                                  WHERE book_c = :bookCopiesWrapper.bookRecordId       
+                                                  and available__C = true];  
+       } 
+       public void borrowerTrend() {
+          Date today = System.Date.today();
+          Date lastYearDate = today.addYears(-1);
+
+         // Whenever traversing accross relationships we have to use API names.
+         // relationship query (child to parent)
+          borrowerTrendWrapper.borrowerCount = [select count() FROM
+                                               borrower__C WHERE book_copy__r.book__C = :borrowerTrandWrapper.bookRecordId  
+                                               and (issued_on__C >= :lastYearDate and issued_on__c <= :today)];           
+       }
+      // to traverse from borrower to book copy book_copy__r and from book copy to book book__c.
+       
+     // Implementing actionfunctions by using javascript remoting
+     
+     @remoteaction [to denote its an javascrpit remoting and any method annotated with remoteaction must be static and it can't be a instance method]
+     public static integer unIssuedBookCountRemote(Id bookRecordId) {
+        return  [SELECT count() from book_copy__C
+                WHERE book_c = :bookRecordId       
+                and available__C = true];                                          
+     } 
+   }
+
+- Ways to write Javascript in VF page
+
+1. Using external JS file and uploading it and using it as static resource.
+2. Directly writing script tag.
+
+--------------------------------VISUALFORCE PAGE CODE--------------------------------
+
+<apex:page controller = "BookCustomController">
+-------------------------------------------CODE CHANGES----------------------------------------------------------------------
+    <script type="text/javascript">
+      // Configure JS remoting request
+      // Optimize multiple calls executed clase to each other by grouping them
+       in a single request  
+      Visualforce.remoting.buffer = true; // Helps in grouping rquest/clubing all call and sending them as one rquest/call instead of one rquest at a time.
+      Visualforce.remoting.escape = true; // The response which we recieve if it contains special characters or string then it will convert it to HTML equivalent.
+      // like '<' = &lt and '>' = &gt.
+      Visualforce.remoting.timeout = 120000; [im milliseconds] // timeout for remote request.
+
+      function getUnissuedBookCount(bkRecordId, bkName) {
+         Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.BookCustomController.unIssuedBookCountRemote}',
+         bkRecordId,
+         function(result, event) {
+            if(event.status) {
+               document.getElementById('another-msg-span').innerHTML ='The book' +
+               bkName + ' has ' + result + 'uni-issued copies.';
+            }
+         }); 
+      [here the 1st para is the function(JS remoting function denoted by @remoteaction) which we want to refere in the controller]
+      [2nd para is argument we want to pass to the JS remoting function and 3rd is the Callback method which should be executed after 
+       completion of the JS remoting function]
+      // Going to create a span and giving it an id 'another-msg-span' in the VF page [span not yet created]
+      }  
+    </script>
+-------------------------------------------------------------------------------------------------------------------------------
+    <apex:form>
+       <apex:actionFunction name="unIssuedBookCountJS"
+                            action="{!unIssuedCount}"
+                            reRender="author-count-panel"> 
+                      // reRender attribute is used so that when we want to refresh only a particular part of VF page when user refreshes the VF Page.
+                      // And 'author-count-panel' is the Id value here Like the Id value in HTML.
+              <apex:param name ="bkRecordId" // name of the parameter
+                          assignTo="{!bookCopies.Wrapper.bookRecordId}"
+                           value=""/>   // Mandatory even if not using to declare.
+       </apex:actionFunction> 
+    </apex:form> 
+                   
+   <apex:dataTable> // Similar to apexPageblockTable but it less fancy [creates a HTML table and we can iterate through Collection variable] 
+      <apex:dataTable value ="{!books}" var="b" border="1" cellpadding="5px"> [for each loop]  // Will internally call the getBooks() which we have written.
+ ---------------------------------CODE CHANGE-------------------------------------------------------------------------------------------                                                                                              // setters and gettters are compulsory needed then only controller will call internally.
+        <apex:column onmudemove="getUnIssuedBookCount('{!b.id}' ,'{!b.name}')"> // To create action when we hover over the book name
+----------------------------------------------------------------------------------------------------------------------------------------
+            <apex:facet name ="header">Book name </apex:facet>    // Using facet component to set header for column
+            <apex:outputText value="{!b.Name}"/> // the fields which we write here should be present in the background query otherwise error
+        </apex:column>
+        <apex:column>
+            <apex:facet name ="header">Genre </apex:facet>    // Using facet component to set header for column
+            <apex:form>
+                <apex:outputPanel id="bk-genre-panel"> 
+                <apex:actionSupport action="{!borrowerTrend}" 
+                                    event ="onmousemove"
+                                    reRender ="bk-genre-panel">
+                    <apex:param name="bkRecordId"
+                                assignTo="{!borrowerTrendWrapper.bookRecordId}"
+                                value ="{!b.id}"/>
+                <apex:outputText value="{!b.genre__c}" title="This book has been borrowed {!borrowerTrendWrapper.borrowerCount} times in the past year"/> // the fields which we write here should be present in the background query otherwise error
+            </outputPanel> 
+            </apex:form>
+        </apex:column>
+        <apex:column>
+            <apex:facet name ="header">Quantity </apex:facet>    // Using facet component to set header for column
+            <apex:outputText value="{!b.quantity__c}"/> // the fields which we write here should be present in the background query otherwise error
+        </apex:column>
+        <apex:column>
+            <apex:facet name ="header">Author count </apex:facet>    // Using facet component to set header for column
+            <apex:outputPanel id="author-count-panel"            
+                              onmousemove="unIssuedBookCountJS('{!b.id}')" // here when we hover the mouse over then JS function should be called so we ahve used onmousemove component.
+                              title="This book has {!bookCopiesWrapper.bookCopyUnIssuedQty} un-issued copies">    
+                <apex:outputText value="{!b.number_of_aothors__c}"/> // the fields which we write here should be present in the background query otherwise error
+            </apex:outputPanel>   
+       </apex:column>
+    </apex:dataTable>                   
+   ---------------------------------CODE CHANGES------------------------------- 
+    <br/>
+    <span id="another-msg-span"></span>
+    <br/>
+   -----------------------------------------------------------------------------
+    // So actually span is a line which gives info about record.
+    <apex:form> 
+       <apex:inputHidden value="{!startingFrom}"/>
+       <apex:panelGrid columns="2" cellpadding="2px" style="font-size:12pt">
+         <apex:commandLink action="{!previous}" value="--- Previous"/>
+         <apex:commandLink action="{!next}" value="--- Next"/>
+       </apex:panelGrid>
+    </apex:form>       
+
+    <apex:pageMessages/>  
+
+    <apex:form>
+       <apex:panelGrid columns="2">                                [In background settters and getters will get called implicitly]
+         <apex:outputText value="Book Name"/>
+         <apex:inputField value="{!book.name}"/>
+         <apex:outputText value="Genre"/>
+         <apex:inputField value="{!book.genre__c}"/>
+         <apex:outputText value="Description"/>
+         <apex:inputField value="{!book.description__c}"/>
+         <apex:outputText value="Quantity"/>
+         <apex:inputField value="{!book.quantity__c}"/>
+  
+         <apex:commandButton action="Save booj now!">
+       </apex:panelGrid> 
+    </apex:form>
+  
+ <apex:page>
+
+- VisualForce View State
+
+---> Values of the different fields used on the VF page + values of the properties the VF page is trying to access from its backend controller 
+make up the VF view state. View means size or amount of data this VF page holds.
+---> Max size 170KB.
+---> Visualforce maintains page by VF view state as http protocol is stateless and we require to maintain same data accross multiple requests,etc.[stroed in hidden form field]
+---> In User(for a particular user) enable Development mode and Show view state in development mode.
+
+- Ways to optimize View in VF state
+--->1. when we mark any variable as 'static' or 'transient' then it does not go into view state.
+---> Any variable marked as transient is not serialized.
+2. Use javascript Remoting for optimizing VF view State.
+---> And not actionFunction and actionSupport because it is written in form compulsory and form contains entire element hirarachy
+and this data will be stored accross multiple request,etc.
+---> But in JS Remoting no form element is used so far more efficient atleast for view state.
+3. Use flat component hirarachy  [Less hirarachy and less deep tree structure]
+
+- SOQL [Parent-Child Relationship Query]
+
+Usecase : retrive member info and borrower record details realted to it.
+
+---> Subqueries of SOQL are different from that of the SQL.Its is used only when we ahve to write Parent child relationship query.
+
+// We have to write child query in '()' inside the parent query
+Member__C = [SELECT name,active__c, (SELECT name from borrowers__R) 
+            FROM memeber__C WHERE Id ='a025i000003c1c7AAA'];
+
+System.debug(m.name);
+System.debug(m.active__C);
+
+for(borrower__c brw : m.borrowers__R) {
+    System.debug(brw.name);
+}
+
+- SOQL For Loop [VEry Important]
+
+---> USed to process a large number of records in batches of 200 each.
+
+- Governor Limits (Synchronous Apex [Normal Apex])
+
+---> Max 50,000 records from SOQL Query.
+---> Max 150 DML statements in 1 transaction.[execute]
+---> Max 100 SOQL Queries in 1 transaction.[execute]
+---> For Normal Apex Max heap size is 6 MB.
+
+Savepoint sp = Database.setsavepoint(); // Used for rollback purposes,no need to rollback entire transaction only roolback upto the savepoint.
+List<Book__c> bks = new List<Book__C>();
+for(integer x=1;x<=1000;x++) {
+  bks.add(new Book__C(name='Book'+x));  
+}
+// Never ever use DML statements in the for loop because DML statement execution has a limit of 150 DML statements only.
+// bulk dml
+insert bks;
+
+// heap size issue
+// can cause a system.limitexception [we cannot write try catch for these exceptions as they cannot be caught]
+// bks = [select name from book__C];
+
+- SOQL for loop Syntax
+
+ for(List<Book__C> bkList : [select name form book__C]) {
+     System.debug(bkList.size());
+ }
+
+ Database.rollback(sp);
+
+---> Will retrive atmost 200 records and process entire result set in chunks of 200 records at a time.
+So for 1000 records this query will be executed 5 times.
+ 
+- SOSL [Salesforce Object Search Language]
+
+---> Is a query language for text-based search queries
+
+// name,phone,email
+List<List<sObjects>> results = [FIND 'the' IN ALL FIELDS RETURNING Book__C,Lead,Case]; 
+//Will returns Lists of matching records of Book__C,Account,Lead,Case objects.
+// And all these lists will be placed inside another list therefore it returns  a list of list of sObjects.
+
+ALL - will search in name,email,phone fields.
+EMAIL - will search in email field only.
+...,etc.
+---> By defualt SOSL returns the recordId realted to the records.
+
+
+- Searching Accross Records of Different Objects
+
+---> [FIND 'the' IN ALL FIELDS RETURNING Book__C,Account(name,genre__C),Lead(name,email)]; // In () to return the values of the fields to be returned.
+
+for(List<Sobject> sLst : results) {
+    for(Sobject s : sLst) {
+       switch s {                // Alternative for casting
+         when book__C b {
+            System.debug(b.name);
+            System.debug(b.genre__C);
+            System.debug('==================================================');
+         }
+         when lead l {
+            System.debug(l.name); 
+            System.debug(g.genre__C);    
+            System.debug('==================================================');
+         }    
+       }  
+    }    
+}
+ 
+- Search All the fields of an object
+
+---> [FIND 'the' IN ALL FIELDS RETURNING Book__c]; 
+
+for(List<Sobject>sLst : results) {
+   for(Sobjects s : sLst) {         
+      System.debug(s.Id); 
+      System.debug(((book__C)s).name);          // Casting
+      System.debug(((book__C)s).genre__C);      // Casting
+   }
+}
+
+- Using Wildcards For Searching
+
+---> [FIND 'kry* or the' IN ALL FIELDS RETURNING Book__c(name,genre__C ORDER BY name LIMIT 5) // Individual LIMITS Applied
+                                                 Lead(name,email ORDER BY name LIMIT 10)]; // In () to return the values of the fields to be returned.
+                                                // LIMIT 10)]; // COMMON LIMIT Applied     
+for(List<Sobject>sLst : results) {
+   for(Sobjects s : sLst) {
+      System.debug(s.Id); 
+      System.debug(((book__C)s).name);
+      System.debug(((book__C)s).genre__C);
+   }
+}
+
+---> Max 2,000 records from a SOSL Query can be fetched.
+
+
+==================================================================================================================================================================================
+
+15 June
+
+- Apex Triggers [Important]
+
+  ---> Are similar to triggers for a table in database.
+  ---> Go to command pallete and search Apex Trigger after creation they are found in triggers folder.
+  ---> A single trigger can handle multiple DML Operations And Salesforce strongly Recommends to write a single trigger which handle all DML operations for single sOBJECT.
+  --->  isBefore, isAfter are known as context variables.
+
+ trigger SampleTrigger on Author__C (before insert,before update, before delete
+                                     after insert, after update, after delete, after undelete) {
+    if(Trigger.isBefore) { // This isBefore is boolean variable and it will be true if trigger is been executed for any before insert,before update, before delete.
+       if(Trigger.isInsert) { // If the trigger is been executed for before insert then isInsert will be true.
+          List<Author__C> newValues = Trigger.new; // The 'new' context variable is used to retrive collection of records[It returns list of records(latest)].
+       } else if(Trigger.isUpdate) { // If the trigger is been executed for before insert then isUpdate will be true.
+          List<Author__C> updatedValues = Trigger.new;
+          Map<Id, Author__C> updatedValuesMap = Trigger.newmap;[It returns a Map] // If the trigger is been executed for before update then isUpdate will be true.
+          List<Author__C> oldValues =  Trigger.old; // It returns collection of old records.
+          Map<Id, Author__C> oldValuesMap = Trigger.oldMap;[It returns Map] // It returns collection of old records.
+       } else if(Trigger.isDelete) { // If the trigger is been executed for before insert then isDelete will be true.
+          List<Author__C> deletedValues = Trigger.old; // It returns old records[It returns in list format]
+          Map<Id, Author__C> deletedValuesMap = Trigger.oldMap; // It returns old records[It returns in Map format]
+       }
+    } else if(Trigger.isAfter) {  // This isAfter is boolean variable and it will be true if trigger is been executed for any after insert, after update, after delete, after delete.
+       if(Trigger.isInsert) { // If the trigger is been executed for after insert then isInsert will be true.
+          List<Auhtor__C> newValues = Trigger.new;
+          Map<Id, Author__C> newValuesMap = Trigger.newMap;
+       } else if(Trigger.isUpdate) { // If the trigger is been executed for after insert then isUpdate will be true.
+           List<Author__C> updatedValues = Trigger.new;
+           Map<Id, Author__C> updatedValuesMap = Trigger.newmap;[It returns a Map] // If the trigger is been executed for after update then isUpdate will be true.
+           List<Author__C> oldValues =  Trigger.old; // It returns collection of old records.
+       } else if(Trigger.isDelete) { // If the trigger is been executed for after insert then isDelete will be true.
+           List<Author__C> deletedValues = Trigger.old;
+           Map<Id, Author__C> deletedValuesMap = Trigger.oldMap;
+       } else if(Trigger.isunDelete) {
+           List<Author__C> undeleteValues = Trigger.new;
+           Map<Id, Author__C> undeletedValuesMap = Trigger.newMap;
+       }
+    }               
+ ALTERNATIVE OPTION 
+
+ switch on Trigger.operationType { // Here Trigger.operationType is an Enum.
+   when BEFORE_INSERT { }        // Enum values here is BEFORE_INSERT
+   when BEFORE_UPDATE { }
+   when BEFORE_DELETE { }
+   when AFTER_INSERT { }
+   when AFTER_UPDATE { }
+   when AFTER_DELETE { }
+   when AFTER_UNDELETE { }
+ }
+}
+---> Standard interface is not only the place form we are going to update,insert or delete the record.
+---> If we want to deactivate the trigger then we can do it from Apex Trigger search in quick find box.
+---> Apex Triggers are always executed for a bulk of records.
+---> The default batch size for a trigger is 200.
+---> Chatter is an feature of salesforce in which we can show/alert people about anything we have done on the org by sending message.
+---> Book__c b = Trigger.new[0]; not allowed as it seems like we have assumed that the trigger will get executed for single records which is not possible.
+
+trigger NewBookChatterPostTrigger on Book__C (after insert) {
+     if(Trigger.isAfter) {
+       if(Trigger.isInsert) {
+          List<Book__C> newBooks = trigger.new;
+          List<FeedITem> feeds = new List<FeedITem>(); // FeedITem is the class used to send messages on chatter.
+          
+          for(Book__C b : newBooks) {
+             FeedItem feed = new FeedItem();
+             feed.body = 'We have addes ' + b.name + 'to our collection'; // the body field contains the message to be posted on chatter.
+             feed.parentid = UserInfo.getUserId(); // Gives the Identity of the sender.
+           
+           // insert feed; we should not do this as limit of DML statement is 150 and collection may contain more than 150 records.
+            [Never write DML inside the Loop] 
+           // Correct way is to add it to collection and add in bulk
+
+              feeds.add(feed);
+                
+              if(feeds.size() > 0) insert feeds;         
+          }
+       }
+     }          
+}
+
+---> [Best Programming Practice 1]Avoid writing logics/too much code in trigger instead of it create an apex class and the logic their
+and call it from inside the trigger.
+---> [Best Programming Practice 2] Write 1 trigger per sObject.(Reason if two same triggers for same object then salesforce doesn't gaurantee which will be executed first.)
+
+public with sharing class BookTriggerLogic {
+     public void postChatterMessages(List<Book__C> newBooks) {
+        List<FeedItem> feeds = new List<FeedItem>();
+
+        for(Book__C b : newBooks) {
+           FeedItem feed = new FeedItem();
+           feed.body = 'We have added ' + b.name + ' to our collection';
+
+           feeds.add(feed);
+         }
+
+         if(feeds.size() > 0) insert feeds; 
+      }
+ }
+
+
+- Context Variables of Trigger
+
+---> isBefore, isAfter are known as context variables which are used to know whether an event is executed for before/after DML operations.
+
+
+- Unit Testing [Very Important] 
+
+---> Saleforce expects all your Apex code to have minimum of 75% test coverage
+     for deployment to production.
+---> @istest to annotate class for testing(all unit test should be annotated with @istest).
+---> The test method should be static method and annotated with '@istest' annotation.
+---> Never use org data for unit tests.[Built in data available on salesforce]
+---> Data for the unit tests is called test data and it needs to be initialized in unit tests.
+---> There is a way to access the data of the org by setting the '@istest(seealldata=true)' the 'seealldata' when set to true we can access the org data in the unit tests.
+[Never use this because org should not be used at all].
+---> Seealldata exposes our org data.Avoid using it.
+---> Test data is temporary and rolled back at the end of the test.
+---> 3 ways to initialize test data.
+  ---> 1. Initialize data inside the test method.
+  ---> 2. Use a @testsetup annotation for a method in which we will keep the test data that is required many times.[Like doing it static]
+  ---> 3. Use a static resource (csv) and Test.loadData method to access the csv file contents uploaded on the org.
+     [Test.loadData(API Name of sobject, Name of the file uploaded)].It returns a List of sobjects.
+  ---> the methods  == null cannot be covered.
+
+---> @istest
+     public class TestCustomController {
+           
+        @istest
+        public static void setupTestData {
+           Book__C book = new Book__C(name='Dummy book');
+           insert book;
+           List<book_copy__C> nkcopies = new List<book_copy__C>();
+           for(integer x = 1; x <= 5; x++) {
+              bkcopies.add(new book_copy__C(book__c=book.id,
+                                            available__C=(math.mod(x,2)==0)));  
+           } 
+         insert bkcopies;    
+        }
+       @istest
+       public static void testUnIssuedBookCount_1() {
+           Book__C book = [select id FROM book__C WHERE name like 'Dummy%'];
+           
+           Test.startTest();
+           BookCustomController controller = new BookCustomController(); 
+           controller.bookCopiesWrapper.bookRecordId = book.id; 
+           controller.unIssuedCount();
+           Test.stopTest();
+
+           System.assert(controller.bookCopiesWrapper.bookCopyUnIssuedQty == 2);      
+       }
+     }   
+// To know whether our test is successfull or failed we have to use assert().
+---> Use Test.startTest() and Test.stopTest() and write your test data inside it when facing governor limit issues as when we do this the 
+governor limit is set to zero and our preconsumed limit are not considered but if u do not use then limit = preconsumed limit in testsetup() + consumed limit in test() methods
+which will result in limit excceded error/exception.
+
+---> startTest() and stopTest() can be used only once in a test() method i.e in the a particular istest.
+---> Mark the members of the class as @testvisible so that these members of the class are
+ accessible from the Unit tests.[To Expose any inaccessible members of the classes in your unit tests].
+
+---> Variables in the Test class run Individually i.e we hav eto query variables for every method separately.
+---> Records created by the TestDataFactory class need to be only updated after assigning values.(Already Implemented)
+---> Records created by own needs to be inserted.(Not Implemented already)
+---> To run the Unit tests 2 ways.
+  ---> 1. Use the link on the page[given above each unit tests].
+  ---> 2. go to command pallete and search for command 'Run Apex Tests' and then select the class in which 
+  our tests are written.
+---> The results are available in .sfdx folder-->tools-->testresults\apex.
+---> Highlited Apex code coverage is not 100% accurate niether the json results.
+shown in green doesn't mean it is tested.
+
+---> Use Test.setCurrentPage(pagereference object) method when we want to set the VF page in unit test fop testing purposes 
+if required in any code.
+
+ @istest
+ public static void testConstructor_1() {
+     Test.setCurrentPage(Page.Book_VF_Page_Custom_Controller); // The code we are testing here tries to take refence of the Vf page therefore we are using this method here.
+     Test.startTest();
+     BookCustomController controller = new BookCustomController();
+     stopTest();
+
+     System.assert(controller.getbook().id == null);  // Testing for constructor when no book id given should return null;
+ }
+
+ 
+
+ @istest
+ public static void testConstructor_2() {
+     Test.setCurrentPage(Page.Book_VF_Page_Custom_Controller); // The code we are testing here tries to take refence of the Vf page therefore we are using this method here.
+     ApexPages.currentPage().getParameter().put('id',book.id); // here we are putting value of book.id into the 'id'.
+     Test.startTest();
+     BookCustomController controller = new BookCustomController();
+     stopTest();
+
+     System.assert(controller.getbook().id == book.id);  // Testing for constructor when book id is given should return record;
+ }
+
+===============================================================================================================================================================================================
+ June 16 Lecture missed [Learn from internet]
+
+- Asynchronous Apex
+  ---> A way to write Apex code which executes at a later point in time when resources
+       are available.
+  ---> Future Method
+      ---> can have parameters of a primitive data type only.
+      ---> cannot call another future method.
+  ---> Queueable
+  ---> Batchable
+      ---> used to process a very large number of records.
+      ---> can process upto 50 million records only when you use a Database.querylocator.
+  ---> Schedulable
+      
+  
+===============================================================================================================================================================================================
+
+June 17
+
+- Integration
+
+ ---> Integrating salesforce with external systems and vice versa using Web Service APIs.
+ ---> Salesforce with External System.      |
+ ---> External System with Salesforce.      |  Two way integration.
+
+---> Salesforce rest api [reference REST API]
+
+---> Postman is a testing tool used to test Web Service APIs.
+---> Security token gets reset when we create a new password and it is located in the setting.
+It is used to authenticate user from outside the salesforce.
+NOTE : if you don't know the security token then only do reset because reseting might cause the existing integration to break.
+
+- External System with Salesforce [Integrating]
+
+  ---> Here External system is Postman and is integrating with the salesforce to access Rest APIs.
+  ---> Step 1: Find the securtiy token. if "absolutely"needed reset it.
+  ---> Step 2: Configuring a connected App.
+    ---> A connected app is used in integration and contaions secret credentials used by an user to communicate with an org from outside of salesforce.
+    ---> contains the client secret and the client key.
+    ---> To create connected app go to app manager and click connected app button on UI.
+    ---> OAuth is an opensource Authentication and Authorization framework.    
+    ---> OAuth scopes means which parts of the APIs should be accessed.
+    ---> In Postman to send request so as to access APIs from Org we ahve to give URL which is used to hit the Rest API and
+         we will find this URL in the Domain section by searching for it in the Quick find box.
+         NOTE : Every domain has its own URL.  
+  ---> The client has to generate access token to access APIs and it is valid for a particular time period. 
+    ---> To generate the Access Token we have to send request(POST) the URL(domain URL/services/oauth2/token) in the Postman alomg with parametrs in the body of the request. 
+         We have to give Parameters like :                                                  // oauth2 is a framework                        
+         Parameters                  Value
+   1. client_id                    write client_id                      [These details can be found in the Connected App]
+   2. client_secret                write client_secret
+   3. username                     write the org username
+   4. password                     append the password with security token eg)test1234[security token]    
+   5. grant_type                   password        
+  ---> When we will send the request it will generate Access token[JSON Response] which will contain Access Token.
+  ---> So the OAuth framework helps us generate Access tokens so clients don't need to provide credentials again and again to authenticate themselves.
+  ---> Access token is valid for 15 minutes to 2 hrs something. 
+  ---> Now after genearting the Access token successfully Send New GET request(as we want to retrive Account Record) and use the 
+       URL as Domain URL/services/data(we are tring to access Account record i.e data)/v-54.0(api version)/sobjects/Account(Api name of sobject)/recordID we want to access.   
+  ---> Now before sending request set the Header 'Authorization' and give value 'Bearer AccessToken'
+       And set Header 'Accept' and give value 'application/xml' to recieve xml Response from API or 'application/json' to recieve json respone from the API.
+ 
+- Salesforce with External System [Integrating]      |
+ 
+  ---> Invoke external API from Salesforce or write code in Apex to call External APIs.
+  ---> Go to internet and search for ProgrammableWeb which is a directory of APIs available.
+  ---> Step 1: Identify the API we Intend to use(Use APIs which do not require to supply credentials).
+    ---> Nager.Date Public Holiday API is a free API(no credentials required).
+    ---> Whitelist the API URL (so then we write code in apex to access the URL).   
+      ---> 2 Ways to whitelist URLs.
+        1. Configure Remote Site Settings i.e create new remote site setting and paste the API URL which we intend to access.
+           Problem : Doesn't support widely used Authentication and Authporization protocols.[Not Preferred by Salesforce Developers]
+           eg) No way to configure OAuth API client_key,etc.
+        2. Configure Name Credentials here advantage is it allows to set varoius Authentication parametrs and protocols. 
+          ---> Write the URL in the URL section ,here base URL is used and the hardcoded values are excluded and specify these values from apex code.
+ 
+---------------------APEX CODE--------------------------
+
+ public with sharing class PublicHolidayServiceCaller {
+    @future(callout=true)       // As we don't know the time taken by API to respond we can Annotate these methods with @futre annotation for callouts.  
+    public static void method() {
+        HttpRequest request = new HttpRequest();
+        request.setEndpoint('callout:Nagar_Public_Holidays_API/2022(year)/RU(country code)'); // endpoint means URL of the API you intend to access don't hardcode it instead refere it.
+                    // Write the API Name of the Named Credentials.
+        request.setMethod('GET');  // Type of request we are sending.  
+                 
+        Http http = new Http();
+        HttpResponse response = http.send(request); // send() to send request and then capture the response in the HttpResponse response object.
+
+        System.debug(response.getBody());  // To see the contents of the response object.
+    }
+ }
+   
+---> To see the output first go to command pallete and command 'Turn on Apex Debug Log Replay Debugger' so to see log later for error correction.
+    
+---------------------------Write Code in Apex Anonymous Class-------------------------
+PublicHolidayServiceCaller.method();
+--------------------------------------------------------------------------------------
+---> And execute it 'Execute Anonymous Apex with currently selected text'.
+
+- External System with Salesforce [Integrating] [Writing our own Rest API]
+ 
+ ---> Access Rest API methods from outside th salesforce org. 
+ ---> Go to command pallete and command 'Create Apex Class'.
+ 
+ @restresource(urlmapping='/my-api/*')  // To indicate it as Rest API class and url fot it and '*' so that we can specify any method urls(of this class)after this class url. 
+ global with sharing class TheEmpiricalAPI { // global : to access it outside the org
+     @restresource(urlmapping='/fetch-ac')  // To indicate Rest API method and url for it
+     @httpget   // Indicates that this method should be accessed through httpget request.
+     global static Account fetchAccountRecord() {
+         RestResource request = RestComntext.request;    // To access request object for parameters so as to return the Account RecordId
+         String recordId = request.params.get('id');
+   
+         Account a = [select name, accountnumber, phone, website, industry
+                      active__C FROM account WHERE id = :recordId];
+         return a;
+     }
+     
+     @httppost
+     @restresource(urlmapping='/register-ac')
+     global static void registerAccount(Account accountDetails) { 
+          insert accountDetails;                      // Validation rules are not performed here and should be performed.
+     }
+ }
+
+ ---> In Postman send a GET request and URL as 'Domain URL/services/apexrest(for api written in apex(user defined))/my-api(Rest API class url)/fetch-ac(Rest API class method URL)?id=0015i00007XWcMAAW(RecordId of Account as method written is of Account Type)'.
+      And give Authorization Header and give value 'Bearer AccesToken'.
+      And Accept Header and give value 'application/json'.
+
+ ---> To call the global static void registerAccount(Account accountDetails) we have to do same procedure 
+      but only we have to do some change in the body section like give name as we are creating new account record.
+      and remove any recordId if present there.
+
+- Best Practices in Apex/Governor Limits
+
+ - Governor Limits
+
+  ---> Strcitly enforced to ensure Apex code or processes don't monopolize shared
+       resources in multitenant environment.
+  ---> If a limit is exceede, runtime exception is thrown that cannot be handled [Cannot be caught].
+  
+- Execution Governor and Limits
+
+- Pre-Transaction Apex Limits
+
+   Description                                                            Synchronous Limit        Asynchronous Limit
+ 
+1. Total number of SOQL queries issued                                       100                     200
+2. Total number of records retrived by SOQL queries                          50,000                
+3. Total number of records retrived by Database.getQueryLocator              10,000                  50 million
+4. Total number of SOQL queries issued                                       20                      
+5. Total number of records retrived by a single SOSL query                   2,000
+6. Total number of DML statements issued 1 transaction                       150
+7. Total number of records processed as a result of DML statements           10,000
+8. Total Stack depth for any Apex invocation that recursively fires triggers 16
+   due to insert, update, or delete statments                   
+
+---> Subqueries are also counted as query.
+---> Don't write SOQL,SOSL queries and DML statments inside a loop.

@@ -1,0 +1,230 @@
+---FUNCTIONS---
+
+- Single Row Functions - 
+
+1. The single row functions operate on single rows and return only one result per row.
+2. Accept one or more arguments and return one value.
+3. Return value for each row returned.
+4. Can be used alone or nested.
+5. A column or an expression can be used as arguments.
+6. Can be used in SELECT,WHERE or ORDER BY clauses.
+Query - 
+SELECT function_name[(arg1,arg2,...)] FROM dual;
+7. Function are of 5 types:
+i.Character Function ii.Number Function iii.Date Function iv.Conversion Function v.General Function.
+
+i.  Character Function - Accpet character values as input,and return character or numeric values.
+ii. Number Function - Accept numeric values as input and return numeric values as output.
+iii.Date Function - Operate on values of the DATE data type.
+iv. Conversion Function - Used to convert one data type to another data type.
+v.  General Function - Tke in any type of data but mainly used to handle NULL values.
+
+- Character Functions -
+
+1. Character Function - Accpet character values as input,and return character or numeric values.
+2. Types of character function are : 
+a. Case Conversion functions - converts character to upper or lower case.
+i.  UPPER function
+ii. LOWER function
+iii.INITCAP function
+b. Character Manipulation functions 
+i.  SUBSTR function
+ii. LENGTH function
+iii.CONCAT function
+iv. INSTR function
+v.  TRIM function
+vi. REPLACE function
+vii.LPAD | RPAD function  
+ 
+- CASE Conversion functions - 
+
+1.  Case Conversion functions - converts character to upper or lower case.
+
+LOWER function - converts all letters of a word into lowercase.
+UPPER function - Converts all letters of a word into uppercase but numbers are not affected. 
+INITCAP function - Converts first letter of each word to uppercase and remaining into lowercase.
+Query - 
+SELECT LOWER(first_n),UPPER(last_n),INITCAP(job_id) FROM employees;
+
+SELECT * FROM employees WHERE LOWER(last_name) = 'king'; -->here the king should be in lower case as for LOWER function.
+
+- Character Manipulation Function - 
+
+1. Oracle is 1 index based and spaces are also counted.
+2. SUBSTR(source_str,position[,length]) - 
+eg) SUBSTR('Sql Course',1,3) -->Sql.
+Query - 
+SELECT first_n,substr(first_n,3,6), length(last_n) FROM employees; --> ON column
+SELECT substr('Sql Course',3,6), length('Sql Course') FROM employees; -->ON string
+3. LENGTH(string) -
+eg)LENGTH('Sql Course') -->10                  
+4. CONCAT(string1,string2) -        // to concat more use nested format of CONCAT().
+eg) CONCATE('Sql','Course') -->SqlCourse
+Query - 
+SELECT concat(first_n,last_n) FROM employees; -->ON column
+SELECT concat('Sql','Course') FROM employees; -->ON string 
+
+5.INSTR('string','substr',[position,number of occurence of substr])
+Query - 
+SELECT instr('I am Learning how to use functions in Oracle','in',1,1) FROM dual; --> ON string [searches from start of string]-->16
+SELECT instr('I am Learning how to use functions in Oracle','in',-1,1) FROM dual; --> ON string [searches from end of string]-->32
+SELECT first_n ,instr(first_n,'a',1,1) FROM dual; --> ON string
+6. Characters in Oracle are case sensitive i.e 'A'!='a'.
+
+- TRIM,LTRIM,RTRIM Functions -
+
+1. TRIM -
+Query - 
+SELECT TRIM([[LEADING|TRAILING|BOTH] trim_character FROM] string)
+SELECT TRIM(LEADING 'm' FROM 'my name is akshad') FROM dual;
+here LEADING --> will remove 'm' characters from left side of string.
+     TRAILING -->will remove  'm' characters from right side of string.
+     BOTH  --> will remove 'm' characters form both left as well as right sides of the string.
+if not specified it is by default BOTH. note -->only characters are trimmed single character and not string.
+if character not specified then it will trim spaces by deafault.
+
+- LTRIM 
+SELECT LTRIM(string,trim_string); -->here we can input string we want to trim. <--advantage
+Query - 
+SELECT LTRIM('my name is akshad','my') FROM Dual; -->trims 'my' string from left side of string.
+NOTE-->it removes even one character if found from substr here 'my' if it finds 'm' character then it will remove 
+it from left side of the string.
+
+
+- RTRIM 
+SELECT RTRIM(string,trim_string); -->here we can input string we want to trim. <--advantage
+Query - 
+SELECT RTRIM('my name is akshad','my') FROM Dual; -->trims 'my' string from right side of string.
+NOTE-->it removes even one character if found from substr here 'my' if it finds 'm' character then it will remove 
+it from right side of the string.
+
+- REPLACE(string,string_to_replace[,replacement_string])
+REPLACE('Sql Course','s',*) -->Sql Cour*e
+Query -
+SELECT first_n,REPLACE(first_n,'und','-') FROM employees-->Sundar --> S-ar. i.e exact match is required and only one '-' is placed in place of 'und'.
+
+- LPAD(string,target_length,padding_expression) 
+LPAD('Sql',10,'-') --> -------Sql
+Query - 
+SELECT first_n,LPAD(first_n,10,'-') FROM employees;
+SELECT first_n,LPAD('my name is '||last_name,20,'-') FROM employees;
+
+- RPAD(string,target_length,padding_expression)  here target_length is the length of the resultant string.
+RPAD('Sql',10,'-') --> Sql-------
+Query - 
+SELECT first_n,RPAD(first_n,10,'-') FROM employees;
+SELECT first_n,RPAD('my name is '||last_name,20,'-') FROM employees;
+
+- NUMERIC Functions -
+
+- Numeric functions accept numeric values as the input and return numeric values as the output.
+1. ROUND - takes in a number and rounds it to the specified number of decimal places.
+2. TRUNC - truncates values to the specified number of decimal places.
+3. CEIl -  Returns the smallest integer greater than or equal to a specified number.
+4. FLOOR - Returns the highest inetger less than or equal to a specified number.
+5. MOD   - Returns the remainder of division.
+
+1. ROUND(number[,decimal])
+   ROUND(12.136,2) -->12.14
+   Query -
+   SELECT ROUND(12.136,2) FROM dual;
+2. TRUNC(number[,decimal])
+   TRUNC(12.136,2) -->12.13
+   Query - 
+   SELECT TRUNC(12.136,2) FROM dual;
+3. CEIL(number)
+   CEIL(2.67) --> 3
+   Query - 
+   SELECT CEIL(12.136) FROM dual;
+4. FLOOR(number)
+   FLOOR(2.67) --> 2
+   Query - 
+   SELECT FLOOR(12.136) FROM dual;
+5. MOD(m,n)
+   MOD(8,5) --> 3
+   Query - 
+   SELECT MOD(8,5) FROM dual; 
+
+- NESTED Functions - 
+
+1. Nested functions are evaluated within statring from the innermost function and executed one by one toward the outermost one.
+2. The result of the innermost function becomes the input of outer function.
+3. We can use many nested functions as we want.
+Query - 
+SELECT first_n.last_n,LPAD(UPPER(CONACT(first_n,last_n)),20,'*') 
+AS "NESTED FUNCTIONS" FROM employees;
+
+SELECT SUBSTR('John Smith',INSTR('John Smith',' ')+1) AS output FROM dual;
+
+SELECT first_n||' '||last_n full_name
+SUBSTR(CONCAT(CONCAT(first_n,' '),last_n),
+INSTR(first_n||' '||last_n,' ')+1) AS output FROM employees;
+
+- Date Values & Date Formats -
+
+1. DATE is the main datatype used in oracle for storing the date values.
+2. Stores date value in numeric format and stores a seven-byte number that conatins century,year,month,day,hour,minute and second.
+3. Date representation format -
+i. 'DD-MM-RR','DD-MM-YY','DD/MM/YYYY',etc.
+4. The RR format is different time format element that allows us to show 20-century dates in the 21-century using only 2 digits.
+i.  if Specified year < Current year then add 1. [i.e SY = [0-49] and CY = [50-99]]
+ii. if Specified year > Current year then Subtract 1.[i.e SY = [50-99] and CY = [0-49]]
+iii.if Specified year ~= Current year then smae. [SY = [0-49] and CY = [0-49]]
+iv. if Specified year ~= Current year then smae. [SY = [50-99] and CY = [50-99]] 
+ 
+- DATE Data Types In Oracle - 
+
+1. DATE - The standard data type that stores date values in oracle.
+2. TIMESTAMP - This data type stores year,month,day,hour,minute,second as well as Fractional Seconds(which is additional in TIMESATMP as compared to DATE).
+3. TIMESTAMP WITH TIME ZONE - This data type is the same as TIMESTAMP,but it sotres the timezone along with it.
+4. TIMESTAMP WITH LOCAL TIME ZONE - This data type is similar to TIMESTAMP WITH TIME ZONE,but the stored timezone is the database's timezone.
+
+
+- Oracle Date Function - 
+
+1. SYSDATE -  returns the current date and time of the OS where the Oracle Databse is installed.
+2. CURRENT_DATE - returns the current date and time of the place where the user's session is looged in from.
+3. SESSIONTIMEZONE - returns time zone of the user's session.(loggeg in from)
+4. SYSTIMESTAMP - returns the date and time of the database.
+5. CURRENT_TIMESTAMP - returns current date and time from user's session.(loggeg in from)
+Query - 
+SELECT CURRENT_DATE,SESSIONTIMEZONE, SYSTIMESTAMP,CURRENT_TIMESTAMP FROM daul;
+(They do not take arguments).
+
+- Arithmetic Operation With Date - 
+
+1. We can add or subtract a number from a date,and the resukt of this operation will also be a date.
+Query - 
+SELECT sysdate,sysdate + 1/(24*60) FROM dual;
+2. Subtracting two dates returns the number of days between these dates.
+Query - 
+SELECT first_n,last_n,(sysdate - hire_date)/365 AS "Working_Period" FROM employees ORDER BY Working_Period;
+
+- Date Manipulation Functions
+
+1. Date functions operate on dates and return dates,numbers or texts.
+
+   Date Function                                                      Meaning
+
+1.ADD_MONTHS(date,n)                                        Adds months to a date
+2.MONTHS_BETWEEN(date1,dtae2)                               Number of months between 2 dates
+3.ROUND(date,[format])                                      Rounds a date/time value to a specific element
+4.TRUNC(date,[format])                                      Truncates a date/time value to a specific element
+5.EXTRACT(date_component FROM date)                         Extracts a specific time component from a date
+6.NEXT_DAY(date,day_of_week)                                Returns the last date of the next specified weekday
+7.LAST_DAY(date)                                            Returns the last day of the month
+
+eg)ROUND('16-JUN-20','MONTH')                               '01-JUL_20' -->if day is greater than 15 month is modified
+   ROUND('14-JUN-20','MONTH')                               '01-JUN-20' -->if day is less than 15 month remains same
+
+eg)ROUND('16-JUL-20','YEAR')                               '1-JAN-21' -->if month is >=july  then year is modified and day is 1-JAN-next year   
+   ROUND('16-JUN-20','YEAR')                               '1-JAN_20' -->if month is <july then year remains same with day is 1-JAN-same year  
+
+eg)TRUNC('16-JUN-20','MONTH')                              '1-JUN-20' -->if by month then it truncates the month to its 1st day
+   TRUNC('16-JUN-20','YEAR')                               '1-JAN-20' -->if by year then it truncates the year to its 1st day
+
+eg)EXTRACT(month FROM sysdate)                              Returns the Month from date
+   EXTRACT(year FROM sysdate)                               Returns the year from date
+   EXTRACT(day FROM sysdate)                                Returns the day from date
+
+     

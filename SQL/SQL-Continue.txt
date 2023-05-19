@@ -1,0 +1,81 @@
+- Primary Key Constrainst -
+1. Is a column or Coumn combination in a table used to uniquely identify a each row in a table.
+2. It is a combination of NOT NULL and UNIQUE constraint.
+3. Only one primary key per table is allowed.
+4. Acts as a unique identifier for each row.
+5. Oracle server creates unique index when a primary key is created.
+6. NOT NULL constraint is automatically applied on the column which has primary key on it.
+7. Two types of primary keys 
+i. Simple Primary key (Single column)
+eg) (manager id NUMBER CONSTRAINT PK_MANAGER PRIMARY KEY,
+     ------- 
+     -------
+    );
+ii.Composite Primary key(Multiple/(Table Level) Columns)
+    (manager_id NUMBER,
+     ------- 
+     CONSTRAINT PK_MANAGER PRIMARY KEY(manager_id)
+    );
+
+- Constraint names should be unique for a schema i.e we cannot create same constraint name for a schema and other also.
+
+- Foriegn Key Constraint (Child)-
+1. It is a column or combination of columns which is used to show relationship between parent and child tables.
+2. Relationship is between the primary/unique key of parent table and column or set of columns of the child table.
+3. Also called referential integrity constraint i.e it creates link between two tables and enforces data integrity by restricting the data that can be entered.
+4. A reference record should be availabe in the Parent table(Primary key) before we insert a record related to it in the child table(foreign key).
+5. To delete the records of the parent we first need to delete the same record from the child table.
+6. A single column(child table) when references to single column in parent table is called simple foreign key.
+   And when multiple column(child table)when references to multiple columns in parent table is called composite  foriegn key.
+7.References keyword is used to table name and column name to be referenced in the parent table.
+eg) CONSTRAINT mgr_dept_fk REFERENCES departmens(department_id),--> column level foriegn key.
+CONSTRAINT mgr_dept_fk FOREIGN KEY(manager_id) REFERENCES employees(employee_id) --> Table level foreign key.
+
+***** Important Note ******
+1. While creating copy of the table using create tables,select statements ,only NOT NULL constraints will be copied from the original table.
+As the database should know where to point.
+2. Cannot delete parent record while child record references it.
+
+8. We cannot set child record to any value other than the parent table has,But the NULL value is exception even if the parent record doesn't have NULL values.
+9. Foriegn key composite key will point to composite primary key only and not the simple primary key. 
+
+- TO OVERCOME INTEGRITY CONSTRAINT PROBLEMS -
+- Deleting parent and child record problems  these clauses are introduced.
+
+
+- ON DELETE CASCADE -
+1. This clause deletes dependent rows in the child table where a related row in the parent table is deleted.
+
+- ON DELETE SET NULL -
+1. This clause upadtes dependent rows in the child table to NULL when a related row in the parent table  is deleted.
+
+****NOTE****
+- This clauses are only applicable to Table-Level Constraints Only.
+
+- CHECK Constraint -
+1. Ensures a column or a group of columns to meet a specific condition.
+2. used in arithmetic and conditional operations.
+3. Cannot create check constraint referencing to another table.
+4. Can be applied on table-level as well as column-level constraint.
+5. A table or a column can hav multiple check constraints.
+eg) CHECK(department_id IN(10,20,30,40)), --> column level Constraint
+CONSTRAINT mgr_salary_check CHECK(salary>0 AND salary<100000) --> Table-level Constraint.
+
+Questions -
+1.What is true about constraints?
+-->They enforce rules at the table level.
+
+2.What is true about NOT NULL constraint in SQL?
+-->It must be defined at the column level.
+
+3.What among the following is true regarding a UNIQUE KEY constraint?
+-->UNIQUE KEY constraint allows NULL values if there is no NOT NULL defined on the column(s).
+
+4. A relational database consists of a collection of?
+--> Tables
+
+5.A ________ in a table represents a relationship among a set of values?
+-->Row.
+
+6.Data Models in DBMS are classified into ______ categories?
+-->3.

@@ -1,0 +1,684 @@
+- Admin in Salesforce
+
+---> Whenever we create a custom object we automatically get Cahtter Feed Tracking.
+Chatter feed tracking provides a way for multiple people to comment and collaborate on a particular record. 
+---> Your company has its own space in the cloud, but you have all kinds of neighbors, from mom-and-pop shops to multinational corporations.
+This idea is multitenancy. Multitenancy is a great word for making you sound smart at dinner parties, but really all it means is that you’re sharing resources. Salesforce provides a core set of services to all our customers in the multitenant cloud. No matter the size of your business, 
+you get access to the same computing power, data storage, and core features.
+--->  metadata is data about data. Wait. That’s not simple at all. When we say data about data, we’re really talking about the structure of your Salesforce org.
+
+- Meta Data
+
+--->  You are left with the Property object along with all its fields, like address, price, and number of bedrooms. You can also have page layouts, security settings, and any other customizations you’ve made.
+
+All of these standard and custom configurations, functionality, and code in your org are metadata. Part of the reason you can move so fast on the platform is that Salesforce knows how to store and serve you that metadata immediately after you create it.
+
+- API 
+
+---> Fundamentally, APIs allow different pieces of software to connect to each other and exchange information.
+APIs are similar. Without knowing the details, you can connect your apps with other apps or software systems.
+---> In Salesforce when we create a field or custom object it asks for API Name which serves as an access point between your org and the database.
+Salesforce uses that API name to retrieve the metadata and data you’re looking for.
+
+---> Object Manager: Object Manager is where you can view and customize standard and custom objects in your org.
+---> Setup Menu: The menu gives you quick links to a collection of pages that let you do everything from managing your users to modifying security settings.
+---> Main Window: We’re showing you the Setup home page, but this is where you can see whatever it is you’re trying to work on. 
+
+- Setup Menu [Salesforce page]
+
+---> There are three main categories in the Setup menu: Administration, Platform Tools, and Settings. Let’s take a look at what’s available.
+---> Administration: The Administration category is where you manage your users and data. You can do things like add users, change permissions, import and export data, and create email templates.
+---> Platform Tools: You do most of your customization in Platform Tools. You can view and manage your data model, create apps, modify the user interface, and deploy new features to your users. If you decide to try your hand at programmatic development, Platform Tools is where you manage your code as well.
+---> Settings: Finally, Settings is where you manage your company information and org security.You can do things like add business hours, change your locale, and view your org’s history.
+
+- Rules of Salesforce
+
+---> It has a rule that before deploying anything to the production org 75% code should be covered i.e we should write test classes for it.[Easy Testing]
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+- Apex
+
+- Like other object-oriented programming languages, these are some of the language constructs that Apex supports:
+
+--> Classes, interfaces, properties, and collections (including arrays).
+--> Object and array notation.
+--> Expressions, variables, and constants.
+--> Conditional statements (if-then-else) and control flow statements (for loops and while loops).
+
+- Unlike other object-oriented programming languages, Apex supports:
+
+--> Cloud development as Apex is stored, compiled, and executed in the cloud.
+--> Triggers, which are similar to triggers in database systems.
+--> Database statements that allow you to make direct database calls and query languages to query and search data.
+--> Transactions and rollbacks.
+--> The global access modifier, which is more permissive than the public modifier and allows access across namespaces and applications.
+--> Versioning of custom code.
+--> Apex is a case-insensitive language.
+
+- Data Types Overview
+
+--> A primitive, such as an Integer, Double, Long, Date, Datetime, String, ID, Boolean, among others.
+An sObject, either as a generic sObject or as a specific sObject, such as an Account, Contact, or MyCustomObject__c (you’ll learn more about sObjects in a later unit.)
+A collection, including:
+A list (or array) of primitives, sObjects, user defined objects, objects created from Apex classes, or collections
+A set of primitives, sObjects, user defined objects, objects created from Apex classes, or collections
+A map from a primitive to a primitive, sObject, or collection
+A typed list of values, also known as an enum
+User-defined Apex classes
+System-supplied Apex classes
+
+- Apex Collections: List
+
+--> The following two declarations are equivalent. The colors variable is declared using the List syntax.
+ --> List<String> colors = new List<String>();
+--> Alternatively, the colors variable can be declared as an array but assigned to a list rather than an array.
+ --> String[] colors = new List<String>();
+
+--> Grow collections as needed by using the List.add() method to add new elements.
+
+----------------->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+// Create a list and add elements to it in one step
+List<String> colors = new List<String> { 'red', 'green', 'blue' };
+// Add elements to a list after it has been created
+List<String> moreColors = new List<String>();
+moreColors.add('orange');
+moreColors.add('purple');
+----------------->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+--> List elements can be read by specifying an index between square brackets,you can use the get() method to read a list element.
+
+// Get elements from a list
+String color1 = moreColors.get(0);
+String color2 = moreColors[0];
+System.assertEquals(color1, color2);
+// Iterate over a list to read elements
+for(Integer i=0;i<colors.size();i++) {
+    // Write value to the debug log
+    System.debug(colors[i]);
+}
+
+- Call a Static Method
+
+--> Static methods are easier to call than instance methods because they don’t need to be called on an instance
+    of the class but are called directly on the class name.
+
+===================================================================================================================================================================================================================================
+- 21 Nov 22          [APEX SuperBadge]
+
+- Use sObjects
+
+ --> Every record in Salesforce is natively represented as an sObject in Apex.
+ --> The Account sObject is an abstraction of the account record and holds the account field information in memory as an object.
+ --> If you’ve added custom objects in your organization, use the API names of the custom objects in Apex. For example, a custom object called Merchandise corresponds to the Merchandise__c sObject in Apex.
+     Create sObject Variables.
+
+- Create sObject Variables
+
+ --> The following example creates an sObject of type Account with the name Acme and assigns it to the acct variable.
+     Account acct = new Account(Name='Acme');
+
+- sObject and Field Names
+ 
+ --> Apex references standard or custom sObjects and their fields using their unique API names.
+     API names of object and fields can differ from their labels.
+ --> For custom objects and custom fields, the API name always ends with the __c suffix. For custom relationship fields, the API name ends with the __r suffix. 
+ --> In addition, spaces in labels are replaced with underscores in API names. For example, a custom field name of Employee Seniority has an API name of Employee_Seniority__c.
+
+- Find Object and Field Names
+
+ --> Objects already created for you by Salesforce are called standard objects. Objects that you create in your organization with the user interface or with the Metadata API are called custom objects. 
+     Objects you create that map to data stored outside your organization are called external objects.
+ --> Account acct = new Account();
+     The API object name becomes the data type of the sObject variable in Apex. In this example, Account is the data type of the acct variable.
+     i.e We have to use API names [Or API Named Data Type Variable] of sObjects to make their sObjects and to reference to them.
+ --> There are two ways to add fields: through the constructor or by using dot notation.
+    1. Constructor [For Avoiding Large Lines of Code And when we know we don't know the amount of creation of var,objects]
+     -> Account acct = new Account(Name='Acme');
+        The fastest way to add fields is to specify them as name-value pairs inside the constructor. 
+    --> The Name field is the only required field for accounts, which means that it has to be populated before being able to insert a new record.
+        i.e Required fields need to be populated before being being able to insert a new record.
+    -> Account acct = new Account(Name='Acme', Phone='(415)555-1212', NumberOfEmployees=100);
+       Multiple field Populated.
+     
+    2.  Use the dot notation to add fields to an sObject
+    -> Account acct = new Account();
+       acct.Name = 'Acme';
+       acct.Phone = '(415)555-1212';
+       acct.NumberOfEmployees = 100;
+
+- Work with the Generic sObject Data Type
+
+  --> When you don’t know the type of sObject your method is handling, you can use the generic sObject data type.
+      Variables that are declared with the generic sObject data type can reference any Salesforce record, whether it is a standard or custom object record.
+     -> sObject sobj1 = new Account(Name='Trailhead');
+        sObject sobj2 = new Book__c(Name='Workbook 1');
+  
+- Cast Generic sObjects to Specific sObject Types
+ 
+  --> One of the benefits of doing so is to be able to access fields using dot notation, which is not available on the generic sObject.
+ 
+--> The fields of a generic sObject can be accessed only through the put() and get() methods.
+--> Creating an sObject doesn’t persist it as a record in the database. To save the sObject as a record,
+    and do other things with it, use the Data Manipulation Language (DML).
+
+- Manipulate Records with DML
+
+--> // Create the account sObject 
+    Account acct = new Account(Name='Acme', Phone='(415)555-1212', NumberOfEmployees=100);
+    // Insert the account by using DML
+    insert acct;
+
+--> The following DML statements are available.
+ -> insert
+    update
+    upsert
+    delete
+    undelete
+    merge
+ 
+--> The upsert and merge statements are particular to Salesforce and can be quite handy.
+--> The upsert DML operation creates new records and updates sObject records within a single statement, using a specified field to determine the presence of existing objects, or the ID field if no field is specified.
+--> The merge statement merges up to three records of the same sObject type into one of the records, deleting the others, and re-parenting any related records.
+
+--> When inserting records, the system assigns an ID for each record.
+--> ID value is also auto-populated on the sObject variable that you used as an argument in the DML call.
+
+--> This example shows how to get the ID on the sObject that corresponds to the inserted account.
+
+ -> // Create the account sObject  
+    Account acct = new Account(Name='Acme', Phone='(415)555-1212', NumberOfEmployees=100);
+    // Insert the account by using DML
+    insert acct;
+    // Get the new ID on the inserted sObject argument
+    ID acctID = acct.Id;
+    // Display this ID in the debug log
+    System.debug('ID = ' + acctID); 
+    // Debug log result (the ID will be different in your case)
+    // DEBUG|ID = 001D000000JmKkeIAF
+
+--> DML limit of 150 statements per Apex transaction.Performing a DML operation on a list of sObjects counts as one DML statement, not as one statement for each sObject.
+--> Upsert helps avoid the creation of duplicate records and can save you time as you don’t have to determine which records exist first.
+
+--> The upsert statement matches the sObjects with existing records by comparing values of one field. If you don’t specify a field when calling this statement, the upsert statement uses the sObject’s ID to match the sObject with existing records in Salesforce.
+
+--> For custom objects, specify a custom field marked as external ID. For standard objects, you can specify any field that has the idLookup property set to true.
+  eg) For custom objects, specify a custom field marked as external ID. For standard objects, you can specify any field that has the idLookup property set to true.
+
+- Upsert Syntax
+
+-> upsert sObject | sObject[]
+   upsert sObject | sObject[] field
+
+--> The optional field is a field token. For example, to specify the MyExternalID field, the statement is:
+   eg) upsert sObjectList Account.Fields.MyExternalId;
+
+--> Upsert uses the sObject record's primary key (the ID), an idLookup field, or an external ID field to determine whether it should create a new record or update an existing one:
+--> If the key is not matched, a new object record is created.
+--> If the key is matched once, the existing object record is updated.
+--> If the key is matched multiple times, an error is generated and the object record is neither inserted or updated.
+
+Contact jane = new Contact(FirstName='Jane',
+                         LastName='Smith',
+                         Email='jane.smith@example.com',
+                         Description='Contact of the day');
+insert jane;
+// 1. Upsert using an idLookup field
+// Create a second sObject variable.
+// This variable doesn’t have any ID set.
+Contact jane2 = new Contact(FirstName='Jane',
+                         LastName='Smith',  
+                         Email='jane.smith@example.com',
+                         Description='Prefers to be contacted by email.');
+// Upsert the contact by using the idLookup field for matching.
+upsert jane2 Contact.fields.Email;
+// Verify that the contact has been updated
+System.assertEquals('Prefers to be contacted by email.',
+                   [SELECT Description FROM Contact WHERE Id=:jane.Id].Description);
+
+
+--> You can delete persisted records using the delete statement. Deleted records aren’t deleted permanently from Lightning Platform, but they’re placed in the Recycle Bin for 15 days from where they can be restored.
+Contact[] contactsDel = [SELECT Id FROM Contact WHERE LastName='Smith']; 
+delete contactsDel;
+
+- DML Statement Exceptions
+
+try {
+    // This causes an exception because 
+    //   the required Name field is not provided.
+    Account acct = new Account();
+    // Insert the account 
+    insert acct;
+} catch (DmlException e) {
+    System.debug('A DML exception has occurred: ' +
+                e.getMessage());
+}
+
+
+- Database Methods
+
+--> Apex contains the built-in Database class, which provides methods that perform DML operations and mirror the DML statement counterparts.
+    These Database methods are static and are called on the class name.
+Database.insert()
+Database.update()
+Database.upsert()
+Database.delete()
+Database.undelete()
+Database.merge()
+
+--> Unlike DML statements, Database methods have an optional allOrNone parameter that allows you to specify whether the operation should partially succeed. When this parameter is set to false,
+    if errors occur on a partial set of records, the successful records will be committed and errors will be returned for the failed records. Also, no exceptions are thrown with the partial success option.
+
+--> This is how you call the insert method with the allOrNone set to false.
+   eg) Database.insert(recordList, false);
+--> The Database methods return result objects containing success or failure information for each record. For example, insert and update operations each return an array of Database.SaveResult objects.
+   eg) Database.SaveResult[] results = Database.insert(recordList, false);
+
+--> Upsert returns Database.UpsertResult objects, and delete returns Database.DeleteResult objects.
+
+- Should You Use DML Statements or Database Methods(DML Calls)?
+
+--> Use DML statements if you want any error that occurs during bulk DML processing to be thrown as an Apex exception that immediately interrupts control flow (by using try. . .catch blocks). This 
+    behavior is similar to the way exceptions are handled in most database procedural languages.
+
+--> Use Database class methods if you want to allow partial success of a bulk DML operation—if a record fails, the remainder of the DML operation can still succeed. Your application can then inspect the 
+    rejected records and possibly retry the operation. When using this form, you can write code that never throws DML exception errors. Instead, your code can use the appropriate results array to judge success or failure.
+    Note that Database methods also include a syntax that supports thrown exceptions, similar to DML statements.
+
+- Work with Related Records
+
+--> Create and manage records that are related to each other through relationships.
+
+- Insert Related Records
+
+--> For example, if inserting a new contact, you can specify the contact's related account record by setting the value of the AccountId field.
+
+Account acct = new Account(Name='SFDC Account');
+insert acct;
+// Once the account is inserted, the sObject will be 
+// populated with an ID.
+// Get this ID.
+ID acctID = acct.ID;
+// Add a contact to this account.
+Contact mario = new Contact(
+    FirstName='Mario',
+    LastName='Ruiz',
+    Phone='415.555.1212',
+    AccountId=acctID);
+insert mario;
+
+--> A new account (SFDC Account) has been created and has the Mario Ruiz contact in the account’s Contacts related list.
+
+- Update Related Records
+
+--> When updating a contact, if you also want to update the contact’s related account, you must make two DML calls. 
+    The following example updates a contact and its related account using two update statements.
+
+// Query for the contact, which has been associated with an account.
+Contact queriedContact = [SELECT Account.Name  // Account.Name is field in Contacts as its in LookUp Relationship with Account
+                          FROM Contact 
+                          WHERE FirstName = 'Mario' AND LastName='Ruiz'
+                          LIMIT 1];
+// Update the contact's phone number
+queriedContact.Phone = '(415)555-1213';
+// Update the related account industry
+queriedContact.Account.Industry = 'Technology';
+// Make two separate calls 
+// 1. This call is to update the contact's phone.
+update queriedContact;
+// 2. This call is to update the related account's Industry field.
+update queriedContact.Account; 
+Delete Related Records
+
+
+- Delete Related Records
+
+--> when updating a contact, if you also want to update the contact’s related account, you must make two DML calls.
+    The following example updates a contact and its related account using two update statements.
+--> For example, deleting the account you created earlier (SFDC Account) will delete its related contact too.
+
+Account[] queriedAccounts = [SELECT Id FROM Account WHERE Name='SFDC Account'];
+delete queriedAccounts;
+
+--> You’ll see that both the account and its related contact were deleted.
+
+--> All DML operations in a transaction either complete successfully, or if an error occurs in one operation,
+    the entire transaction is rolled back and no data is committed to the database. The boundary of a transaction can be a trigger,
+    a class method, an anonymous block of code, an Apex page, or a custom Web service method.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------
+
+- Write SOQL Queries
+
+-->  When SOQL is embedded in Apex, it is referred to as inline SOQL.
+--> To include SOQL queries within your Apex code, wrap the SOQL statement within square brackets and assign the return value to an array of sObjects. 
+  eg) Account[] accts = [SELECT Name,Phone FROM Account];
+
+--> SELECT Name,Phone FROM Account
+ -> The query has two parts:
+   1. SELECT Name,Phone :- This part lists the fields that you would like to retrieve. The fields are specified after the SELECT keyword in a comma-delimited list.
+      Or you can specify only one field, in which case no comma is necessary (e.g. SELECT Phone).
+   2. FROM Account :- This part specifies the standard or custom object that you want to retrieve. In this example, it’s Account. For a custom object called Invoice_Statement, it is Invoice_Statement__c.
+ 
+ --> Unlike other SQL languages, you can’t specify * for all fields. You must specify every field you want to get explicitly.
+ --> You don’t need to specify the Id field in the query as it is always returned in Apex queries, whether it is specified in the query or not.
+  eg) For example: SELECT Id,Phone FROM Account and SELECT Phone FROM Account are equivalent statements.
+
+ --> SELECT Name,Phone FROM Account WHERE Name='SFDC Computing'.
+     Note that comparisons on strings are case-insensitive.
+
+ --> The WHERE clause can contain multiple conditions that are grouped by using logical operators (AND, OR) and parentheses.
+     SELECT Name,Phone FROM Account WHERE (Name='SFDC Computing' AND NumberOfEmployees>25)
+
+- Access Variables in SOQL Queries
+
+--> SOQL statements in Apex can reference Apex code variables and expressions if they are preceded by a colon (:). The use of a local variable within a SOQL statement is called a bind.
+--> This example shows how to use the targetDepartment variable in the WHERE clause.
+  eg) String targetDepartment = 'Wingo';
+      Contact[] techContacts = [SELECT FirstName,LastName 
+                               FROM Contact WHERE Department=:targetDepartment];
+
+=======================================================================================================================================================================================================================
+
+- 22 Nov 22
+
+- Query Related Records
+
+--> When Quering Child records from Parent  [Inner Query is Used Compulsory]
+
+Account[] acctsWithContacts = [SELECT Name, (SELECT FirstName,LastName FROM Contacts)
+                               FROM Account 
+                               WHERE Name = 'SFDC Computing'];
+// Get child records
+Contact[] cts = acctsWithContacts[0].Contacts;
+System.debug('Name of first associated contact: ' 
+             + cts[0].FirstName + ', ' + cts[0].LastName);
+
+
+--> When Quering Parent record from Child [No Inner Query is Used]
+
+Contact[] cts = [SELECT Account.Name FROM Contact 
+                 WHERE FirstName = 'Carol' AND LastName='Ruiz'];
+Contact carol = cts[0];
+String acctName = carol.Account.Name;
+System.debug('Carol\'s account name is ' + acctName);
+
+- Query Record in Batches By Using SOQL For Loops
+
+--> SOQL for loops iterate over all of the sObject records returned by a SOQL query. The syntax of a SOQL for loop is either:
+ 
+Syntax :- 
+for (variable : [soql_query]) {
+    code_block
+}
+
+OR
+
+for (variable_list : [soql_query]) {
+    code_block
+}
+
+--> Both  variable and  variable_list must be of the same type as the sObjects that are returned by the  soql_query.
+--> It is preferable to use the sObject list format of the SOQL for loop as the loop executes once for each batch of 200 sObjects. 
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+
+- Write SOSL Queries
+
+--> Salesforce Object Search Language (SOSL) is a Salesforce search language that is used to perform text searches in records. 
+    Use SOSL to search fields across multiple standard and custom object records in Salesforce. SOSL is similar to Apache Lucene.
+
+--> This is an example of a SOSL query that searches for accounts and contacts that have any fields with the word 'SFDC'.
+
+
+- Differences and Similarities Between SOQL and SOSL
+
+--> Like SOQL, SOSL allows you to search your organization’s records for specific information. Unlike SOQL, which can only query one standard or custom object at a time,
+    a single SOSL query can search all objects.
+--> Another difference is that SOSL matches fields based on a word match while SOQL performs an exact match by default (when not using wildcards).
+--> For example, searching for 'Digital' in SOSL returns records whose field values are 'Digital' or 'The Digital Company',
+    but SOQL returns only records with field values of 'Digital'.
+
+--> SOQL and SOSL are two separate languages with different syntax. Each language has a distinct use case:
+
+ -> Use SOQL to retrieve records for a single object.
+ -> Use SOSL to search fields across multiple objects. SOSL queries can search most text fields on an object.
+
+--> SOSL Query Example :
+ 
+ -> FIND {Wingo} IN ALL FIELDS RETURNING Account(Name), Contact(FirstName,LastName,Department).
+
+--> This is the syntax of a basic SOSL query in Apex: 
+FIND 'SearchQuery' [IN SearchGroup] [RETURNING ObjectsAndFields]
+
+--> Remember that in the Query Editor and API, the syntax is slightly different:
+FIND {SearchQuery} [IN SearchGroup] [RETURNING ObjectsAndFields]
+
+--> The * wildcard matches zero or more characters at the middle or end of the search term. The ? wildcard matches only one character at the middle or end of the search term. 
+
+--> FIND {SearchQuery} [IN SearchGroup] [RETURNING ObjectsAndFields]
+--> SearchGroup can take one of the following values :-
+ALL FIELDS
+NAME FIELDS
+EMAIL FIELDS
+PHONE FIELDS
+SIDEBAR FIELDS
+
+--> ObjectsAndFields is optional. It is the information to return in the search result—a list of one or more sObjects and, within each sObject, list of one or more fields, 
+    with optional values to filter against. If not specified, the search results contain the IDs of all objects found.
+ 
+--> In the 'SearchQuery' place there are two ways :
+
+1. Single Word
+
+ --> single word, such as test or hello. Words in the SearchQuery are delimited by spaces, punctuation, and changes from letters to digits (and vice-versa). Words are always case insensitive.
+
+2.Phrase
+ 
+ -->  collection of words and spaces surrounded by double quotes such as "john smith". Multiple words can be combined together with logic and grouping operators to form a more complex query.
+ eg) FIND {Wingo} OR {MAN} IN ALL FIELDS RETURNING Account(Name), Contact(FirstName,LastName,Department)
+
+--> The order of words in the search term doesn’t matter.
+
+--> FIND {Wingo*} IN ALL FIELDS RETURNING Account(Name), Contact(FirstName,LastName,Department)
+ -> This is a wildcard search. This search returns all records that have a field value starting with wing.
+
+--> You can filter SOSL results by adding conditions in the WHERE clause for an object. For example, this results in only accounts whose industry is Apparel to be returned: RETURNING Account(Name, Industry WHERE Industry='Apparel').
+--> Likewise, ordering results for one sObject is supported by adding ORDER BY for an object. For example this causes the returned accounts to be ordered by the Name field: RETURNING Account(Name, Industry ORDER BY Name).
+--> The number of returned records can be limited to a subset of records. This example limits the returned accounts to 10 only: RETURNING Account(Name, Industry LIMIT 10).
+
+--> Apex is a strongly-typed language, meaning that each time you declare (create) a variable, you set its data type, its name, and optionally, its initial value.
+--> Apex strings use single quotation marks to separate literal text from surrounding code. Numbers and Boolean (true or false) values don’t need quotes.
+ eg) String whatTimeIsIt = 'It is Tea Time!';
+
+--> A more efficient alternative to an if-else statement is a switch statement. A switch statement specifies a set of values and tests an expression to determine whether it matches one of those values. Here is how it looks:
+eg) 
+switch on expression {
+    when value1 {
+        //code block 1
+    }
+    when value2 {
+        //code block 2
+    }
+    when else { //if none of the previous values apply
+        //code block 3
+    }
+}
+
+--> In a switch statement, you can have one or more values after the when reserved word.
+eg)
+switch on expression {
+    when value1 { //single value
+        //code block 1
+    }
+    when value2, value3 { //multiple values
+        //code block 2
+    }
+}
+
+--> Example
+String waterLevel = 'empty';
+  
+//option 1 using a single value
+switch on waterLevel {
+    when 'empty' {
+        System.debug('Fill the tea kettle');
+    }
+    when 'half' {
+        System.debug('Fill the tea kettle');
+    }
+    when 'full' {
+        System.debug('The tea kettle is full');
+    }
+    when else {
+        System.debug('Error!');
+    }
+}
+  
+//option 2 using multiple values
+switch on waterLevel {
+    when 'empty', 'half' { //when waterLevel is either empty or half
+        System.debug('Fill the tea kettle');
+    }
+    when 'full' {
+        System.debug('The tea kettle is full');
+    }
+    when else {
+        System.debug('Error!');
+    }
+}
+
+- Data Loader in Salesforce
+
+--> A Salesforce data loader is an application used to insert, update, delete, and export large amounts of data to, within, and from Salesforce. 
+--> An object’s fields in an org are called sObject properties in Apex code. As each field in an org’s object has a data type, each sObject property has a data type.
+ eg) Name field of an Account object has the string data type, the Name property of the myAcct sObject also has the string data type: myAcct.Name = 'The Tea Factory'.
+
+--> To create the same account programmatically, use an Account sObject in Apex code, like this:
+eg)
+Account myAcct = new Account();
+myAcct.Name = 'The Tea Factory';
+myAcct.Phone= '555-0129';
+myAcct.AccountNumber = '356281';
+
+myAcct.AccountNumber = '356281';
+   |       |
+   |       |
+sObject  sObject
+ Name    Property  
+ 
+- Set Field Value
+
+--> Use dot notation to assign a value to an sObject.
+
+- Get Field Value
+
+--> use dot notation to get (retrieve) a value from an sObject.
+eg)
+ String accountName = myAcct.Name;
+
+- Set DS
+
+-->  Because the elements are unordered, a set can't have any duplicates. If you try to add an element that’s already in the set, you don’t get an error, 
+     but the new value is not added to the set.
+
+- Choosing a List or a Set
+
+--> Think about the collection you want to create and ask yourself these two questions.
+
+1. Do I want to allow duplicates?
+2. Is the order of items important?
+
+->If you answer yes to at least one of these questions, then use a list. If you answer no to both questions, use a set. 
+
+- Map
+
+- The Put Method
+ -> The put method expects two parameters: key and value. Let’s create a map of tea types (keys) and their flavor profiles (values). 
+  mapObject.put(key,value);
+
+- The Get Method
+ -> To access values in a map, use the get method, like this: 
+  mapObject.get(key);
+
+- List or Set Iteration For Loops
+
+--> Syntax : 
+for (data_type variable_name : list_name or set_name){
+    // Loop body
+}
+
+-> List <String> tea = new List<String>{'Black Tea', 'Green Tea', 'Chai Tea'};
+Note that the tea list has the string data type. To declare the iteration for loop, we use the list data type (string) and the list name (tea).
+
+for (String t : tea) 
+-> This statement does two things before the loop begins.
+1.Declares the t variable with the string data type (which matches the data type of the list).
+2.Specifies the tea list as the list that the loop iterates through.
+
+-->  So in your SOQL queries, always use field API names, not field labels.
+--> While Using ASC or DESC NOTE :- ASC is by default active.
+
+-> NULLS
+FIRST | LAST
+-> Returns null records at the beginning (NULLS FIRST) or end (NULLS LAST).
+eg)
+SELECT Name, Email FROM Contact
+ORDER BY Email
+NULLS LAST
+
+- To get records for : 
+
+--> Child object, and include fields from a related parent object, use a child-to-parent query.
+ -> Uses dot(.) to access Parent Fields.
+--> Parent object, and include fields from a related child object, use a parent-to-child query.
+ -> Uses sub Query to access Childs Fields like [select name, (subQuery from child) from parent].
+
+--> ***In the details for the AccountId field, the Child Relationship Name is Contacts, plural. By default, the relationship name for standard objects is the plural form of the child object name***.
+
+--> In the details for the AccountId field, the Child Relationship Name is Contacts, plural. By default, the relationship name for standard objects is the plural form of the child object name.
+eg) SELECT Name,(SELECT Name FROM Contacts) FROM Account 
+
+-> This query runs in three parts:
+-> The query selects an account and gets the account Name field. That’s the main query (the outer query).
+-> Next, the query looks at the account’s related contacts, and gets the Name field for each. That’s the subquery (the inner query).
+-> Then it moves on to the next account and repeats the process until it has selected all accounts.
+
+-> SELECT Name, (SELECT Name FROM Contacts) FROM Account WHERE Id IN (SELECT AccountId FROM Contact WHERE LastName = 'Forbes'). //Queries in the () are the child query.
+-> This query does four things
+-> The query finds contacts with the last name Forbes and returns the value of each contact’s AccountId field. (The WHERE clause subquery does that.)
+-> Next, it finds the value of that AccountId in the Id field of an account and gets the name for that account. (The main WHERE clause does that.)
+-> Then the query looks at the account’s related contacts, and gets the name of each contact. (The main query’s subquery does that.)
+-> Finally, the main query returns the name of each account that has a related contact with the last name Forbes, and for each of those accounts, the names of all related contacts.
+
+- Create a Child-to-Parent Query
+
+- Use the Custom Relationship Name in the Query
+
+--> That’s because the Broker__c field in the Property__c object is a lookup to the Broker object. Fields with lookup relationships contain the related object’s Id.
+    To get the name of the Broker, we need a relationship query.
+
+--> To specify the Broker__c related object (not the Broker__c field), we change __c to __r (underscore-underscore-r). Broker__r is the custom relationship name. 
+    It indicates that we want to traverse the relationship from Property__c to the Broker__c object. This portion of the query says, “Get the Name field from the related Broker__c custom object.
+eg) SELECT Address__c, Picture__c, Broker__r.Name FROM Property__c; // here Broker__r is the Parent object and Name is the field in Broker.
+
+-> A bind variable in a query is like a parameter in a method. The bind variable is replaced by a specific value when the query runs.
+
+-> Consider a bind variable named maxHomeValue. We declare the variable in Apex and then use the variable in a query, like this: 
+eg) Integer maxHomeValue = 200000;
+List<Property__c> property = [SELECT Name, Price__c FROM Property__c WHERE Price__c < :maxHomeValue];
+
+-> the COUNT() function counts all values, which often includes multiple records with the same value.
+-> The MIN() and MAX() functions also recognize the sort order of picklist values, so you can find the first or last value in a picklist.
+-> The AVG() function calculates the average of all values. The SUM() function calculates the sum of all values. Because both of these functions perform calculations, they work only with fields that contain numeric values.
+
+-> Filter the Results of Aggregate Functions :
+eg)SELECT MAX(Status__c), Broker__r.Name
+FROM Property__c
+GROUP BY Broker__r.Name
+HAVING MAX(Status__c) = 'Closed'
+
+-->  Here’s how to decide when to use WHERE and when to use HAVING. 
+--> The WHERE clause filters records in a SOQL query that has no aggregate function.
+--> The HAVING clause filters the results after data is aggregated by an aggregate function.
+

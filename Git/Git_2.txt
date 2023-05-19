@@ -1,0 +1,113 @@
+Git configurations -
+
+- Local config -
+1. git config --local user.name "xyz"
+2. git config --local user.email "xyz@gmail.com"
+
+- Refs Folder -
+ 
+1. Refs/heads -
+ 
+--> Here heads is directory which contains one file per branch in a repository.
+
+2. refs/heads/master -
+
+--> contains the commit hash of the last commit on the master branch.
+
+3. refs/tags
+  
+--> contains one file for each tag in the repository.
+
+Master <--- Head :- here internally in .git folder their is Head folder and the arrow represents 
+reference,which is a file in the head folder. 
+
+- Head File -
+
+1. All the commit hash of branch,files are present in Head pointer.
+
+- Objects Folder/directory -
+
+1. Contains all the repository files.this is where git stores backups of files,the 
+commits in a repo and more.
+
+2. It contains 4 types of Git Objects -
+i. commit
+ii. tree
+iii. blob
+iv. annotated tag
+
+- Hashing Function -
+
+1. Functions which map input data of arbitary size to fixed-size output values[containers].
+
+- Cryptographic Hashing Function -
+
+1. We should never be able to guess/determine the input from the output. 
+2. a small change in input should produce large difference in output.
+3. Deterministic - same input yeilds same output.(fixed)
+4. 2 outputs with same value should not be found to avoid collision.
+5. Git uses  SHA1 hashing function.it generates 40 digit hexadecimal numbers.
+6. All four objects in git are hashed using SHA1. 
+7. Git is a key-value data store.
+i.e we store data in git,it will give us SHA1 hash so that we can retrive the information later.
+
+8. >>git hash-object [file]-->returns a SHA1 value for file without storing it.
+9. >>echo "hi" | git hash-object --stdin -->returns a SHA1 value for input from the keyboard here "hi" without storing it.
+10.>>echo "hi" | git hash-object --stdin -w -->does same as 9. but stores the SHA1 in a folder
+which is named after the starting two letters of the SHA1.
+
+- Retrive data with git-cat file -
+
+1. git cat-file -p [object-hash] 
+ It gives the value we have stored in the .git/object folder.
+here -p indicates pretty print(format specifier) according to the data in object.
+
+if deleted content then use >>git cat-file -p [object-hash] > filename.  
+> indicates to store output in which file.
+
+- Blob Object -
+1. These are the object types used by git to store only file contents.
+so the hash we see are actually blob-objects and the hash is called blob-hash.
+
+- Trees - 
+1. These objects are used by the git to store the directory names.
+The tree contains pointer which refer to blob and other trees.
+so each entry in tree has a blob-hash it can be a tree or blob.
+as well as mode,type,filename. 
+ Tree stores the filename,and references the hash of the blob.
+
+Tree has three blocks -
+1. mode - tree and blob.
+2. type - blob-hash (40 digit hexadecimal number)
+3. filename - stored by the tree in it.
+
+- Viewing trees -
+
+>>git cat-file -p master^{tree}
+here the master^{tree} denotes the tree object which is pointed to by the master branch.
+
+- To check the type of object -
+use >>git cat-file -t [object-hash] --> prints the type of object(whether tree/blob)
+
+- Commit Contents -
+1. It contains message,author,committer,etc. But it also conatins reference to parent commits(previous commit) and reference to tree 
+objects also.
+So if new commit is created then git creates new commit object which contains the reference of previous commit as parent object.
+it also contains reference to tree that contains the snapshot of the current directory at present time instance.
+ 
+So when we restore files the git checks the commit tree and the state of the directory in that tree and restores files upon it.
+
+- Annotated tag store refernce to the commit.
+- Commit stores reference to the tree.
+- Tree stores reference to the blob.
+1. Annotated tags conatins metadata,stored in objects directory.
+here metadata includes --> who made the tags,dates,message.
+it is just a pointer to the commit and not a commit itself.
+
+Command used to remove everything form stash
+>> git stash clear
+Git command_______ used to give tags to the specific commit.
+>>git tag[commitID]
+
+How many HEAD references are in a local repository.
+--> One

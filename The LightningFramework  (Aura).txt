@@ -1,0 +1,1388 @@
+June 22
+
+- CRM [Customer Relationship Management]
+
+- Need?
+
+ ---> To take customer relationship experience to the next level.'
+ ---> LWC was introduced so as to create fast,beautiful  applications.
+
+- Reasons to use Lightning Web Components 
+
+1. Avoid server calls - As various web components on page use AJAX calling mechanism 
+    the performance is boosted.
+2. Lazy Loading - Helps me to display a particular component data whenever a user loads a something.
+3. Faster Development - Lot of outof development tools,etc for development.
+4. Cross Browser Compatibility 
+5. Lightning App Builder  - create application with minimal amount of code to be written.
+6. Event-driven Architecture - Better Decoupling of the components.i.e Any component can the event
+                               if anyone subscribed will recieve notification.
+
+7. SLDS [Salesforce Lightning Design System] - Helps us to style the component in our way.
+8. Two Way Binding - It changes in Application state will be reflected into the view of it.
+9. Avoids ViewSate Error 
+10. Lightning Out - True power of Salesforce lightning.Enables us to take our component
+to external sites.Eg) We can include lightning components in our VF Page.(i.e best form both VF as well as Lightning component)
+
+---> Digital Experience is a community and we have to enable it.First got to search
+     digital experience and setting to enable it for giving digital experience to your org.
+---> With Lightning App Builder we are able to create pages which we see and throught the App Manager we are able to build Apps.
+---> We can create forums like eg) stack overflow,etc on slaesforce by enabling digital experience.
+NOTE : We cannot delete,edit these things later so be carefull while doing these things. 
+ 
+---> We cannot see things by using stand alone component we have to embedded them in Lightning application.
+---> The lightning component is enclosed in <aura:component> Tag and App is enclosed in <aura:application> Tag. 
+---> We have to render every component in <aura:application> Tag using 'c' namespace as <c:HeaderComponent/>.
+---> To view the component we have to embedded it into <aura:application> in the App.
+
+
+- MyfirstApp.app
+
+ ---> <aura:application>
+         <c:HeaderComponent/>
+         <p> This is my first Lightning Application build using AURA.</p>
+         <c:FooterComponent/> 
+      </aura:application>
+
+- FooterComponent.cmp
+  
+ ---> <aura:component>
+        <br/>
+        <br/>
+        <h3> Copy right@2022 </h3>
+      </aura:component>
+ 
+- HeaderComponent.cmp
+ 
+ ---> <aura:component>
+         <h1>Welcome to Persistent</h1>
+         <br/>
+         <br/>
+      </aura:component>
+
+---> Every component comes with bundle setting.
+  ---> Helper - it is a javascript server side which helps us to connect to the servers.
+  ---> Documention - is used for documenting component(i.e how ot use).
+  ---> Renderer - is used to override the default behaviour of component.
+  ---> Design and SVG - is used for designing components.
+  
+---> HTML - Structure
+     CSS  - Styling
+     JS   - Behavoiur 
+
+- CSS [Styling]
+
+ ---> In Salesforce styling can be done in three ways : 
+      i.  Inline styling attribute
+      ii. External CSS
+      iii.Using Component Bundle
+
+---> To fetch the changes from Org to Manifest command 'Retrive the source in manifest from org'/ right click on the package.xml folder and same command option.
+      So by doing this the changes are acquired in the force folder of VS code.
+---> To create aura component use the command 'Create  Aura Component'.
+
+- MyStyleApp.app
+ 
+ ---> <aura:application>
+          <c:MyStyleComp/>
+      </aura:application> 
+       
+- MyStyleComp.cmp
+
+1. InLine Styling
+
+ ---> <aura:component>  
+          <h3> Using Inline Styling !</h3>
+          <br/>
+          <div style ="background-color: black;">
+             <p> styl="color: white;">White Text With Balck Background!</p>
+             <p style="color: yellow">Yellow Text With Black Background!</p>
+           </div>
+       </aura:component>
+ ---> Then deploy source and the App.And to render the component we need to paste the URL of org/c/AppName
+      eg) persistentsystems561-dev-ed.lightning.force.com/c/MyStyleApp.app
+
+ ---> In CSS the tag selector is direct the tag, Id selector is '#', the class selector is '.' .
+
+ - External CSS [Styling]
+
+  ---> First create a static resource in the org using developer console.Then in VS code import the static resource
+       using the {!$Resource.(static resource name)}.
+
+- JustCSS.css [This is static reource which is created in the org in developer console 
+               We need to fetch this from org to manifest folder]   
+
+  h1 {
+     color : red;
+     background-color : aqua; 
+  }
+  
+ #para1 {
+     color : blue;
+     background-color : peachpuff;  
+  }
+
+ .divClass {
+     color : white;
+      background-color : lightgreen;
+      padding : 20px;
+      margin : 10px;  
+  }
+
+- MyStyleApp.app
+ 
+ ---> <aura:application>
+          <c:MyStyleCompWithExternalCSS/>
+      </aura:application>
+
+- MyStyleCompWithExternalCSS.cmp
+ 
+ ---> <aura:component>
+           <ltng:require styles="{!$Resource.JustCSS}"/> 
+           <h1>My Style Component With External CSS!</h1>
+           <br/>
+           <p id="para1">This is simple paragraph!</p>
+           <br/>
+           <div class="divClass">This div is part of divClass! and styling is comming from External CSS</div>
+        <aura:component>
+
+---> Deploy the source(i.e the component page on VS code) and the App(i.e the .app file) on the org.
+---> To render use URL of org/c/app fileName. 
+---> The $Resource lets us refer to the html,css,js things and can be used in helper,svg and controller,etc.
+---> .THIS {} indicates the current component.
+
+- Using Component Bundle [Styling]
+
+- MyStyleCompStylefromCompBundle
+
+ ---> - MyStyleApp.app
+ 
+ ---> <aura:application>
+          <c:MyStyleCompWithExternalCSS/>
+      </aura:application>
+
+- MyStyleCompWithExternalCSS.cmp
+ 
+ ---> <aura:component>
+          <h1>Style coming from Component Bundle! - standard way of styling!</h1>
+          <h3>Hello There!</h3>
+          <p>This is standard way of styling an Aura component!</p>
+          <div>                                          [This part of code did not get the styling]
+             <h1>Hello inside h1 element</h1>
+             <p>Para inside div element!</p>
+          </div>  
+      </aura:component>
+
+- MyStyleCompWithExternalCSS.css
+
+ .THIS {
+    padding : 20px;
+ }
+ 
+ h1.THIS {
+    color : peachpuff;
+    background-color : maroon;
+    font-size : 22px;
+ }
+ // Instead of .THIS alternative is as follows [Component Name should be prefixed with '.c']
+ p.cMyStyleCompStylefromCompBundle {
+    font-weight : bold;
+    color : blue;
+ }
+     
+---> Deploy the source(i.e the component page on VS code) and the App(i.e the .app file) on the org.
+---> To render use URL of org/c/app fileName in the browser LINK SECTION. 
+--->  For class selector here use .className.THIS
+---> .THIS is mandatory if we are using the Bundle Component.
+---> Problem here was only outer components eg) h1,etc got affected but inner components didn't got affected.
+
+- Targetting The Inner Elements
+
+- MyStyleApp.app
+ 
+ ---> <aura:application>
+         <c:MyStyleCompWithExternalCSS/>
+      </aura:application>
+
+- MyComponentStyleSelectors.cmp
+
+ ---><aura:component>
+        <h1>Component Style Selector</h1>
+        <br/><br/>
+        <h1>This is TOP Level Heading</h1>
+        <p>This is TOP Level Paragraph</p>
+        <br/><br/>
+        <div>
+           <h1>This is NESTED Level Heading.</h1>
+           <p>This is NESTED Level Paragraph.</p>
+        </div> 
+        <br/><br/>
+        <h1 class="h1Class">This is NESTED Level Heading with class as h1Class.</h1>
+        <p class="pClass">This is NESTED Level Paragraph with class as pClass.</p>
+         <div>
+           <h1 class="h2Class">This is NESTED Level Heading with class as h1Class.</h1>
+           <p class="pClass">This is NESTED Level Paragraphwith class as pClass.</p>
+        </div> 
+        <br/><br/>
+        <p id="myNameI">My name is Renuka Kulkarni</p>
+        <div>
+           <p id="myNameI">My Office Persistent Systems</p>
+        </div>      
+     <aura:component>
+             
+- MyComponentStyleSelectors.css
+
+ ---> h3.THIS {
+         padding : 10px;
+         font-weight : bold;          
+      }   
+    
+      h1.THIS {        [Used to target Outer Element]
+         color : red;
+         padding : 10px; 
+         font-weight : bold;    
+      }
+  
+      p.THIS {         [Used to target Outer Element]
+         color : green;
+         padding : 10px;
+         font-weight : bold;
+      } 
+   
+      .THIS h1 {       [Used to target Inner Element]
+         color : blue;
+         padding : 10px; 
+         font-weight : bold; 
+      }
+
+      .THIS p {        [Used to target Inner Element] 
+          color : blueviolet;
+          padding : 10px;
+          font-weight : bold;
+      }
+        
+      .h1Class.THIS {                        [Used to target Outer Element]
+           background-color : aqua;
+           padding : 10px;
+           font-weight : bold; 
+      }
+       
+      .pClass.THIS {                         [Used to target Outer Element]
+           background-color : yellowgreen;
+           padding : 10px;
+           font-weight : bold; 
+      }
+       
+      .THIS .h1Class {    (Nested Level Class Selector)  [Used to target Inner Element]
+           background-color : mediumpurple;
+           padding : 10px;
+           font-weight : bold; 
+      }
+       
+      .THIS .pClass {     (Nested Level Class Selector)  [Used to target Inner Element]
+           background-color : lightpink;
+           padding : 10px;
+           font-weight : bold; 
+      }
+       
+      #myNameI.THIS {
+           border : 3px solid red;
+           padding : 10px;
+           font-weight : bold;   
+      }
+      
+      .THIS #myNameI {
+           border : 3px solid blue;
+           padding : 10px;
+           font-weight : bold;  
+      }
+ 
+- Salesforce Lightning Design Systems
+
+[NOTE: Do all the searching in the slds site of salesforce only]
+
+ ---> Salesforce Lightning Design System (SLDS) is a CSS framework that provides a look and feel that’s consistent with Lightning Experience. 
+      Use SLDS styles to give your custom Lightning web components a UI that is consistent with Salesforce, without having to reverse-engineer our styles. 
+      And best of all, it just works with Lightning components running in Lightning Experience and in the Salesforce mobile application.
+
+ ---> If we want to download static resources we can download them from Salesforce platform.But when you add static resource the file size max limit of uploading
+     is 5 MB and bifergate that zip file into two files.
+ ---> Now to import this org file we have to use tag <ltng require styles="{!$Resource.SLDSV283(Name of the Resource from org)+'/styles/salesforce-lightning-design-system.css(directory of the slds file in the Laptop)'}"/>    
+
+- DemoSLDSApp.app
+ 
+ ---> <aura:application>
+         <ltng require styles="{!$Resource.SLDSV283+'/styles/salesforce-lightning-design-system.css}"/>   
+         <c:DemoSLDSComp/>
+      </aura:application>
+
+- DemoSLDSComp.cmp
+
+ ---> <aura:component>
+          <div>
+              <table>
+                   <thead>
+                       <th>FirstName</th>
+                       <th>LastName</th>
+                       <th>Age</th>  
+                   </thead>
+                   <tbody>
+                       <tr>
+                          <td>Sachin</td>
+                          <td>Tendulkar</td>
+                          <td>48</td>
+                       </tr>
+                       <tr>
+                          <td>Virat</td>
+                          <td>Kohli</td>
+                          <td>34</td>
+                       </tr>
+                       <tr>
+                          <td>MS</td>
+                          <td>Dhoni</td>
+                          <td>38</td>
+                       </tr> 
+                   </tbody>
+              </table>
+              <br/><br/>
+              <lightning:button variant="brand" label="Brand" title="Brand action" onclick="{!c.handleClick}"/>
+           </div>
+      </aura:component>
+
+ ---> Use slds table class for better styling of tables.
+ ---> Deploy the source(i.e the component page on VS code) and the App(i.e the .app file) on the org.
+ ---> To render use URL of org/c/app fileName in the browser LINK SECTION. 
+
+ ---> The design guidelines reflect upon four core principles:
+
+1. Clarity: Whatever you design must be clear to the end-user and they must be allowed to act in confidence.
+
+2. Efficiency: Every designed component must work efficiently. It includes streamlining and optimizing the workflows for better and faster operation.
+
+3. Consistency: The proposed design must be consistent throughout devices. Every screen size should host the same look and feel.
+
+4. Beauty: The whole aspect of designing is based on beauty and user experience. A beautifully designed component tells people that their attention and time are worth the investment.
+
+- SLDS Class Naming(Block-Element-Modifier)
+
+ ---> A block represents a high-level component(e.g house).
+ ---> An element represents a descendent of a component(e.g house__door).
+ ---> A modifier represents a particular state of a block or element(e.g house___door__red).
+ ---> Eg) sld-button__icon_x-small.
+ 
+ ---> Search for buttons on slds site of salesforce/ lightning buttons on google.
+ ---> If we want to use online library then as follows
+    
+<aura:application extends="force:slds"> -----CODE CHANGE------
+         <ltng require styles="{!$Resource.SLDSV283+'/styles/salesforce-lightning-design-system.css}"/>   
+         <c:DemoSLDSComp/>
+      </aura:application>
+
+ ---> It will work according to the online library formatting of UI.
+ ---> Slds grid is used so the app will have no scroll bar (i.e responsive UI) according to the different screens.
+ ---> <div class="slds-col slds-size_1-of-12"> // for spreading the contents in a grid.
+ ---> SLDS in VF Page by using <apex:slds/>
+ [Topic incomplete to be completed through Salesforce ROC Course]
+
+
+==================================================================================================================================================================================================
+
+June 23
+
+- Two Major Features of Salesforce 
+
+1. Lightning Locker Service [LLS]
+2. Lightning Data Service   [LDS]
+
+1. Lightning Locker Service 
+  
+ ---> Is a virtual layer between your browser and doc object.
+ ---> The Browser doesn't know who is the genuine user and who is hacker.
+ ---> And this identification is done by the Javascript part to tell difference between user and a hacker.
+ ---> Genuine user uses a Javascript while a Hacker uses a Malicious Javascript.
+ ---> It is used to avoid accessing of data of one component into another and avialabel after version 39 onwards.Before it Component Container was used.
+ 
+ ---> XSS - Cross side scripting --> a malicious javascript code injected within the webpage by hacker.
+ ---> Popular way of Hacking Any site are : 
+      1. Injecting Using Forms.
+      2. Injecting Using Url.
+ ---> Solutions to Attacks are :
+      1. Data Validation 
+      2. Data Filtering
+      3. Data Escaping
+      4. Deep Testing
+
+      Security Methods :
+      1.Javascript Strcit Mode (ES5) - 1)In this the drawback of javascript i.e use(value assignment) a variable without declaring was resolved.
+        It did not allowed to use(value assignment) a variable which is not declared.
+        2) Attach the variable to window Object to make it global.
+
+ ---> Componet Types : [With lightning Namespace] 
+   ---> Base lightning Component (lightning:button)
+   ---> OOB [Out of Box] - force,ui,aura namespace.
+   ---> Custom Component - c namespace.
+   ---> Managed/UnManaged Package Components.
+
+ ---> So if ES5 i.e Javascript Strict Mode is not enabled then components can call/read  other components content and private APIs also.      
+ ---> If Javascript Strict Mode is not Enabled it means Lightning Locker Service is OFF.
+ ---> So the component cannot traverse the DOM of another component/object And each element will have its own DOM.
+ 
+ ---> It is Salesforce architecture for Lightning components
+   ---> Isolates individual lightning components in their own namespace.
+   ---> Prevents components from interacting with one another outside framework methods - aura attributes and methods.
+   ---> Provides explicit security measures for your components,such as Content Security Policy(CSP)
+        to help mitigate cross-site scripting(XSS) attacks and resource restrictions to ensure that images and scripts load securely.
+ ---> Before LLS(NEW) Salesforce Used Component Container(OLD) security.
+
+- With Locker Service
+
+- LockerServiceApp.app
+
+ ---> <aura:application>
+          <c:LockerServiceComp/>   
+      </aura:application>
+-LockerServiceComp.cmp
+
+ ---> <aura:component>
+         <h1>Locker Service Demo!</h1>
+         <br/><br/>
+         <ui:button press="{!c.doinit}">   // here press is an event 
+         <div class="divClass">Click ME!</div>  
+         </ui:button> // Will be deprecated soon so use lightning : button.
+      </aura:component>
+
+- LockerServiceComp.css
+
+  .THIS {
+ 
+     margin : 50px;
+  }  
+  
+  .THIS .divClass{
+     
+      color : blue;
+      background-color : peachpuff;
+      width : 200px;
+      height : 30px; 
+      padding : 10px;    
+  }
+
+- LockerServiceCompController.js
+
+({
+  doInit : function(component, event, helper) {  // here doInit is an Event Listner
+      console.log(window.toString())         //  Rteurns a string representing the window object
+      console.log(document.toString())       //  Rteurns a string representing the document object
+  }   
+})
+
+ ---> Deploy this source i.e app and all others.
+ ---> The output is shown in console of browser by clicking and seeing impact option.
+ ---> Lightning Components are : 
+     1. Reusable
+     2. Responsive(fits any device)
+     3. Event Driven Approach
+
+- Lighntning Data Service [TOPIC INCOMPLETE COVER THROUGH FUSION COURSE]
+
+ ---> Serves as a data layer for lightning.
+ ---> Lightning Components counterpart to the Visualforce standard controller.
+ ---> Identifies and eliminates requests taht involve same record data, sending a single shared data request that updates all relevant components.
+ ---> Allows to do CRUD operations without Using Apex Class and basically behaves like a standard controller.
+ 
+ ---> Usecase : Create a quick action to display account name industry description using this locker data service 
+                so user should be able to update account name,industry,description for the record which is displayed.
+ ---> If three components are sharing the same record then if one component updates the record then all the other components should be able to see 
+      the change i.e avoid data inconsistency.this is done with the help of Lightning data service.
+ 
+ ---> LightningDataServiceExample --> Loading the data.
+      LightningEditComponent --> Edit.
+      LightningDataServiceController --> Toggle.
+    
+ ---> A force:recordData component defines the parameters for accessing, modifying or creating a record using
+      Lightning Data Service.You have granular control on how you want to display or render the data in your custom component.
+ 
+ - LightningDataServiceContainer.cmp
+ 
+  ---> <aura:component implements = "flexipage:availableForAllPageTypes, [These are all interfaces(as they are implemented)]
+                                     flexipage:availableForRecordHome,
+                                     force:hasRecordId,
+                                     force:lightningQuickAction
+                                     access="global">
+         <aura:attribute name="currentView" type="String" default="BaseView"/>                
+         
+         <aura:if isTrue="{!v.currentView == 'baseView'}">
+             <c:LightningDataServiceBaseView recordId="{!v.recordId}" curView ="{!v.currentView}"/>
+         <aura:if>
+
+         <aura:if isTrue="{!v.currentView == 'editView'}">
+             <c:LightningDataServiceEditView recordId="{!v.recordId}" curView ="{!v.currentView}"/>
+         <aura:if>  
+       </aura:component>
+
+ - LightningDataServiceBaseView.cmp [here for loading the id we reuire force:recordData]
+   
+  ---> <aura:component implements="force:appHostable,
+                                   force:availableForAllPageTypes, 
+                                   force:hasRecordId,
+                                   flexible:availableForRecordHome">
+          <aura:attribute name="recordError" type="String"/>
+          <aura:attribute name="recordInfo" type="Object"/>
+          <aura:attribute name="simpleRecord" type="Object"/>
+          <aura:attribute name="recordId" type="String"/> 
+          <aura:attribute name="curView" type="String"/>
+          <force:recordData aura:id="recordLoader
+                            recordId="{!v.recordId}"
+                            layoutType="FULL"
+                            targetRecord="{!v.recordinfo}"
+                            targetFields="{!v.simpleRecord}"
+                            targetError="{!v.recordinfo}"/>
+                            [Here No mode is specified as the View Mode is by default]                                     
+       // Now for Markup we need slds classes to store the data.
+       <div class="slds-form--stacked"> 
+          <div class="slds-form-element">
+             <label class="slds-form-element__label" for="recordName">Account Name</label>
+             <div class="slds-form-element__control">  
+                 <ui:outputText value="{!v.simpleRecord.Name}" aura:id="accName"/> 
+             </div>
+           </div>  
+           
+           <div class="slds-form-element">
+           <label class="slds-form-element__label" for="recordOwnerName">Industry</label> 
+           <div class="slds-form-element__control"> 
+                <ui:outputText value="{!v.simpleRecord.Industry}" aura:id="accIndustry"/> 
+           </div> 
+
+           <div class="slds-form-element">
+           <label class="slds-form-element__label" for="accType">Description</label> 
+           <div class="slds-form-element__control"> 
+                <ui:outputText value="{!v.simpleRecord.Decription}" aura:id="accDesc"/> 
+           </div>   
+           <br/><br/>
+           <div class="slds-form-element"> 
+                <lightning:labelvalue="Edit Account" onclick="{!c.editRecordHandler}"/> 
+           </div>   
+        <div/>                                                 
+       </aura:component>
+
+ - LightningDataServiceBaseViewController.js
+ 
+  ---> ({
+           editRecordHandler : function(component, event, helper) {     // Change the currentView to EditView
+               component.set("v.curView","editView");      
+           }    
+       })
+ 
+ - LightningDataServiceEditView.cmp
+
+  ---> <aura:component implements="force:appHostable,
+                                   force:availableForAllPageTypes, 
+                                   force:hasRecordId,
+                                   flexible:availableForRecordHome">
+          <aura:attribute name="recordError" type="String"/>
+          <aura:attribute name="recordInfo" type="Object"/> 
+          <aura:attribute name="simpleRecord" type="object"/>
+          <aura:attribute name="recordId" type="String"/> 
+          <aura:attribute name="curView" type="String"/>
+          <force:recordData aura:id="recordHandler"
+                            recordId="{!v.recordId}"
+                            layoutType="FULL"
+                            targetRecord="{!v.recordInfo}"
+                            targetField="{!v.simpleRecord}"
+                            targetError="{!v.recordError}"
+                            mode="EDIT"/>                            //  [We have to specify Edit mode as By default View mode is specified]
+          <div class="slds-form--stacked">
+              <div class="slds-form-element">
+                  <lightning:input type="text" label="Name" value={!v.}>
+              </div>
+              <div class="slds-form-element">
+                  <lighntning:select aura:id="accDesc" label="Industry"
+                                     value="{!v.simpleRecord.Industry}">     
+       </aura:component>
+
+ ---> force:recordData ---> Display,Create,edit or delete.
+      lightning:recordFrom---> Display,Create or edit.
+      lighntning:recordViewForm ---> Display (lightning:outputField).
+      lighntning:recordEditForm ---> Create or edit (lighntning:inputField).
+      force:hasRecordId ---> Grab everything form shared cache.
+
+=====================================================================================================================================================================================
+
+24 June
+
+- Attribute and Expression
+
+ ---> Lightning Compoenet Framework
+    i.  Server side contains Apex Controller.
+    ii. Client side contains JavaScript Controller.
+    iii.Salesforce Cloud.
+
+- Attributes
+ ---> Attribute is a variable to store value which can be reused.
+    1. Should start with alphabets/_
+    2. It can contain only alphanumeric or _
+
+- Data Types
+
+ 1.Primitive data types such as Boolean,Date,Time,DateTime,
+   Decimal,Double,Integer,Long or String.
+ 2.Standard an Custom Salesforce Objects such as Account or CustObject__c.
+ 3.Collections such as List,Map,Set.
+ 4.Framework Specific types such as Aura.Component or Aura.Component[].
+
+- Expressions
+ 
+ ---> Is set of literal values, variables,etc that can be resolve into 
+      a single value.
+
+- Expression Types
+  1. Property reference expression.
+  2. Calculated expression.
+
+- Expression Flavours
+  1.Pass By reference [Using ! mark]
+  2.Pass By Value [Using # mark]
+
+- DemoAura.app
+
+ ---> <aura:application>
+          // We can invoke attributes and change value in the app also if we don't want the default attribute value.
+          <!--c:GreetPersonComp username="Renuka"/-->  
+          <c:Aura_comp/>
+      </aura:application>  
+
+- Aura_comp.cmp
+
+ ---> <aura:component>
+         <aura:attribute name="userNames" type="List"
+                         default="['Sachin','Rahul','Virat']"/>
+         <p><c:GreetPersonComp username="{!v.userName[0]}"/></p>
+         <p><c:GreetPersonComp username="{!v.userName[1]}"/></p>
+         <p><c:GreetPersonComp username="{!v.userName[2]}"/></p>
+         <br/>
+         <br/>
+         <h1>List Iterations!</h1>
+         <aura:iteration items="{!v.userNames}" var="name">
+              <p><c:GreetPersonComp username={!name}/></p> 
+         </aura:iteration>  
+
+       <h1>Conditional Expression and Global value Provider</h1>
+       <aura:attribute name="truthy" type="boolean" default="TRUE">
+       <aura:if isTrue="{!v.truthy}">           // Used to write if condition
+          <h1>Value of Truthy is <b>TURE</b></h1>
+          <aura:set attribute="else">
+              <h1>Value of Truthy is <b>FALSE</b></h1>
+          </aura:set>              // Used to write else condition   
+       </aura:if>
+       <br/>
+       <br/>
+       <aura:if isTrue="{!$Browser.isPhone}">   // So here if this page is opened in phone it will display Sachin[Use of $Browser]
+              <p><c:GreetPersonComp username="{!v.userName[0]}"/></p>
+           <aura:set attribute="else">
+              <p><c:GreetPersonComp username="{!v.userName[2]}"/></p>  // So here if this page is opened in desktop it will display Virat[Use of $Browser]
+           </aura:set> 
+       </aura:if>
+
+       <lightning:button label="Check Browser"
+                         onclick="{!c.checkBrowser}"/> // checkBrowser is a event listner.
+       </aura:component> 
+
+- GreetPersonComp.css
+
+ ---> .THIS {
+       
+          margin-left : 10px;
+       }
+
+- Aura_compController.js
+
+ ({
+      checkBrowser : function(component, event, helper) {
+          var device = $A.get('$Browser.formFactor')                        // '$A'(Namespace) Entry point for using framework in javascript code
+          alert('User is Using'+device)                                        Gives access to underlying Aura Framework.  
+      }                                                                     
+ })
+
+- GreetPersonComp.cmp
+
+ ---> <aura:component>
+         <h1> Calculated Expressions </h1>
+    I/P1 {!2*2}                                     // Calculated expression
+         <br/><br/>    
+    I/P2 {!2+5*4}
+         <br/>
+
+         <aura:attribute name="no" type="Integer" default="10"/>   
+    I/P  <h1> Result is {!v.bo*5+15}</h1>
+         <br/>
+ // PROPERTY REFERENCE EXPRESSION [We can change it]
+         <aura:attribute name="username" type="String" default="Sachin"/>
+    I/P  <p> Hello {!v.username}</p> 
+         <br/><br/>
+         <aura:attribute name="num" type="Integer" default="11"/>
+    I/P  <ui:inputNumber name="Enter your Age!" aura:id="age" value="{!v.num}"/> // Taking input from user
+         <p>User's age is {!v.num}</p> 
+      </aura:component> 
+- O/P1 : Calculated Expressions
+        4
+- O/P2 : 22
+- O/P3 : 65
+- O/P4 : Hello Sachin / Hello Renuka(when invoked in app)
+- O/P  : [I/P : 10...] 10...
+
+ ---> The '$Browser' is a global value provider that returns information about the hardware and operating 
+      system of the browser accessing the application.
+
+- ParentAttributeComp.cmp
+
+ ---> <aura:component>
+         <h1>Inside Parent Component</h1>   
+         <aura:attribute name="parentAttr" type="string" default="Parent data"/>    
+         <p>Passing value from Parent - <b>{!v.parentAttr}</b></p>
+         <br/><br/>     
+         <p><b>Bound Expression</b> is using (!) Pass By Reference:</p> 
+         <c:ChildAttributeComp childAttr = "{!v.parentAttr}"/> 
+         <br/><br/>
+         <p><b>UnBound Expression</b> is using (#) Pass By Value:</p> 
+         <c:ChildAttributeComp childAttr = "{#v.parentAttr}"/> 
+         <br/>
+         <p><lightning:button label="Update parentAttr"
+                              onclick="{!c.updateParentAttr}"/></p>
+      </aura:component>
+  
+- ChildAttributeComp.cmp
+   
+ ---> <aura:component>
+         <br/>
+         <h1>Inside Child Component</h1>
+         <aura:attribute name="childAttr" type="string"/>
+         <p>Data Coming from Parent Component is<b>{!v.childAttr}</b></p>    
+         <br/>
+         <br/>
+         <p><lightning:button label="Update childAttr"
+                              onclick="{!c.updatChildAttr}"/></p>    
+      </aura:component> 
+
+- ChildAttributeCompController.js
+
+   
+  ({
+         updateChildAttr : function(component, event, helper) {
+         component.set("v.childAttr","Updated Child attribute data!")       
+         }   
+  })
+
+- DemoAura_App.app
+
+ ---> <aura:application>
+         <c:ChildAttrinuteComp/>
+      </aura:application>
+
+- ParentAttributeCompController.js
+
+  ({
+      updateParentAttr : function(component, event, helper) {
+         component.set("v.parentAttr","Updated Parent attribute data!")       
+      }   
+  })
+
+- Data Binding [Topic Incomplete]
+
+ 1. Bound - Pass By Reference. 
+ 2. Unbound - Pass By Value.
+
+ ---> In Bound the changes are reflected from parent to child [because of pass by reference]
+ ---> In UnBound the changes are not reflected from child to parent [becuase of the pass by value]
+
+ ---> To customize the component just before the event is rendered we use 'init'event.
+ ---> init event - The value is set to the controller after the component initializes and before it is getting rendered.
+
+- Aura_Init_Handler_App.app
+
+ ---> <aura:application>
+         <c:Aura_Init_Handler/> 
+      </aura:application>
+
+- Aura_Init_HandlerController.js
+
+ ({
+event1   doInit : function(comp) {
+         comp.set("v.setMeOnInit","Magic of Init!")
+      },
+event2    doClick : function(comp) {
+          comp.set("v.setMeOnInit","Value set on button click")
+      } 
+ })
+
+- Aura_Init_Handler_Comp.cmp
+
+ ---> <aura:component>
+         <aura:attribute name="setMeOnInit" type="string" default="Default Value"/>
+  I/P    <p><b>{!v.setMeOnInit}1</b></p> 
+      // If we want to change the value before the component is getting initialized or rendered we can use <aura:handler>   
+         <aura:handler name="init" value="{!this}"  // !this -->indicates current one
+                       action="{!c.doInit}"/>  
+         <br/>
+         <lightning:button label="On click" 
+                           onclick="{!c.doClick}">               
+      </aura:component>
+       
+- O/P : Default Value1
+- O/P : before --> magic of controller init!
+        after on click --> Value set on button click  
+
+===================================================================================================================================================
+
+27 June
+ 
+ ---> Please refer to the screenshot of Calling Server-side Apex Controller...
+ ---> 1 component can talk to 1 apex controller at a time.
+ ---> we use $A.enqueueAction(action);In Helper.js because requests goes to the server asynchronously.
+ ---> After reaching the Apex controller the methods should be marked with @AuraEnabled  which should be executed by $A.enqueueAction.
+ ---> So by using @AuraEnabled only these methods are exposed to the component.
+ ---> When we use {c.xyz}, we are calling value return by the controller It can be server-side-controller (.JS controller )or client-side-controller (Apex Class).
+ ---> Server-side Controller actually is an Apex Class.
+
+- Calling Server-side Apex Controller action from Client-side Controller in Lightning Component
+ 
+- CallingServerSideActionComp.cmp
+
+ ---> <aura:component controller="SimpleServerSideController">
+         <aura:attribute name="firstName" type="string" default="Sachin"/>
+         <br/>
+         <lighntning:button label="Call ServerSideController"
+                            onclick="{!c.echo}"/>  
+      </aura:component>
+
+- CallingServerSideActionApp.app
+
+ ---> <aura:application>
+        <c:CallingServerSideActionComp/>  
+      </aura:application>
+
+- CallingServerSideActionCompController.js
+
+ ---> ({
+          echo : function(component, event, helper) {
+              var action = component.get('c.serverEcho'); // Created instance of the serverecho action
+              action.setParams({firstName:component.get('v.firstName')});
+           
+         
+              action.setCallback(this,function(response){                                         // function is driectly defined in parameter
+                                                             var state = response.getSate();
+                                                             if(state === 'SUCCESS') {
+                                                                 alert('Got response from the server'+response.getResturnValue()); 
+                                                             } else if(state === 'INCOMPLETE') {
+                                                                 alert('Incomplete');             // The '===' here is called strict check which does not convert LHS to RHS or vice versa and directly checks content.              
+                                                               } else if(state === 'ERROR') {                                                   
+                                                                    var errors = response.getError();
+                                                                    if(errors) {
+                                                                      if(errors[0] && errors[0].message) {       // Spreading error for better error code whike displaying
+                                                                         console.log('Error Message '+errors[0].message);                                                  
+                                                                      };                         
+                                                                    } else {
+                                                                         console.log('Unknown Error');                                
+                                                                      }                           
+                                                                 }
+                                                          });
+              $A.enqueueAction(action);          
+          } 
+      })
+
+- SimpleServerSideController.cls
+
+ ---> public with sharing class SimpleServerSideController {
+
+          @AuraEnabled
+          public static String serverEcho(string firstName) {
+              return ('Hello '+firstName+'from apex controller');   
+          }
+      }
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+- OpportunityDataComp.cmp
+
+ ---> <aura:component controller="OpportunityDataController">
+          <aura:attribute name="opportunities" type="Opprtunity[]"/>
+          <aura:attribute name="opport" type="Opprtunity"/>
+          <aura:attribute name="id" type="Opprtunity.Id" default="08e723tyg6td(Opportunity id)"/>
+          Opportunities:
+          <ui:button label="Get All opportunities" press="{!c.getOpps}">
+          <aura:iteration var="Opportunity" items="{!c.opportunities}">
+              <p>{!opportunities.Id}:{!opportunity.Name}:{opportunity.CloseDate}</p>
+          </aura:iteration>
+          <br/><br/>
+          Opportunity:
+          <lightning:button label="Get Opportunity"
+                            onclick="{!c.getOpp}"/> 
+          <br/>
+          <p>{!v.opport.Id}:{!v.opport.Account.Name}:{!v.opport.Description}</p> 
+      </aura:component> 
+
+- OpportunityDataCompController.js
+ 
+ ---> ({
+            getOpps : function(cmp) {
+                var action = cmp.get('getOpportunities');
+                action.setCallback(this,function(response){    // Here this represents the getOpportunities() action 
+                                                             var state = rsponse.getSate(); 
+                                                             if(state === 'SUCCESS') {
+                                                                 cmp.set('v.opportunities',response.getReturnValue());    
+                                                             }                                      
+                                                          });      
+             $A.enqueueAction(action);       
+            },
+           
+            getOpp : function(component) {
+                 var action = cmp.get('getOpportunities');
+                 action.setParams({id:component.get(v.id)})  
+                action.setCallback(this,function(response){    // Here this represents the getOpportunities() action 
+                                                             var state = rsponse.getSate(); 
+                                                             if(state === 'SUCCESS') {
+                                                                 cmp.set('v.oppor',response.getReturnValue());    
+                                                             }                                      
+                                                          });      
+             $A.enqueueAction(action);
+                           
+            }
+      })
+
+- OpportunityDataController.cls
+
+ ---> public with sharing class OpportunityDataController(Apex class) {
+          public OpportunityDataController() {
+     
+
+          }
+          @AuraEnabled    [For getting a list of all Opportunity Description]
+          public static List<Opportunities> getOpportunities() {
+             List<opportunity> opportunities = [SELECT Id, Name, CloseDate FROM Opportunity];
+             return opportunities;  
+          } 
+           
+          @AuraEnabled     [For getting a particular recordId Description]
+          public static Opportunity getOpportunity(Id id) {
+    
+              Opportunity opportunity = [SELECT Id, Account.Name, Description, CloseDate,
+                                        FROM opportunity WHERE Id =:id];
+                                        return opportunity; 
+               
+          }           
+      }
+
+- CallingServerSideActionApp.app
+
+ ---> <aura:application>
+        <!--<c:CallingServerSideActionComp/>-->
+        <c:OpportunityDataComp/>   
+      </aura:application>
+
+- Events
+
+ ---> Communication Between components is handled by Events.
+ ---> 2 types of Custom Events in Salesforce
+      i. Application Events --> follows Publish-Subscribe Event.[Not limited to any hierarchy can be fired and handled by any component].
+      ii.Component Events --> Build On Component Hierarchy.[Component Event can be registered with child component and handled by parent component].
+
+      ---> System Events - generated by system we cannot handle them.   
+ 
+
+ i. Application Event
+
+  ---> Follows a traditional Publish-Subscribe Mode.Fired from instance of a component and any component in the entire system can ahndle it.
+  
+- ApplicationEventApp.app
+
+ ---> <aura:application>
+          <c:PickListUsers/>
+          <br/><br/>
+          <c:WelcomeMSG/>  
+      <aura:application>
+
+- WelcomeMSG.cmp
+     
+ ---> <aura:component>
+          <aura:handle event="c:NewUser" action="{!c.getVal}"/>
+          <aura:attribute name="Name" type="string"/>
+          <h1>Welcome to WelcomeMSG Component!
+             <ui:outputText aura:id="userName" value=""/ >  
+          </h1>
+      </aura:component>  
+
+- PickList.cmp
+
+ ---> <aura:handler name="init" value="{!this}" action="{!c.doInit}"/> // here inpuSelect --> a dropdown basically
+      <aura:registerEvent name="NewUser" type="c:Newuser"/>
+      <ui:inputSelect label="ViewingAs" class="dynamic" aura:id="InputSelectDynamic"
+                      value='' change="{!c.onChange}"/>
+
+- NewUser.evt
+
+ --->   <aura:event type="APPLICATION" description="Event template">
+         <aura:attribute name="newuser" type="String">
+         
+      </aura:event>
+
+- PickListUserController.js
+
+ ---> ({
+           doInit : funciton() {      // For setting names in the dropdown
+              var users = [
+                {label:'SACHIN', value:'TENDULKAR', selected:'true'},   
+                {label:'RAHUL', value:'DRAVID'},           // Setting Dynamic value for dropdown 
+                {label:'MS', value:'DHONI'} 
+              ]
+           var inpuSelect = component.find('inputSelectDynamic'); // search the input and store it in the inputSelect.
+           inputSelect.set('v.options','users');   // Now the stored input will be set/displayed in the place of the options.
+           },
+
+           onChange : function() {
+               var nam = component.find('InputSelectDynamic').get('v.value'); // It will see what user is selected and will return its value i.e Lastname.
+               console.log(nam);
+               var eve = $A.get('e.c:NewUser'); here 'c:NewUser is custom event' // For notifying other component              
+               eve.setParam({'newuser':nam});
+               eve.fire();   // raise the event or call the event
+           }         
+      })
+
+- WelcomeMSGController.js
+
+ ---> ({
+          getval : function(component, event) {
+             var showName = event.getParam('newuser');
+             component.find('userName').set('v.value', showName);  
+          }
+      })
+---> component.find() - It returns the Aura.Component instance(s) by its local ID.
+If the Aura.Component local ID is unique, it returns the component and if there are multiple Aura.Component with the same local ID, it returns an array of the components.
+Syntax: component.find("auraid");
+---> Before handling we have to register the event.
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+- Component Event
+
+- ceEvent.evt
+
+ ---> <aura:event type="COMPONENT">
+          <aura:attribute name="message" type="string"/>
+      </aura:event>
+
+- ceNotifierComp.cmp [Publisher(Child) / notifies an event and will ahndle it]
+
+ ---> <aura:component>
+          <aura:registerEvent name="cmpEvent" type="c:ceEvent"/>
+          
+          <aura:handler name="cmpEvent" event="c:ceEvent" action="{!c.handleAtSource}"/> 
+          <h1> Simple Component Event!</h1>
+          <br/>
+          <lightning:button label="click to fire component Event!"
+                            onclick="{!c.fireComponentEvent}"/>
+      </aura:component>
+
+// So traversal of events from child to parent is called bubbling(by default ON) while parent to child is called capturing/phase. 
+
+- ceNotifierController.js
+
+  ---> ({                                                               
+            handleAtSource : function(component, event, helper) {
+               alert("Inside Child");               
+ 
+            },
+ 
+            fireComponentEvent : function(cmp, event) {
+                 var cmpEvent = cmp.getEvent('cmpEvent');
+                 cmpEvent.setParams({
+                     'message' : "A compoenet event is fired on Me!"+
+                      "It has happened so fast"          
+                 });
+                 cmpEvent.fire();
+            }       
+       }) 
+
+- ceNotifierHandlerApp.app
+
+ ---> <aura:application>
+          <!--c:ceNotifierComp/-->
+          <c:ceHandlerComp/>
+      </aura:application>  
+
+- ceHandlerComp.cmp [Parent Component handling the child fired event]
+
+ ---> <aura:component>
+         <h1>Parent Component</h1>
+         <aura:attribute name="messageFromEvent" type="String"/>
+         <aura:attribute name="numEvents" type="Integer" default="0"/>
+
+         <aura:handler name="cmpEvent" event="c:ceEvent action="{!c.handleComponentEvent}"
+                       phase="capture"/> // So that event should be executed from parent to child.
+         <c:cdNotifiercomp/>  
+         <p>{!v.messageFromEvent}!</p> 
+         <br/>
+         <p>Number of Events: {!v.numEvents}</p>   
+      </aura:component> 
+       
+- ceHandlerCompController.js
+  
+ ---> ({
+            handleComponentEvent : function(component, event) {
+                alert('inside Parent');
+                var message = event.getParam('message');  
+           
+                component.set('v.messagefromEvent',message); // Set the handler attribute based on event data.
+                
+                var numEventsHandled = parseInt(component.get('v.numEvents'))+1;
+                component.set('v.messageFromEvent',message);
+                event.stopPropagation(); // Used to stop propagation of event from parent to child [but condion : phase="capture" should be wriiten in the parent's component controller.js]
+                 // like here parent component controller is ceHandlerComp.cmp
+            }
+      })
+
+---> An Event can be handled by i. The component who instantiates it or in which it is present.[Parent handles event fired by child]
+                                ii.The component which creates it and fires it.  
+---> Deploy them.
+---> Install Slaesforce Lightning Inspector Extension in chrome for debugging.
+ 
+- Salesforce Connect
+
+ ---> Helps us with  realtime use of external data.Has some ready made connectors and we can make our connectors also
+      Connectors help us add or view that data in the org in context we want.
+
+------------ WILL BE LEARNING SOON LWC----------------------
+
+-----SAMPLE-------
+
+- Create Lightning Web Component [Hello World]
+
+- helloWorld.html
+
+ ---> <template>
+          <lightning-card title='HelloWorld' icon-name='custom:custom14'>
+             <div class='slds-m-around_mediun'> 
+                 <p>Hello, {greeting}!</p>
+                 <lighntning-input label="Name" value={greeting}
+                                   onchange={!changehandler}></lightning-input> 
+             <div>
+          </lightning-card> 
+      </template>
+
+- helloWorld.js
+    
+  ---> import { LightningElement } from 'lwc';
+ 
+       export default class HelloWorld extends LighntningElement { 
+            
+           @track   
+           greeting = 'World';
+       
+           changeHandler(event) {
+               this.greeting = event.target.value;  
+           } 
+       }
+
+- helloWorld.js-meta.xml
+
+ ---> <?xml version="1.0" encoding="UTF-8"?>
+      <LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+           <apiVersion>55.0</apiVersion>
+           <isExposed>true</isExposed>
+           <targets>
+                <target>lightning_AppPage</target>
+                <target>lightning_RecordPage</target>
+                <target>lightning_HomePage</target>
+           </targets>
+         </LightningComponentBundle>
+ 
+- Lightning Connect
+
+ ---> External Large data in your Org(it will not be real time and will eat up your Org space)
+      We can access part of the huge data without copying the data into  our Org.
+
+- Using Lightning Component as a Utility Bar
+
+ ---> <aura:component implements="force:appHostable,
+                                  flexipage:availableForAllPagesTypes"
+                                  access="global">
+ 
+ ---> Lightning Out - Use lightning component with the visualforce Pages
+      App
+      1.list components as a dependency,referenced in a call to $lighntning.createComponent().
+      2.Set access as Global.
+      3.Extends ltng:outApp/ltng:AppUnstyled
+      4.Only 1 App can be refered into a VF Page(<apex:includeLightning>$Lighntning.use(Lighnting App)) 
+  
+- lcvfApp.app
+
+  <aura:application extends="ltng:outApp"
+                    access="GLOBAL">
+    <aura:dependency resource="c:lcvfCompI"/>
+    <aura:dependency resource="c:lcvfCompII"/>
+    <aura:dependency resource="lighntning:button"/>
+     
+  </aura:application>       
+
+- lcvfComp.cmp
+
+  ---> <aura:component>
+          <aura:attribute name="VFPageValue" type="String" default="default"/>
+          <h1>Hello from simple Aura Component!</h1>
+          <br/>
+          <p>{!v.VFPageValue}</p>
+       </aura:component>
+
+- lcvfCompII.cmp [To show the user who has logged in]
+ 
+  ---> <aura:component>
+          <aura:attribute name="textColor" type="string" default="black"/>
+          <aura:attribute name="currentUserName" type="string"/>
+          <h1 style="{'color:'+v.textColor}">Welcome <b class='slds-badge'>
+              LoggedIn User:- {!v.currentUserName}!</b></h1>
+       </aura:component>
+    
+ ------------CREATING VISUALFORCE PAGE FOR APP-------------
+
+- VF_Page_with_LightningComp.page
+
+ ---> <apex:page>
+          <apex:includeLightning/>
+          <div id="lightDivI"></div>
+          <div id="lightDivII"></div>
+          <div id="lightDivIII"></div>
+          <div id="lightDivIV"></div>
+          <script>
+              $lightning.use('c:lcvfApp',function(){ // specify App that conatins dependencies.
+                                                     // and function to create components which were listed in the component.
+          
+                  $lightning.createComponent('c:lcvfComp,'{ 
+                                                         VFPageValue:'Wohoo,Lightning Out is an amazing feature of salesforce'
+                                                          },
+                                                          'lightDivI',              // Render VFPage in DivI
+                                                           function(cmp) {
+                                                               console.log('c:lcvfComp was created!');
+                                                                console.log(cmp.get('v.VFPageValue'));        
+                                                           })   
+                  })
+                  
+                   $Lightning.use('c:lcvfApp',function() {
+                       $Lightning.createComponent('lightning:button',{    // Render the button in DivII
+                          label:'Press Me!'   
+                       },
+                       'lightDivII',
+                        function(cmp) {
+                            console.log('button was created'); 
+                        })
+                   })  
+                       
+                   $Lightning.use('c:lcvfApp',function() {
+                       $Lightning.createComponent('c:helloWorld',{    // Render the helloWorld App in DivIV
+                           greeting : 'New World'
+                       },
+                       'lightDivIV',
+                        function(cmp) {
+                            console.log('button was created'); 
+                        });
+                   });                           
+          </script>   
+      </apex:page>
+    
+ ---> With the help of lightning Out  we can use lightning components within VF Pages.
+      To Do So follows the steps given below :
+ Step 1.list components as a dependency,referenced in a call to $lighntning.createComponent().
+ Step 2.Set access as Global.
+ Step 3.Extends ltng:outApp/ltng:AppUnstyled
+ Step 4.Only 1 App can be refered into a VF Page(<apex:includeLightning>$Lighntning.use(Lighnting App)) 
+       
+ - Override Standard Actions with the Help of Lightning Component
+
+- OverrieStdActionWithC.cmp
+ 
+  ---> <aura:component implements="lightning:actionOverride"
+                       access="global"
+                       controller=" OverrideStdActionWithLC">
+         
+           <aura:attribute name="acc" type="Account" default="{ 'sobjectType' : 'Account',
+                           'Name':'',
+                           'Description':''}"/>
+           <div class="slds-m-around--xx-large">
+           <div class="slds-form--stacked">
+           <div class="slds-form-element">
+           <div class="slds-form-element__control"> 
+           <ui:inputText aura:id="accName" label="Name" value="{!v.acc.Name}" class="slds-form-element">
+           <ui:inputText aura:id="accDescription" label="Name" value="{!v.acc.Description}" class="slds-form-element">   
+           </div>
+           </div>
+           <div class="slds-m-around--medium">
+           <button  class="slds-button--brand" onclick="{!c.creatAccount}">
+           </div>
+           </div>
+           </div>
+
+       </aura:component>
+
+- OverrieStdActionWithCController.js
+
+   ({
+       createAccount : function(component, event) {
+           var action = component.get('c.saveAccount');       
+           action.setParams({
+               'accRec' : component.get('v.acc');      
+           });
+          
+            action.setCallback(this,function(response){        
+                if(response.getState() === 'SUCCESS') {
+                    var accId = response.getReturnValue();
+                    var toastEvent = $A.get('e.force:showToast'); // here we will be Raising an event before showing anything 
+                    toastEvent.setParams({
+                        'title':'Success!',
+                        'type':'Success',
+                        'message':Account created Successfully!'      
+                    });
+                    toastEvent.fire();
+                   
+                    var navEvt = $A.get('e.force:navigateToSObject');
+                    navEvt.setParams({
+                        'recordId':accId,
+                        'slideDevName':'related'
+                    });
+                    navEvt.fire();      
+                }  
+            });
+            $A.enqueueAction(action);  
+       }    
+
+   })
+
+- OverrideStdActionWithLC.cls
+
+  ---> public with sharing class  OverrideStdActionWithLC {
+           public  OverrideStdActionWithLC() {
+
+           }
+           @AuraEnabled
+           public static ID saveAccount(Account accRec) {
+               try {
+                   insert accRec;     
+               } catch(Exception e) {
+                   throw new AuraHandledException(e.getMessage());  
+               }
+               return accrec.Id;
+           }
+       }
+
+- simpleCalculator.cmp
+
+ ---> <aura:component implements="force:appHostable,
+                                 felxipage:availableForAllPageTypes"
+                                 access="global">
+           <h1>Simple Calculator component</h1>
+           <h2>Try to make it available handy thorugh Utility Bar! </h2>
+       
+      </aura:component>   
+
+---> Utility Bar is like a small tab at bottom of page which is visible in every VF page for handy stuff.
+
+=====================================================================================================================================
+
+
+                       

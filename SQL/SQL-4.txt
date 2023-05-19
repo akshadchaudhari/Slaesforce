@@ -1,0 +1,260 @@
+1. NULL values do not take up physical space in the disk and while counting NULL values are not counted.
+2. NULL is a special marker.it is not a space,zero or empty stirng as they accqiure physical space in the disk.
+3. It means unknown or non-existential.
+
+- DESCRIBE Command - 
+
+1. Gives the structure of the specified table.
+2. Returns column names,nullable or not,and data types.
+Query - 
+DESC[RIBE] table_name;
+3. Can be used with DESC or DESCRIBE keywords.
+OR 
+4. Select the  table_name and press shift+f4.
+
+- SQL Statement Basics -
+
+1. SQL statements are not case-sensitive.
+2. SQL statements can be separated into multiple lines.
+3. Keywords cannot be abbreviated or split.
+4. In SQL Developer,SQL statements can be terminated by a semicolon ';' or a forward slash "/" but on new line only.
+5. One Space is needed in between two commands atleast.
+
+- Oracle Error Message - 
+
+1. They are in the form of ORA-187398 so copy thi sin google to find answer.
+
+- SELECT Statement - 
+
+1. SELECT statement is used to retrive data from the database.
+ Query - 
+ SELECT *|[col1,col2..coln] FROM table_name;
+2. "*" retrives all data without knowing table data.
+ Query -
+ SELECT * FROM table_name;
+3. We can retrive specific number of columns by writing the column names.
+ Query -
+ SELECT [col1,col2,col3] FROM table_name;
+
+- Column Aliases -
+
+1. Renames a column heading.
+2. AS keyword is used to increase readability.
+Query - 
+i. SELECT first_name fn,last_name ln FROM employees.
+ii.SELECT first_name AS fn,last_name AS ln FROM employees.
+3. AS keyword is useful for calculations.
+Query - 
+SELECT employee_id,salary +nvl(salary*commission_pct,0)+1000 as new_salary,salary FROM employees.
+so here nvl(salary*commission_pct,0)+1000 is replaced with new_salary 
+
+4. Aliases are used with the double quotation marks if our alias name contains space characters,special character
+   or it is used for handling case-sensitivity.
+Query - 
+SELECT first_name "Fn",last_name "l n",end_date "e*d" FROM employees.
+
+- Quote (Q) Operator  \ dual-->dummy table- 
+
+-->select 'My name is Akshad' from employee.
+1. It is a dummy table used by the SQL developers to show or explain thiongs.
+2. select q'[I'm using my computer]' as "Quote Operator" from dual.
+So here q' --> is quote operator which allows us to write special characters in the text.
+
+3. You can use any character as quotation mark delimeter.
+-->[],{},<>,or even any character like'A','*';
+-->Usually,[] is used as quotation mark delimeter.
+
+- DISTINCT & UNIQUE Operator - 
+
+1. They are used to eliminate the duplicate rows.
+2. SELECT DISTINCT job_id FROM employees. -->returns unique columns fro job_id column
+3. SELECT DISTINCT job_id,department_id FROM employees. -->returns unique columns from combination of job_id and department_id.
+4. Should be written before first column.
+
+- Concatenation Operator [||] -
+
+1. SELECT first_name || '' ||  last_name AS "Full Name" FROM employees.
+2.  SELECT first_name || '' ||  last_name AS "Full Name",designation FROM employees. 
+3. Concatenates two or more columns and returns a single output column value.
+4. Concatenation with NULL values does not return NULL,it returns the first part of concatenation other than NULL value.
+Using aliases improves readability of code.
+
+- Arithmetic Operator - 
+
+1. Arithmetic Operations with date values return new date values.
+eg) SELECT sysdate + 3 FROM dual;
+2. Arithmetic operations with NULL values return NULL.
+3. Follows BOADMAS rules.
+
+=================================================================================================================
+
+- Restricting Data - 
+
+- Using WHERE clause - 
+
+1. It limits the rows by a query.
+2. WHERE clause is used with:
+i.  Comparision operators (=<,>,<=,>=,<>,!=).
+ii. BETWEEN....AND,IN,LIKE,and NULL.
+iii.Logical Operators (AND,OR,NOT operators)
+Query - 
+SELECT column-name FROM table_name [WHERE conditions];
+
+- Comparision Operators - 
+
+1. SELECT * FROM employee WHERE mangaer_id != 100;/manger_id <>100;etc
+2. OPerators are:
+i. <,>,=,<=,>=,<>,!=
+ii.BETWEEN....AND,LIKE,IS NULL.
+Query - 
+SELECT *|{[DISTINCT ] column [alias]...}
+FROM table-name
+[WHERE logical expressions];
+ 
+- BETWEEN...AND Operator - 
+
+1. Retrives data between the specified lower and upper limit.
+2. The lower and upper limits are included.
+3. Many dta types like number,dtae,character values can be restricted with the BETWEEN..AND operator.
+Query - 
+SELECT * FROM employees WHERE salary BETWEEN 10000 AND 14000;
+SELECT * FROM employees WHERE hire_date BETWEEN '07-JAN-20' AND '07-FEB-22';
+
+- IN Operator [Comaparision Operator] - 
+
+* Strings are written in "''" -->single quotes so the oracle database recognize it as string.
+1. The IN operator is used to retrive the restricted values in a specified list.
+2. Many data types like number,date,character values can be used with the IN operator.
+3. The order of the specified value is not important.
+Query - 
+SELECT employee_id,first_name,last_name
+FROM employees
+WHERE employee_id IN (100,105,102,200);
+
+- LIKE Operator - 
+
+1. LIKE Operators are used for searching some texts in string values.
+2. LIKE operator is used to perform wildcard searches and retrives rows matching a certain character pattern.
+3. Wildcard patterns are : 1)% 2)_
+1)% -->i. A% -->Pattern in string which starts with 'A' letter.
+       ii.%A -->Pattern in string which ends with 'A' letter.
+       iii.%A% -->Pattern on string which conatins 'A' letter.
+2)_ -->i._a -->Pattern in string in which first letter is anything but second letter is a. 
+         _e_d-->Pattern in string in which first letter is anything but second letter is e third letter is anything fourth letter is d. 
+4. LIKE operators should be used with wildcard characters or it will be equivalent to '=' operator but slower than '=' operator.
+
+- Using the IS NULL Operator - 
+
+1. the IS NULL operator is used for searching NULL values.
+2. SELECT column-name FROM table-name WHERE colun-name IS NULL -->for searching NULL values.
+3. SELECT column-name FROM table-name WHERE colun-name IS NOT NULL -->for searching NOT NULL values.
+4. = NULL is not the same as the IS NULL.
+5. = NOT NULL is not the same as the IS NOT NULL.
+Query - 
+ SELECT * FROM employee WHERE manager_id IS NULL;
+
+- Logical Operators(AND,OR and NOT)
+
+1. AND means all conditions must be true. t^t=t otherwise false.
+2. OR means atleast one condition is true. t^f=t otherwise true.
+3. NOT means inverse of. ~t = f and ~f = t.
+4. NULL AND TRUE = NULL but NULL AND FALSE = FALSE.
+5. NULL OR TRUE = TRUE but NULL OR FALSE = NULL.
+6. ~NULL = NULL.
+
+- Rules Of Precedence - 
+
+Order  Meaning
+
+1.     Arithmetic Operators.
+2.     Concatenation Operator
+3.     Comparision Conditions
+4.     IS [NOT] NULL,LIKE, [NOT] IN
+5.     [NOT] BETWEEN
+6.     Not Equal To
+7.     NOT Logical Operator
+8.     AND Logical Operator
+9.     OR  Logical Operator 
+
+- Use paranthesis to avoid confusion or change the order of execution.    
+
+==========================================================================================================================================================
+
+   ---SORTING DATA---
+
+- ORDER BY Clause - 
+
+1. The ORDER BY clause chnages the returning rows order by column or alias or the numeric position of clomn(index)
+in the SELECT list.
+2. This ORDER BY clause can sort rows in ASC or DESC order.
+3. By default the order by is ASC order.
+4. We can order by alias also.
+5. And we can use coulmn position also.
+like--> SELECT fisrt_n,last_n,end_n FROM employees ORDER BY 1,2;
+here 1-->firt_n and 2-->last_n.
+6. Multiple rows can be used in ORDER BY clause.Then it sort by first row,if same then by second row and so on.
+7. It doesn't change the actual order of the rows in the table.
+Query - 
+SELECT column-names FROM table-name WHERE condition ORDER BY column-name.
+
+- ASC and DESC Operators -
+
+1. SELECT first_n,last_n,end_n FROM employees  ORDER BY first_n DESC,lasy_n DESC.
+ ---> Sorting individually.
+2. SELECT first_n,last_n,end_n FROM employees  ORDER BY first_n ASC,lasy_n DESC.
+3. Queries can be ordered in ascending and descending order individually.
+4. alias and numeric positions can be used with the ASC and DESC operators.
+5. NULL values are displayed last in ascending order.
+
+- NULLS FIRST and NULLS LAST Operators -
+
+-- they are used as for ascending order the NULL values are sorted at last and for descending values the NULL values are sorted at the beginning.
+1. The NULLS FIRST or NULLS LAST operators are used for changing the order of the NULL values.
+QUery - 
+SELECT first_n,last_n,end_n FROM employees ORDER BY 1 DESC NULLS LAST,last_n ASC NULLS FIRST.
+
+- ROWID and ROWNUM - 
+
+1. The ROWID is unique identifier(16 digit hexadecimal number) that contaibs physical address of a row.
+2. Oracle automatically generates a unique rowid at the time of insertion of row.
+3. Fastest way to access a single row is using its ROWID.
+4. It is permanent and it doesn't change.
+5. The information in the ROWID gives 
+i.  Disc Number
+ii. Cylinder
+iii.Block Number
+iv. Block offset.
+
+- ROWNUM -
+
+1. Logical sequence number given to the rows fetched form the table.
+2. Used to limit the returning rows in the table,you can use the ROWNUM column.
+3. ROWNUM is temporary.i.e if you change the query,the rownum number will refer to another row.
+4. SELECT employee_id,first_n,last_n,salary,rowid,rownum FROM (SELECT employee-id,first_n,last_n,salary,rowid FROM employees
+   WHERE department_id = 80 ORDER BY salary DESC)
+   WHERE ROWNUM <=5;
+use the ROWNUM after the ORDER BY clause so to avoid incorrect results.
+
+- FETCH clause [Alternative for ROWNUM and ROWID]-
+
+1. The FETCH Clause is used in conjunction with the SELECT and ORDER BY clauses to limit the rows and retrive a portion of the returning rows.
+Query - 
+[OFFSET rows_to_skip ROWS]
+ FETCH [FIRST|NEXT] [row_count|percent PERCENT] ROWS [ONLY | WITH TIES];
+
+OFFSET - specifies the number of rows to skip before the row limiting starts.
+ROW|ROWS - both of them can be used based on the returning rows in order to increase the semantic clarity.
+rows_to_skip -->if decimal then only mantisa part is considered and decimal part is ignored.
+                if NULL/Number specified greater than rows in query  then no rows are returned.
+FIRST|NEXT - use them based on situation.
+row_count|percent PERCENT - the row_count specify the number of rows to return ,the PERCENT specifies the percentage of
+the total number of selected rows to return.
+
+ONLY|WITH TIES - ONLY is used to return the specified number of rows or percentage of rows.
+                 The WITH TIES returns extra rows with the same value as the last row fetched.
+If we specify WITH TIES then we must not specify ORDER BY clause so no additional rows will be returned.
+
+- we can use FETCH clause with/without OFFSET.  
+Query - 
+SELECT first_n,last_n,salary FROM employees OFFSET 1 ROW FETCH FIRST 10 ROWS WITH TIES; -->no extra rows matching last row as no ORDER BY clause.
+SELECT NULL FROM employees OFFSET 1 ROW FETCH FIRST 10 ROWS WITH TIES; -->no rows are returned.

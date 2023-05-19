@@ -1,0 +1,3166 @@
+---> To downlaod Dependencies in Spring. Website : mvn repository and paste it inside the dependencies tag after dependency.
+---> Dependency Injection / IOC Inversion Of Control.     
+---> Spring Core is a module in which we ahve to simply mention what dependency you'll need and spring will give it to us. 
+---> Crtl space for package Import.
+
+- Dependency [Library] [Jar Files]
+
+ --->Dependency is nothing but a ‘Library’ that provides specific functionality that we can use in our application. 
+     In Spring-Boot, Dependency Management and Auto-Configuration work simultaneously.It is the auto-configuration that 
+     makes managing dependencies supremely easy for us. We have to add the dependencies in the pom.xml/build.gradle file.
+
+- Dependency Injection 
+
+ ---> Dependency injection is the ability of an object to provide the dependencies of another object. So, for example,
+      if you consider two classes A and B and say that class A uses the functionality of class B, 
+      it implies that class A has a dependency of class B.
+
+- Creating Spring Starter Project [means Spring Boot Project]
+ 
+ ---> 
+ 
+- How to Use SpringBoot Project
+
+ ---> Use @Component to tell spring you are responsible to create the object of a class.
+     i.e Making it Aware of.
+
+- Creating An Object in Springboot
+
+   Classname obj = getBean(Classname.class);
+// Now here getBeans is method of ApplicationContext so need its object to call this method.
+// Already given in main()
+  
+ public static void main(String[] args) {
+     ApplicationContext context = SpringApplication.run(FirstprojApplication,args);   
+ }
+// As here the run() return type is ApplicationContext it will return its object.
+// and we will be able to use it to access the getBeans(). 
+
+- SpringBoot Autowire
+
+ ---> @Autowired means the object will be created by spring i.e getting the atcual object of that class.
+ 
+
+  @Component
+- public class Alien {
+
+     @Autowired
+     Laptop lap;
+     
+     public void code(){
+       
+        lap.compile(); 
+     }
+  }
+
+---> Write @Component Above every class.[Create Awareness]
+---> Write @Autowired above variables(class type) to create object by spring.
+     i.e get actual object automatically.
+---> run springboot project as 'Springboot App'. 
+
+------------------ SPRING FRAMEWORK ---------------------
+ 
+- Bean Factory [Bean means Object,Class also]
+
+ ---> Create Maven Project [Stadalone Software (Core Application)] (Simple Spring Project)
+ ---> run Spring Project as 'Java Application'.
+ ---> Spring Provides us with feature for Dependency injection like IOC Inversion of Control.
+      IOC - Object crated by the spring framework.
+
+- public class Alien {
+
+ 
+     public void code(){
+       
+        System.out.println("I'm Coding");
+     }
+  }
+
+
+- public class App {
+
+      public static void main(String[] args) {
+         
+          // Interface          // Class
+          BeanFactory factory = new XmlBeanFactory(new FileSystemResource("spring.xml"));
+           
+          Alien obj = (Alien)factory.getBean("alien");  // factory contains getBean()      
+          obj.code();
+      }
+}
+
+- spring.xml [So that spring can know what the alien means specified in getBean()]
+
+ ---> Configuration for alien so spring can know what the alien means specified in getBean() means
+      or what to replace in its place if found in program [value kind of stuff].
+
+<?xml version="1.0" encoding="UTF-8"?> 
+.......
+
+ <bean id="alien" class="com.telusko.SpringDemo.Alien" scope="singleton"></bean> // for single instance of a class
+  <bean id="alien" class="com.telusko.SpringDemo.Alien" scope="prototype"></bean>
+
+// We have an attribute called as 'scope' in which if give value as 'singleton'
+// then it will create only one object of that class no matter how many times we try.
+// But if we want multiple insatnces(objects) of same class then provide the value 'prototype'
+// in the scope attribute.
+   
+---> So when a user says 'alien' give him the object of Alien[com.telusko.SpringDemo.Alien]
+
+// alien -> com.telusko.SpringDemo.Alien [springboot syntax]
+
+- Application Context
+
+ --->  Instead of BeanFactory Use ApplicationContext
+
+- public class App {
+
+      public static void main(String[] args) {
+          
+          // Interface                    // Class 
+          ApplicationContext factory = new ClassPathXmlApplicationContext("spring.xml");  
+          // Move the file in class path i.e inside package otherwise it will give exception file not found         
+ 
+          Alien obj = (Alien)factory.getBean("alien");  // factory contains getBean()      
+          obj.code();
+      }
+}
+
+- Spring Controller
+
+ ---> Bean is class here.
+ ---> JVM contains Container and Containers contains beans also called as class/object.
+      So when the Appication... line is seen by the compiler then it will go to Container and ask for
+      the object of class with 'id' which we have specified in the xml file.  
+
+- public class Alien {
+ 
+     int age;  
+
+     public void code(){
+       
+        System.out.println("I'm Coding");
+     }
+  }
+
+ 
+
+- public class App {
+
+      public static void main(String[] args) {
+          
+          // Interface                    // Class 
+          ApplicationContext factory = new ClassPathXmlApplicationContext("spring.xml");  
+          
+ 
+          Alien obj1 = (Alien)factory.getBean("alien");  // factory contains getBean()      
+          obj1.code();
+          obj1.age = 15;
+          System.out.println(obj.age);
+           
+          Alien obj2 = (Alien)factory.getBean("alien");  // factory contains getBean()      
+          obj2.code();
+          obj2.age = 15;
+          System.out.println(obj.age);
+           
+          Alien obj3 = (Alien)factory.getBean("alien");  // factory contains getBean()      
+          obj3.code();
+          System.out.println(obj3.age);
+      }
+}
+O/P : ALien Object Created..
+      I'm Coding 
+      15
+      I'm Coding  
+      15
+      I'm Coding    // When the scope attribute is set to 'prototype' value.
+      0
+
+---> From above output we observe that both the object reference point to the
+     same bean(object ) in the Container. 
+ 
+---> So here the bean/Object is singleton object [singleton Pattern] i.e only one copy of it.
+     Because by default Spring has feature i.e it follows Singleton Design Pattern.
+---> Singleton 
+  --> It will give us Object even if we don't ask for it.[At the start]
+---> Prototype
+  --> It will not give us object we have to ask for it. 
+---> When we don'tmention any type it is by default singleton. 
+
+- Setter Injection
+
+- public class Alien {
+ 
+     private int age;  
+
+     public Alien() {
+        System.out.println("Alien Object Created");
+     }     
+   
+     public int getAge() { // the methods names should have appropriate variable name/change the 
+                           // specified property as same as to the setter/geeter method name..
+        return age;        // otherwise error :- Inavalid property(variable) age.
+     }   
+   
+     public void setAge() {
+        System.out.println("Age Assigned");
+        this.age = age;  
+     }
+     
+     public void code(){
+       
+        System.out.println("I'm Coding");
+     }
+  }
+
+- Spring.xml
+ 
+ <?xml version="1.0" encoding="UTF-8">
+ <beans xmlns="https://www.springframework.org/schema/beans"
+        xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="https://www.springframework.org/schema/beans https://www.springfrmaework".org/schema/beans>
+
+        <bean id="alien" class="com.telusko>SprongDemo.Alien">
+             <property>name="age" value="10"</property> 
+        </bean>   
+
+ </bean>
+
+ 
+---> Generating Getters and Setters right click in window and go to source and 
+     select getters and setters.
+---> Variables are called property. 
+
+- Assign Reference Value [Ref Attribute]
+
+- Laptop.java
+
+ - public class Laptop {
+       
+     public void compile() {
+        System.out.println("Code Compiled"); 
+     } 
+   }
+ 
+- public class Alien {
+ 
+     private int age;   
+     private Laptop laptop;
+
+     public Alien() {
+        System.out.println("Alien Object Created");
+     }     
+   
+     public int getAge() { // the methods names should have appropriate variable name/change the 
+                           // specified property as same as to the setter/geeter method name..
+        return age;        // otherwise error :- Inavalid property(variable) age.
+     }   
+   
+     public void setAge() { // age value passed through th exml file.
+        System.out.println("Age Assigned");
+        this.age = age;  
+     }
+ 
+     public Laptop setLaptop(Laptop laptop) {
+        return laptop;        
+     }     
+
+     public Laptop getLaptop() {
+         this.laptop = laptop; 
+     } 
+    
+     public void code(){
+       
+        System.out.println("I'm Coding");
+     }
+  }
+
+- Spring.xml
+ 
+ <?xml version="1.0" encoding="UTF-8">
+ <beans xmlns="https://www.springframework.org/schema/beans"
+        xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="https://www.springframework.org/schema/beans https://www.springfrmaework".org/schema/beans>
+
+        <bean id="alien" class="com.telusko>SprongDemo.Alien">
+             <property name="age" value="10"</property> 
+             <property name="Laptop" ref="Laptop"></property> // Writing Laptop property in Alien bean as it needs Laptop Object.
+        // Writing ref Attribute so as to refer a Reference Value.                     
+        </bean> 
+         
+        <bean id="Laptop" class="com.telusko.SpringDemo.Laptop">
+             
+        </bean>    
+ </bean>
+
+
+O/p : Alien Object Created..
+      Age Assigned
+      I'm Coding..
+      Code Compiled
+      10  
+
+- Constructor Injection
+
+ ---> Two ways to assign values to varibales
+    1. Constructors
+    2. Setters
+
+ - public class Alien {
+ 
+     private int age;   
+     private Laptop laptop;
+
+ /*    public Alien() {
+        System.out.println("Alien Object Created");
+     }
+*/     // It gives error :- No default consrtuctor found as we are creating Alien object in the xml file.
+   
+     public int getAge() { // the methods names should have appropriate variable name/change the 
+                           // specified property as same as to the setter/geeter method name..
+        return age;        // otherwise error :- Inavalid property(variable) age.
+     }   
+   
+     public void setAge() {
+        System.out.println("Age Assigned");
+        this.age = age;  
+     }
+ 
+     public Laptop setLaptop(Laptop laptop) {
+        return laptop;        
+     }     
+
+     public Laptop getLaptop() {
+         this.laptop = laptop; 
+     } 
+    
+     public void code(){
+       
+        System.out.println("I'm Coding");
+        laptop.compile();   
+     }
+  }
+   
+- Spring.xml
+ 
+ <?xml version="1.0" encoding="UTF-8">
+ <beans xmlns="https://www.springframework.org/schema/beans"
+        xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="https://www.springframework.org/schema/beans https://www.springfrmaework".org/schema/beans>
+
+        <bean id="alien" class="com.telusko>SprongDemo.Alien">
+             <constructor-arg>value="12"</constructor-arg> // This is used to tell compiler to use arg constructor instead of default constructor.[Constructor for Normal Property]
+  //         <constructor-arg>ref="14"</constructor-arg> //  This is used to tell compiler to use arg constructor instead of default constructor.[Constructor for Reference Property]           
+             <property name="Laptop" ref="Laptop"></property> // Writing Laptop property in Alien bean as it needs Laptop Object.
+        // Writing ref Attribute so as to refer a Reference Value.                     
+        </bean> 
+         
+        <bean id="Laptop" class="com.telusko.SpringDemo.Laptop">
+             
+        </bean>    
+ </bean>
+
+---> NOTE : Use Constructor when we will comulsory going to assign value to Property.
+            But in case of Optional value assign to Property Use Setters otherwise constructor will give error.
+
+O/P : I'm Coding..
+      Code Compiled   
+      12   
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+- Autowire
+
+- Laptop.java
+
+- public interface Computer {
+
+   void compile();
+}
+
+- public class Laptop implements Computer {
+       
+     public void compile() {
+        System.out.println("Code Compiled in Laptop"); 
+     } 
+   }
+
+- public class Desktop implements Computer {
+       
+     public void compile() {
+        System.out.println("Code Compiled in Desktop"); 
+     } 
+   }
+    
+ - public class Alien {
+ 
+     private int age;   
+     private Computer com;
+
+     public int getAge() { // the methods names should have appropriate variable name/change the 
+                           // specified property as same as to the setter/geeter method name..
+        return age;        // otherwise error :- Inavalid property(variable) age.
+     }   
+   
+     public void setAge() {
+        System.out.println("Age Assigned");
+        this.age = age;  
+     }
+ 
+     public Laptop setLaptop(Computer com) {
+        return laptop;        
+     }     
+     
+     public Computer getCom() {
+         this.laptop = laptop; 
+     }       
+
+     public void code(){
+       
+        System.out.println("I'm Coding");
+        com.compile();
+     }
+  }
+ 
+Case 1:
+
+- Spring.xml
+ 
+ <?xml version="1.0" encoding="UTF-8">
+ <beans xmlns="https://www.springframework.org/schema/beans"
+        xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="https://www.springframework.org/schema/beans https://www.springfrmaework".org/schema/beans>
+
+        <bean id="alien" class="com.telusko>SprongDemo.Alien" autowire="byName">
+            // when we search using 'byName' property then it creates object by searching the name specified in the 'id' Attribute.
+             <property name="age" value="10">
+                            
+        </bean> 
+         
+        <bean id="laptop" class="com.telusko.SpringDemo.Laptop">
+             
+        </bean> 
+        
+        <bean id="desktop" class="com.telusko.SpringDemo.Desktop">
+              
+        </bean>      
+ </bean>   
+
+ ---> Autowire simply means you are informing spring framework hairsplitting if you want to set some property.
+      If you're looking for some property if the bean is available then it automatically only when.
+
+ O/P : Alien Object Created..
+       Age Assigned
+       I'm Coding..
+       Code Compiled in Laptop
+       10
+ 
+Case 2: Commenting the laptop 
+
+- Spring.xml
+ 
+ <?xml version="1.0" encoding="UTF-8">
+ <beans xmlns="https://www.springframework.org/schema/beans"
+        xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="https://www.springframework.org/schema/beans https://www.springfrmaework".org/schema/beans>
+
+        <bean id="alien" class="com.telusko>SprongDemo.Alien" autowire="byType"> 
+            // when we search using 'byType' property then it creates object by searching the Object Type specified in the 'id' Attribute.
+            // eg) here it searches in ALien Class and finds Computer interface having property 'com' which is implemented by the desktop class.
+            // so it will create objects of the classes which have implemented the Computer interface. 
+             <property name="age" value="10">
+                            
+        </bean> 
+         
+        <!-- bean id="laptop" class="com.telusko.SpringDemo.Laptop">
+             
+        </bean --> 
+        
+        <bean id="desktop" class="com.telusko.SpringDemo.Desktop">
+              
+        </bean>      
+ </bean>   
+
+O/P :  Alien Object Created..
+       Age Assigned
+       I'm Coding..
+       Code Compiled in Desktop
+       10
+
+Case 3: When two classes are available in the xml file.
+
+- 1 Way 
+
+---> By using Specified Property.
+
+- Spring.xml
+ 
+ <?xml version="1.0" encoding="UTF-8">
+ <beans xmlns="https://www.springframework.org/schema/beans"
+        xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="https://www.springframework.org/schema/beans https://www.springfrmaework".org/schema/beans>
+
+        <bean id="alien" class="com.telusko>SprongDemo.Alien" autowire="byType"> 
+            // when we search using 'byType' property then it creates object by searching the Object Type specified in the 'id' Attribute.
+            // eg) here it searches in ALien Class and finds Computer interface having property 'com' which is implemented by the desktop class.
+            // so it will create objects of the classes which have implemented the Computer interface. 
+             <property name="age" value="10">
+             <property name="com" ref="desktop"></property> // gives preference to desktop
+               <property name="com" ref="com"></property> // gives preference to Laptop
+                            
+        </bean> 
+         
+        <bean id="laptop" class="com.telusko.SpringDemo.Laptop">
+             
+        </bean> 
+        
+        <bean id="desktop" class="com.telusko.SpringDemo.Desktop">
+              
+        </bean>      
+ </bean>   
+ 
+- 2 Way 
+
+---> if you don't want to mention property and  want to go for all using autowire byType.
+     With the help of Primary Attribute.      
+
+- Spring.xml
+ 
+ <?xml version="1.0" encoding="UTF-8">
+ <beans xmlns="https://www.springframework.org/schema/beans"
+        xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="https://www.springframework.org/schema/beans https://www.springfrmaework".org/schema/beans>
+
+        <bean id="alien" class="com.telusko>SprongDemo.Alien" autowire="byType"> 
+            // when we search using 'byType' property then it creates object by searching the Object Type specified in the 'id' Attribute.
+            // eg) here it searches in ALien Class and finds Computer interface having property 'com' which is implemented by the desktop class.
+            // so it will create objects of the classes which have implemented the Computer interface. 
+             <property name="age" value="10">
+             
+                            
+        </bean> 
+         
+        <bean id="laptop" class="com.telusko.SpringDemo.Laptop" primary="true">
+             
+        </bean> 
+        
+        <bean id="desktop" class="com.telusko.SpringDemo.Desktop">
+              
+        </bean>      
+ </bean>   
+
+---> So even if you don't have any thing assigned in autowire like byName or byType.It will go for byType and prefer the bean with primary attribute.
+
+
+O/P :  Alien Object Created..
+       Age Assigned
+       I'm Coding..
+       Code Compiled in Laptop
+       10
+
+=======================================================================================================================================================================
+
+- Spring MVC
+
+- What is MVC?
+
+- Controller 
+ ---> controller who will accept the request who has send a response.
+ 
+- Model 
+ ---> Will Hold the data.
+
+- View 
+ ---> Want a view technology.
+
+---> It will work as a servlet.Advantage is separating the tasks.  
+
+---> In older JSP and Servlet technology
+  --> Servlet was used as Controller.
+  --> POJO / Simple Java Class was used as Model.
+  --> JSp was used as View. 
+
+---> One Servlte can handle only one request while one Controller can handle multiple requests.
+
+- Flow Of Request
+
+ ---> Fitst request will be recieved by the front controller[Dispatch Servlet] which provided by spring itself
+      then according to the type of request it will forward it to the actual controller[which we define].
+ ---> The dispatch servlet is able to figure out which type of request is through file which we configure.
+     
+--------------------- SPRING MVC WITH HELP OF SPRING BOOT -----------------------
+
+- Spring MVC Using Spring Boot
+
+ ---> Create SpringBoot project using 'spring starter project option' by right click.
+ ---> Now for storing JSP pages we need to create a Webpapp Folder in src->main->webapp folder.
+ ---> to create JSP file then right click->others->search jsp file.
+
+- index.jsp
+
+<%@ page language="java" contentTypes="text/html; charset=UTF-8"
+                         pageEncoding="UTF-8">
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+     Welcome to Telusko
+</body>  
+</html> 
+
+// here when we have webapp we need to add server like tomcat,etc.But here we can run it as 'SpringBoot app' only.
+// Or else add server and run it as 'Run as Server'.
+
+O/P : Error and not calling index.jsp as we have not built any Actual Controller.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------
+
+- Creating Controller
+
+ --->  Create a Class(Controller).
+
+@Controller
+- public class HomeController {
+
+   @RequestMapping("/")  // @RequestMapping is used for mapping web requests onto handler methods in request-handling classes. 
+      along with request value/path as a parameter.here param is '/' denotes home page so it will handle requests coming from home page.
+      public String home() {
+      
+         return "index.jsp"; // This will inform dispatch controller to call the specified page to be returned.  
+      }
+}
+
+---> @RequestMapping is used for mapping web requests onto handler methods in request-handling classes. 
+     The process of mapping web requests to handler methods is also called routing.
+
+O/P : downloading jsp page
+
+---> JSP is not converted into Servlet and requires Tomcat for it.Pre-integrated Tomcat is not able to convert it into servlet.
+
+- Tomcat Jasper[Library]
+
+ ---> Which converts the JSP into Servlet.
+ ---> Go to mvn repository and download tomcat jasper library.
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+- Accepting User Input
+
+- HomeController.java
+
+@Controller
+- public class HomeController {
+
+   @RequestMapping("/")  // @RequestMapping is used for mapping web requests onto handler methods in request-handling classes. 
+      along with request value/path as a parameter.here param is '/' denotes home page so it will handle requests coming from home page.
+      public String home() {
+      
+         return "index.jsp"; // This will inform dispatch controller to call the specified page to be returned.  
+      }
+
+   @RequestMapping("add") {
+      public String add(HttpServletRequest req)      // to fetch input from user HttpServletRequest object created.
+      // This object 'req' is available in tomacat.SpringBoot know this due to dependency injection
+      
+      int i = Integer.parseInt(req.getParameter("num1")); 
+      int j = Integer.parseInt(req.getParameter("num2")); 
+     
+      int num3 = i+j;
+      // To send variable to jsp page two ways 1. http session 2.send dispatch servlet 
+         
+      HttpSession session = req.getSession(); // getSession is used to get Session object
+      session.setAttribute("num3",num3); // the second is attribute whose name should be same as that of on the JSP page.
+      // Used to set attribute
+
+         return "result.jsp";       
+      // return "result.jsp?num3="+ num3;  // 2.send dispatch servlet 
+
+      }    
+}
+
+- index.jsp
+
+<%@ page language="java" contentTypes="text/html; charset=UTF-8"
+                         pageEncoding="UTF-8" isELIgnored="false"%> // so it does not ignore the expression. 
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+       Welcome to Telusko
+ 
+       <form action="add">
+          Enter 1st number : <input type="text" name="num1"></br>
+          Enter 2nd number : <input type="text" name="num2"></br>
+          <input type="submit">  
+       </form>
+
+</body>  
+</html>
+ 
+
+- result.jsp
+
+<%@ page language="java" contentTypes="text/html; charset=UTF-8"
+                         pageEncoding="UTF-8" isELIgnored="false"%> // so it does not ignore the expression. 
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+       Result is : ${num3}   [JSTL Syntax]
+</body>  
+</html>
+ 
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+- @RequestParam
+
+Use :To pass Parameters as arguments in function
+
+- HomeController.java
+
+@Controller
+- public class HomeController {
+
+   @RequestMapping("/")  // @RequestMapping is used for mapping web requests onto handler methods in request-handling classes. 
+      along with request value/path as a parameter.here param is '/' denotes home page so it will handle requests coming from home page.
+      public String home() {
+      
+         return "index.jsp"; // This will inform dispatch controller to call the specified page to be returned.  
+      }
+
+   @RequestMapping("add") {
+      public String add(@RequestParam("num1")int i,@RequestParam("num2")int j,HttpSession session)   {   
+     
+      int num3 = i+j;
+      // To send variable to jsp page two ways 1. http session 2.send dispatch servlet 
+        
+      session.setAttribute("num3",num3); // the second is attribute whose name should be same as that of on the JSP page.
+      // Used to set attribute
+
+         return "result.jsp";        
+      }    
+}
+
+- index.jsp
+
+<%@ page language="java" contentTypes="text/html; charset=UTF-8"
+                         pageEncoding="UTF-8" isELIgnored="false"%> // so it does not ignore the expression. 
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+       Welcome to Telusko
+ 
+       <form action="add">
+          Enter 1st number : <input type="text" name="num1"></br>
+          Enter 2nd number : <input type="text" name="num2"></br>
+          <input type="submit">  
+       </form>
+       <hr>
+       <form action="getAlien" method="get">
+            Enter your id: <input type="text" name="aid"><br>
+            <input type="submit">
+       </form>         
+</body>  
+</html>
+ 
+- result.jsp
+
+<%@ page language="java" contentTypes="text/html; charset=UTF-8"
+                         pageEncoding="UTF-8" isELIgnored="false"%> // so it does not ignore the expression. 
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+       Result is : ${num3}   [JSTL Syntax]
+</body>  
+</html>
+ 
+- Spring MVC [Model And View]
+
+Use: Remove the HttpSession object from Paramter
+
+- HomeController.java
+
+@Controller
+- public class HomeController {
+
+   @RequestMapping("/")  // @RequestMapping is used for mapping web requests onto handler methods in request-handling classes. 
+      along with request value/path as a parameter.here param is '/' denotes home page so it will handle requests coming from home page.
+      public String home() {
+      
+         return "index.jsp"; // This will inform dispatch controller to call the specified page to be returned.  
+      }
+
+   @RequestMapping("add") {
+      public ModelAndView add(@RequestParam("num1")int i,@RequestParam("num2")int j) {   
+      
+         ModelAndView mv = new ModelAndView();
+         mv.setViewName("result.jsp");   // sets viewname 
+
+         int num3 = i+j;
+         // To send variable to jsp page two ways 1. http session 2.send dispatch servlet 
+        
+         mv.addObject("num3",num3); // the second is attribute whose name should be same as that of on the JSP page.
+         // Used to add Data in the Object
+
+         return mv;   // here will have data and view name.      
+      }    
+}
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+- Prefix and Suffix
+
+Use : 1. If in future i want to go for some other View technology then i will not mention extension.
+      2. Secure the web pages bu keeping them in webinav folder which are private 
+         the only way to call them is through controller.But if we want to make them public then place 
+         the pages in different folder.   
+
+---> Create A folder views and put the JSP pages in the views folder.
+
+- HomeController.java
+
+@Controller
+- public class HomeController {
+
+   @RequestMapping("/")  // @RequestMapping is used for mapping web requests onto handler methods in request-handling classes. 
+      along with request value/path as a parameter.here param is '/' denotes home page so it will handle requests coming from home page.
+      public String home() {
+      
+         return "index"; // This will inform dispatch controller to call the specified page to be returned.  
+      }
+
+   @RequestMapping("add") {
+      public ModelAndView add(@RequestParam("num1")int i,@RequestParam("num2")int j) {   
+      
+         ModelAndView mv = new ModelAndView(); // We can pass the viewname in the constructor also.
+         mv.setViewName("result");   // sets viewname 
+
+         int num3 = i+j;
+         // To send variable to jsp page two ways 1. http session 2.send dispatch servlet 
+        
+         mv.addObject("num3",num3); // the second is attribute whose name should be same as that of on the JSP page.
+         // Used to add Atrribute to the Object and addObject(AttributeName,AttributeValue) <-- Syntax
+         // It will add the 'num3' attribute to the model in ModelView so that we can access it in JSP page through AttributeName num3(Leftone) 
+
+         return mv;   // here will have data and view name.      
+      }    
+}
+
+---> We have to do configuration in application property so that Dispatch Servlet will be able to know the location of JSP pages and to add .jsp extension to them.
+
+---> Spring Docs // website : springboot application properties [All Properties]
+
+- application properties
+
+spring.mvc.view.preffix = /views/       [giving path of pages as prefix] such as /views/(result from the java file).
+spring.mvc.view.suffix = .jsp           [giving extension to the JSP pages]
+
+- Model and ModelMap
+
+- Model
+
+--->  // Model behaves same as model view only we have to not specify view. 
+---> To Add data in the object.
+
+- HomeController.java
+
+@Controller
+- public class HomeController {
+
+   @RequestMapping("/")  // @RequestMapping is used for mapping web requests onto handler methods in request-handling classes. 
+      along with request value/path as a parameter.here param is '/' denotes home page so it will handle requests coming from home page.
+      public String home() {
+      
+         return "index"; // This will inform dispatch controller to call the specified page to be returned.  
+      }
+
+   @RequestMapping("add") {
+      public String add(@RequestParam("num1")int i,@RequestParam("num2")int j,Model m) {   
+      // Model behaves same as model view only we have to not specify view.      
+
+         m.setViewName("result");   // sets viewname 
+
+         int num3 = i+j;
+         // To send variable to jsp page two ways 1. http session 2.send dispatch servlet 
+        
+         mv.addAttribute("num3",num3); // the second is attribute whose name should be same as that of on the JSP page.
+         // Used to add Object and addAttribute(AttributeName(dataName),AttributeValue(data)) <-- Syntax
+
+         return "result";   // here will have data and view name.      
+      }    
+}
+  
+---------------------------------------------------------------------------------------------------------------------------------------------
+         
+- ModelMap
+
+---> Model behaves same as model view only we have to not specify view and has Map features.
+     Data is added in Mapo format (key,value) pair.
+---> To Add Map type data in the object.
+
+- HomeController.java
+
+@Controller
+- public class HomeController {
+
+   @RequestMapping("/")  // @RequestMapping is used for mapping web requests onto handler methods in request-handling classes. 
+      along with request value/path as a parameter.here param is '/' denotes home page so it will handle requests coming from home page.
+      public String home() {
+      
+         return "index"; // This will inform dispatch controller to call the specified page to be returned.  
+      }
+
+   @RequestMapping("add") {
+      public String add(@RequestParam("num1")int i,@RequestParam("num2")int j,Model m) {   
+      // Model behaves same as model view only we have to not specify view.      
+
+         m.setViewName("result");   // sets viewname 
+
+         int num3 = i+j;
+         // To send variable to jsp page two ways 1. http session 2.send dispatch servlet 
+        
+         mv.addAttribute("num3",num3); // the second is attribute whose name should be same as that of on the JSP page.
+         // Used to add Object and addAttribute(AttributeName(dataName),AttributeValue(data)) <-- Syntax
+
+         return "result";   // here will have data and view name.      
+      }    
+}
+
+
+- Need of ModelAttribute(annotation) CLearified in next topic Continue
+
+ ---> Create Model Package.
+
+- public class Alien {
+
+    private int aid;
+    private String aname;
+      
+    public int getAid() {
+        return aid;
+    }
+     
+    public void setAid(int aid) {
+        this.aid = aid;
+    } 
+
+    public String setAname(String aname) {
+        this.aname = aname;  
+    }
+ 
+     public String getAname() {
+        this.aname = aname;  
+    }
+
+    @Override
+    public String toString() {
+       return "Alien [aid="+ aid +", aname="+ aname +"]";  
+    }
+}
+
+- HomeController.java
+
+@Controller
+- public class HomeController {
+
+   @RequestMapping("/")  // @RequestMapping is used for mapping web requests onto handler methods in request-handling classes. 
+      along with request value/path as a parameter.here param is '/' denotes home page so it will handle requests coming from home page.
+      public String home() {
+      
+         return "index"; // This will inform dispatch controller to call the specified page to be returned.  
+      }
+
+   @RequestMapping("add") {
+      public String add(@RequestParam("num1")int i,@RequestParam("num2")int j,Model m) {   
+      // Model behaves same as model view only we have to not specify view.      
+
+         m.setViewName("result");   // sets viewname 
+
+         int num3 = i+j;
+         // To send variable to jsp page two ways 1. http session 2.send dispatch servlet 
+        
+         mv.addAttribute("num3",num3); // the second is attribute whose name should be same as that of on the JSP page.
+         // Used to add Object and addAttribute(AttributeName(dataName),AttributeValue(data)) <-- Syntax
+
+         return "result";   // here will have data and view name.      
+      }  
+
+    @RequestMapping("addAlien") 
+        public String addAlien(@RequestParam("aid")int aid,@RequestParam("aname")String aname,Model m) {
+
+        Alien a = new Alien(); 
+        a.setAid(aid);
+        a.setAname(aname); 
+  
+        m.addAttribute("alien",a);  // So now when we specify alien in jsp page then we will be able to access the 'a' Alien Object.       
+
+        return "result";
+    }  
+}
+
+- result.jsp
+
+<%@ page language="java" contentTypes="text/html; charset=UTF-8"
+                         pageEncoding="UTF-8" isELIgnored="false"%> // so it does not ignore the expression. 
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+       Result is : ${alien}   [JSTL Syntax]
+</body>  
+</html>
+
+- index.jsp
+
+<%@ page language="java" contentTypes="text/html; charset=UTF-8"
+                         pageEncoding="UTF-8" isELIgnored="false"%> // so it does not ignore the expression. 
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+       Welcome to Telusko
+ 
+       <form action="addAlien">
+          Enter 1st number : <input type="text" name="num1"></br>
+          Enter 2nd number : <input type="text" name="num2"></br>
+          <input type="submit">  
+       </form>
+
+</body>  
+</html>
+
+---> Here it is showed that we manually pass the parameters and assign them to the Alien Object 
+     to avoid this we will be using Model Attribute.As it automatically assigns value to them.
+
+
+- HomeController.java
+
+@Controller
+- public class HomeController {
+
+   @RequestMapping("/")  // @RequestMapping is used for mapping web requests onto handler methods in request-handling classes. 
+      along with request value/path as a parameter.here param is '/' denotes home page so it will handle requests coming from home page.
+      public String home() {
+      
+         return "index"; // This will inform dispatch controller to call the specified page to be returned.  
+      }
+
+   @RequestMapping("add") {
+      public String add(@RequestParam("num1")int i,@RequestParam("num2")int j,Model m) {   
+      // Model behaves same as model view only we have to not specify view.      
+
+         m.setViewName("result");   // sets viewname 
+
+         int num3 = i+j;
+         // To send variable to jsp page two ways 1. http session 2.send dispatch servlet 
+        
+         mv.addAttribute("num3",num3); // the second is attribute whose name should be same as that of on the JSP page.
+         // Used to add Object and addAttribute(AttributeName(dataName),AttributeValue(data)) <-- Syntax
+
+         return "result";   // here will have data and view name.      
+      }  
+
+    @RequestMapping("addAlien") 
+        public String addAlien(@ModelAttribute Alien a) {
+
+        return "result";
+    }  
+}
+
+---> Model Attribute does the job of automatically assigning the values to the attributes in the object and data in the Model also.
+ aadAlien(@ModelAttribute("a1") Alien a) 
+// Here we can give another name to the object 'a' as 'a1' also.
+
+- result.jsp
+
+Case : 1
+
+<%@ page language="java" contentTypes="text/html; charset=UTF-8"
+                         pageEncoding="UTF-8" isELIgnored="false"%> // so it does not ignore the expression. 
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+       Result is : ${a1}   [JSTL Syntax]
+</body>  
+</html> 
+
+---> A twist here is it all works without ModelAttribute Aslo but as a convention we write it.
+
+ @RequestMapping("addAlien") 
+        public String addAlien(Alien a) {
+
+        return "result";
+    } 
+---> But now we have to write the same name in the result.jsp. 
+
+- result.jsp
+
+Case : 2
+
+<%@ page language="java" contentTypes="text/html; charset=UTF-8"
+                         pageEncoding="UTF-8" isELIgnored="false"%> // so it does not ignore the expression. 
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+       Result is : ${alien}   [JSTL Syntax]
+</body>  
+</html> 
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+
+- Model Attribute at Method Level
+
+- HomeController.java
+
+@Controller
+- public class HomeController {
+
+   // SpringFramework will call this first after compilation.
+   @ModelAttribute       // This will create model object and add attribute to the model object
+   public void modelData(Model m) {
+
+     m.addAttribute("name","Aliens");
+   }
+ 
+   @RequestMapping("/")  // @RequestMapping is used for mapping web requests onto handler methods in request-handling classes. 
+      along with request value/path as a parameter.here param is '/' denotes home page so it will handle requests coming from home page.
+      public String home() {
+      
+         return "index"; // This will inform dispatch controller to call the specified page to be returned.  
+      }
+
+   @RequestMapping("add") {
+      public String add(@RequestParam("num1")int i,@RequestParam("num2")int j,Model m) {   
+      // Model behaves same as model view only we have to not specify view.      
+
+         m.setViewName("result");   // sets viewname 
+
+         int num3 = i+j;
+         // To send variable to jsp page two ways 1. http session 2.send dispatch servlet 
+        
+         mv.addAttribute("num3",num3); // the second is attribute whose name should be same as that of on the JSP page.
+         // Used to add Object and addAttribute(AttributeName(dataName),AttributeValue(data)) <-- Syntax
+
+         return "result";   // here will have data and view name.      
+      }  
+
+    @RequestMapping("addAlien") 
+        public String addAlien(@ModelAttribute Alien a) {
+
+        return "result";
+    }  
+}
+
+
+---> Here it is showed that we manually pass the parameters and assign them to the Alien Object 
+     to avoid this we will be using Model Attribute.As it automatically assigns value to them.
+
+- result.jsp
+
+<%@ page language="java" contentTypes="text/html; charset=UTF-8"
+                         pageEncoding="UTF-8" isELIgnored="false"%> // so it does not ignore the expression. 
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>f title here</title>
+</head>
+<body>
+       Result is : ${alien}   [JSTL Syntax]
+
+       Welcome Back ${name} 
+</body>  
+</html> 
+
+------------------------------- SPRING MVC PROJECT ---------------------------------
+
+---> Create a Maven Web Application Project.
+---> Add Tomcat Server externally.
+---> Spring MVC does not require main file remove it.
+---> Setup the Tomcat Server by going to right click on project name->spring mvc proper..->java build path->(add java folder if missing)->set up tomcat server by 'add library')
+---> Download and add Spring Web MVC dependencies in pom.xml file.(if Error with the controllers).
+---> In view folder two files index.jsp,result.jsp.
+
+- Configurations
+
+ ---> In the webapp->WEB-INF->web.xml file we have to write configurations.
+
+- web.xml
+
+<!DOCTYPE web-app PUBLIC
+"-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+"http://java.sun.com/dtd/web-app_2_3.dtd"> 
+ 
+---> The first request will go to web.xml
+
+<web-app>
+
+ <servlet>
+     <servlet-name>telusko</servlet-name>
+     <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class> // written so as to call it first when a request has arrived
+ </servlet>
+
+ <servlet-mapping>
+    <servlet-name>telusko</servlet-name> // Name should be same as in servlet tag for mapping purpose
+    <url-pattern></url-pattern>
+ </servlet-mapping>
+
+</web-app>
+
+- telusko-servlte.xml [The xml file is given the name according to the name in the servlet tag]
+
+<beans xmlns="https://www.springframework.org/schema/beans"
+       xmlns:ctx="http://www.springframework.org/schema/context"
+       xmlns:xsi="htpp://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www/springframework.org/schema/beans/spring-beans-2.5.xsd
+       http://www.springframwork.org/schema/mvc
+       http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+
+       <ctx:component-scan base-package="com.telusko"></ctx:component-scan> // To tell the spring in which location we have our controllers written
+       <ctx:annotation-config></ctx:annotation-config> // To tell spring that we have used annotations in controllers/.java file.
+
+       <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+              <property name="prefix" value="/views/"></property>    
+              <property name="suffix" value=".jsp"></property>  
+       </bean>
+
+</beans> 
+
+// We can skip the bean tag here and just move the index.jsp pages from views to webapp folder and write the extension .jsp in .java folder then it will work 
+   without the bean tag also.
+// org.springframework.web.servlet.view.InternalResourceViewResolver ---> package path.
+
+- index.jsp
+
+<%@ page language="java" contentTypes="text/html; charset=UTF-8"
+                         pageEncoding="UTF-8" isELIgnored="false"%> // so it does not ignore the expression. 
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+       Welcome to Telusko
+ 
+       <form action="addAlien">
+          Enter 1st number : <input type="text" name="num1"></br>
+          Enter 2nd number : <input type="text" name="num2"></br>
+          <input type="submit">  
+       </form>
+
+</body>  
+</html>
+
+- result.jsp
+
+<%@ page language="java" contentTypes="text/html; charset=UTF-8"
+                         pageEncoding="UTF-8" isELIgnored="false"%> // so it does not ignore the expression. 
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>f title here</title>
+</head>
+<body>
+       Result is : ${alien}   [JSTL Syntax]
+
+       Welcome Back ${name} 
+</body>  
+</html> 
+
+------------------------------- SPRING BOOT -------------------------------
+
+- Post Mapping
+
+- HomeController.java
+
+@Controller
+- public class HomeController {
+
+   // SpringFramework will call this first after compilation.
+   @ModelAttribute       // This will create model object and add attribute to the model object
+   public void modelData(Model m) {
+
+     m.addAttribute("name","Aliens");
+   }
+ 
+   @RequestMapping("/")  // @RequestMapping is used for mapping web requests onto handler methods in request-handling classes. 
+      along with request value/path as a parameter.here param is '/' denotes home page so it will handle requests coming from home page.
+      public String home() {
+      
+         return "index"; // This will inform dispatch controller to call the specified page to be returned.  
+      }
+
+   @RequestMapping("addAlien") {
+      public String add(@ModelAttribute Alien a) {   
+     
+         return "result";        
+      }  
+
+/*    @RequestMapping("addAlien")          // Will accept Both GET and POST Requests
+        public String addAlien(@ModelAttribute Alien a) {
+
+        return "result";
+    } */                                 
+   
+/*    @GetMapping("addAlien")         // Will accept only GET request 
+        public String addAlien(@ModelAttribute Alien a) {
+
+        return "result";
+    } */
+  
+    @PostMapping("addAlien")       //  Will Accept only Post Request
+        public String addAlien(@ModelAttribute Alien a) {
+
+        return "result";
+    }  
+}
+
+---> Until we were using Post Mapping i.e sending data to the server.
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
+- GET Mapping [Recieving Data From the Server]
+
+- Alien.java
+
+ - public class Alien {
+ 
+     private int aid;   
+     private String aname;
+
+   
+     public Alien() {
+        super(); 
+        this.aid = aid;
+        this.aname = aname; 
+     }    
+
+       return aid;        
+     }     
+
+     public void setAid(int aid) {
+        this.aid = aid;  
+     }
+ 
+     public String SetAname() {
+        return aname;        
+     }     
+     
+     public void getAname(String aname) {
+         this.aname = aname; 
+     }       
+
+     public String toString(){
+         return "Alien [aid=" + aid + ", aname" + aname + "]";  
+  }
+
+- HomeController.java
+
+@Controller
+- public class HomeController {
+
+   // SpringFramework will call this first after compilation.
+   @ModelAttribute       // This will create model object and add attribute to the model object
+   public void modelData(Model m) {
+
+     m.addAttribute("name","Aliens");
+   }
+ 
+   @RequestMapping("/")  // @RequestMapping is used for mapping web requests onto handler methods in request-handling classes. 
+      along with request value/path as a parameter.here param is '/' denotes home page so it will handle requests coming from home page.
+      public String home() {
+      
+         return "index"; // This will inform dispatch controller to call the specified page to be returned.  
+      }
+
+   @RequestMapping("add") {
+      public String add(@RequestParam("num1")int i,@RequestParam("num2")int j,Model m) {   
+      // Model behaves same as model view only we have to not specify view.      
+
+         m.setViewName("result");   // sets viewname 
+
+         int num3 = i+j;
+         // To send variable to jsp page two ways 1. http session 2.send dispatch servlet 
+        
+         mv.addAttribute("num3",num3); // the second is attribute whose name should be same as that of on the JSP page.
+         // Used to add Object and addAttribute(AttributeName(dataName),AttributeValue(data)) <-- Syntax
+
+         return "result";   // here will have data and view name.      
+      }  
+
+
+    @GetMapping("getAliens")         // Will accept only GET request 
+        public String getAlien(Model m) {
+
+        List<Alien> aliens = Arrays.asList(new ALiens.asList(101,"Navin"), new Alien("Rose")); 
+        m.addAttribute("result",aliens);
+         
+  //    return aleins.toString(); reason specified below
+        
+        return "showAliens";      // jsp page
+    } 
+ 
+}
+
+// asList() for creating multiple Lists.
+
+---> In Spring MVC when we return String it is returned as name and it tries to search the jsp page by name we have returned.
+eg) if i return string akshad then it will search for jsp page name akshad.jsp.
+
+- index.jsp
+
+<%@ page language="java" contentTypes="text/html; charset=UTF-8"
+                         pageEncoding="UTF-8" isELIgnored="false"%> // so it does not ignore the expression. 
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+     
+        ${result}          
+ 
+</body>  
+</html>
+
+- result.jsp
+
+<%@ page language="java" contentTypes="text/html; charset=UTF-8"
+                         pageEncoding="UTF-8" isELIgnored="false"%> // so it does not ignore the expression. 
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>f title here</title>
+</head>
+<body>
+       Result is : ${alien}   [JSTL Syntax]
+
+       Welcome Back ${name} 
+</body>  
+</html> 
+
+- showAliens.jsp
+
+<%@ page language="java" contentTypes="text/html; charset=UTF-8"
+                         pageEncoding="UTF-8" isELIgnored="false"%> // so it does not ignore the expression. 
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+     
+        ${result}          
+ 
+</body>  
+</html>
+
+=========================================================================================================================================
+
+- Spring ORM [Object Relational Mapping]
+
+---> It is used to map the Data to the Database.
+---> Hibernate Connects the Database with the Spring.
+---> Spring ORM Connects the Hibernate with the Spring.
+---> Craetes Insantance of Hibernate in the SpringFramework.
+---> To implement Spring ORM we need JPA[Java Persistence API].  
+
+---> We can map Classes with the table as :
+  ---> ClassName is the Table Name
+  ---> Variables are the Columns(Attributes) of the Table.
+  ---> Objects of the Class are the Rows in the Table.
+
+SPRING APPLICATION(Spring Framework) <----> SPRING ORM(Technique  to access a relational database from an object-oriented language.) <----> HIBERNATE(Spring ORM Framework) <----> MYSQL.
+
+---> Spring ORM will create Insantance of Hibernate in the SpringFramework.
+---> Configuration will be done in Spring Framework.
+---> Spring Transaction will be handled by Spring Tx (spring transaction).
+  
+- Connecting to Database 
+
+ 1. JDBC
+ 2. Hibernate [Its An ORM Framework]
+
+ ---> Adding Dependencies to work with hibernate.
+   --> Download Hibernate ORM Hibernate Core dependency in pom.xml file.
+ ---> Adding Dependencies to work with transactions.
+   -->  Download Spring Transaction dependency in pom.xml file.
+ ---> Adding Dependencies to work with MYSQL Database.
+   -->  Download MYSQL Connector dependency in pom.xml file.
+ ---> Adding Dependencies to work with Connection Pooling.(Number of Connection at a Time).
+   -->  Download c3p0 dependency(third party service) in pom.xml file.
+ 
+
+- telusko-servlet.xml [From Spring Project]
+ 
+<beans xmlns="https://www.springframework.org/schema/beans"
+       xmlns:ctx="http://www.springframework.org/schema/context"
+       xmlns:xsi="htpp://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www/springframework.org/schema/beans/spring-beans-2.5.xsd
+       http://www.springframwork.org/schema/mvc
+       http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+       http://www.springframwork.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+
+       <ctx:component-scan base-package="com.telusko"></ctx:component-scan> // To tell the spring in which location we have our controllers written
+       <ctx:annotation-config></ctx:annotation-config> // To tell spring that we have used annotations in controllers/.java file.
+
+       <bean id="myDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+           <property name="driverClass" value="com.mysql.jdbc.Driver"></property>
+           <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/telusko"></property>
+           <property name="user" value="root"></property>  
+           <property name="password" value="526543"></property>  
+       
+           <property name="minPoolSize" value="5"></property>
+           <property name="maxPoolSize" value="10"></property>  
+           <property name="maxIdleTime" value="30000"></property>
+       </bean>
+         
+       <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+           <property name="dataSource" value="myDataSource"></property>
+           <property name="packageToScan" value="com.telusko.springmvc.model"></property>  
+           <property name="hibernateProperties">
+                <props>
+                     <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop> // MySQL Used therfore MySQLDialect
+                     <prop key="hibernate.show_sql">true</prop> // To show sql in console
+                </props>    
+           </property> 
+       </bean>         
+         
+       <bean id="myTransactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+           <property name="sessionFactory" ref="sessionFactory" />
+       </bean>
+    
+       <tx:annotation-driven transaction-manager="myTransactionManager" />     
+
+       <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">   
+           <property name="prefix" value="/views/"></property>
+           <property name="suffix" value=".jsp"></property> 
+       </bean>
+</beans>  
+
+---> For better understanding of this file read it from bottom to up.
+
+- MySQL and DAO 
+
+ ---> Install MySQL and MySQL Workbench and give password.
+
+- DAO [Data Access Object]
+
+ ---> Create a Package and create Class named as DAO[Data Access Object] and place in it.In SpringBoot we refer it as Repository.
+
+---> To fetch data we use session and to use sessions we use sessionFactory.
+
+- ALienDAO.java
+
+@Component          // So that Spring makes its object Automatically for us. 
+- public class AlienDao {
+
+    @Autowired 
+    private SessionFactory sessionFactory;  
+
+    @Transactional               // It will take care of transaction begins and ends,etc.
+    public List<Alien> getAliens() {
+       
+         Session session = sessionFactory.getCurrentSession(); // To get current session
+         List<Alien> aliens = session.createQuery("from Alien",Alien.class).list(); // so the .list() will return the data in list format from the database.
+         
+         return aliens;   
+    }
+}
+
+---> We have to begin transaction and before doing anything on the Database and after done we have to commit the work on Database.
+
+- HomeController.java
+
+@Controller
+- public class HomeController {
+
+   @Autowired
+   private AlienDao dao;  
+
+   // SpringFramework will call this first after compilation.
+   @ModelAttribute       // This will create model object and add attribute to the model object
+   public void modelData(Model m) {
+
+     m.addAttribute("name","Aliens");
+   }
+ 
+   @RequestMapping("/")  // @RequestMapping is used for mapping web requests onto handler methods in request-handling classes. 
+      along with request value/path as a parameter.here param is '/' denotes home page so it will handle requests coming from home page.
+      public String home() {
+      
+         return "index"; // This will inform dispatch controller to call the specified page to be returned.  
+      }
+
+   @RequestMapping("addAlien") {
+         public  String addAlien(@ModelAttribute Alien a) {
+          
+             return "result";        
+      }  
+
+    @GetMapping("getAliens")         // Will accept only GET request 
+        public String getAlien(Model m) {
+
+        m.addAttribute("result",dao.getAliens());
+         
+  //    return aleins.toString(); reason specified below
+        
+        return "showAliens";      // jsp page
+    } 
+}
+
+---> While working with Hibernate Model Classes should be made Entities.
+
+- Alien.java [Model Package Classes]
+
+ @Entity  // To connect Model Classes with Database Tables.
+ - public class Alien {
+ 
+     @Id
+     private int aid;   
+     private String aname;
+
+     public int getAid() { 
+        return aid;        
+     }     
+
+     public void setAid(int aid) {
+        this.aid = aid;  
+     }
+ 
+     public String SetAname() {
+        return aname;        
+     }     
+     
+     public void getAname(String aname) {
+         this.aname = aname; 
+     }       
+
+     @Override
+     public String toString(){
+         return "Alien [aid=" + aid + ", aname" + aname + "]";  
+     } 
+  }
+
+- result.jsp
+
+<%@ page language="java" contentTypes="text/html; charset=UTF-8"
+                         pageEncoding="UTF-8" isELIgnored="false"%> // so it does not ignore the expression. 
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>f title here</title>
+</head>
+<body>
+       Result is : ${alien}   [JSTL Syntax]
+
+       Welcome Back ${name} 
+</body>  
+</html> 
+
+- index.jsp
+
+<%@ page language="java" contentTypes="text/html; charset=UTF-8"
+                         pageEncoding="UTF-8" isELIgnored="false"%> // so it does not ignore the expression. 
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+     
+        ${result}          
+ 
+</body>  
+</html>
+
+- showAliens.jsp
+
+<%@ page language="java" contentTypes="text/html; charset=UTF-8"
+                         pageEncoding="UTF-8" isELIgnored="false"%> // so it does not ignore the expression. 
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+     
+        ${result}          
+ 
+</body>  
+</html>
+----------------------------------------------------------------------------------------------------------------------------------------
+
+- Add and Fetch [Fetching 1 Alien]
+
+- HomeController.java
+
+@Controller
+- public class HomeController {
+
+   @Autowired
+   private AlienDao dao;  
+
+   // SpringFramework will call this first after compilation.
+   @ModelAttribute       // This will create model object and add attribute to the model object
+   public void modelData(Model m) {
+
+     m.addAttribute("name","Aliens");
+   }
+ 
+   @RequestMapping("/")  // @RequestMapping is used for mapping web requests onto handler methods in request-handling classes. 
+      along with request value/path as a parameter.here param is '/' denotes home page so it will handle requests coming from home page.
+      public String home() {
+      
+         return "index"; // This will inform dispatch controller to call the specified page to be returned.  
+      }
+
+   @RequestMapping("addAlien") {
+         public  String addAlien(@ModelAttribute("result") Alien a) {
+               
+             dao.addAlien(a);
+           
+             return "showAliens";        
+      }  
+
+    @GetMapping("getAliens")         // Will accept only GET request 
+        public String getAlien(Model m) {
+
+        m.addAttribute("result",dao.getAliens());
+         
+  //    return aleins.toString(); reason specified below
+        
+        return "showAliens";      // jsp page
+    } 
+    
+    @GetMapping("getAlien") 
+        public String getAlien(@RequestParam int aid, Model m) {
+
+            m.addAttribute("result", dao.getAlien(aid));
+              
+            return "showAliens";  
+        } 
+}
+
+- ALienDAO.java [DAO Layer]
+
+@Component          // So that Spring makes its object Automatically for us. 
+- public class AlienDao {
+
+    @Autowired 
+    private SessionFactory sessionFactory;  
+
+    @Transactional               // It will take care of transaction begins and ends,etc.
+    public List<Alien> getAliens() {
+       
+         Session session = sessionFactory.getCurrentSession(); // To get current session
+         List<Alien> aliens = session.createQuery("from Alien",Alien.class).list(); // so the .list() will return the data in list format from the database.
+         
+         return aliens;   
+    }
+   
+    @Transactional 
+    public void addAlien(Alien a) {
+             
+        Session session = sessionFactory.getCurrentSession();
+        session.save(a);      // To save in database 
+    } 
+ 
+    @Transactional
+    public Alien getAlien(int aid) {
+         
+       Session session = sessionFactory.getCurrentSession();
+       Alien a = session.get(Alien.class, aid);  // To get Alien.class-> type of Alien and aid from user. 
+       // We can use Load() also here.
+
+       return a;  
+    }
+}
+
+- result.jsp
+
+<%@ page language="java" contentTypes="text/html; charset=UTF-8"
+                         pageEncoding="UTF-8" isELIgnored="false"%> // so it does not ignore the expression. 
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>f title here</title>
+</head>
+<body>
+       Result is : ${alien}   [JSTL Syntax]
+
+       Welcome Back ${name} 
+</body>  
+</html> 
+
+- index.jsp
+
+<%@ page language="java" contentTypes="text/html; charset=UTF-8"
+                         pageEncoding="UTF-8" isELIgnored="false"%> // so it does not ignore the expression. 
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+       Welcome to Telusko
+        
+       <form action="addAlien">
+           Enter your id: <input type="text" name="aid"><br>
+           Enter your name: <input ytpe="text" name="aname"><br>
+           <input type="submit">      
+       </form> 
+       <hr>
+       <form action="getAlien" method="get">                  // For Getting a Particular Alien.
+          Enter your id: <input type="text" name="aid"><br>
+          <input type="submit">             
+       </form>         
+</body>  
+</html>
+
+- showAliens.jsp
+
+<%@ page language="java" contentTypes="text/html; charset=UTF-8"
+                         pageEncoding="UTF-8" isELIgnored="false"%> // so it does not ignore the expression. 
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+     
+        ${result}          
+ 
+</body>  
+</html>
+
+- Alien.java [Model Package Classes]
+
+ @Entity  // To connect Model Classes with Database Tables.
+ - public class Alien {
+ 
+     @Id
+     private int aid;   
+     private String aname;
+
+     public int getAid() { 
+        return aid;        
+     }     
+
+     public void setAid(int aid) {
+        this.aid = aid;  
+     }
+ 
+     public String SetAname() {
+        return aname;        
+     }     
+     
+     public void getAname(String aname) {
+         this.aname = aname; 
+     }       
+
+     @Override
+     public String toString(){
+         return "Alien [aid=" + aid + ", aname" + aname + "]";  
+     } 
+  }
+
+- telusko-servlet.xml [From Spring Project]
+ 
+<beans xmlns="https://www.springframework.org/schema/beans"
+       xmlns:ctx="http://www.springframework.org/schema/context"
+       xmlns:xsi="htpp://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www/springframework.org/schema/beans/spring-beans-2.5.xsd
+       http://www.springframwork.org/schema/mvc
+       http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+       http://www.springframwork.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+
+       <ctx:component-scan base-package="com.telusko"></ctx:component-scan> // To tell the spring in which location we have our controllers written
+       <ctx:annotation-config></ctx:annotation-config> // To tell spring that we have used annotations in controllers/.java file.
+
+       <bean id="myDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+           <property name="driverClass" value="com.mysql.jdbc.Driver"></property>
+           <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/telusko"></property>
+           <property name="user" value="root"></property>  
+           <property name="password" value="526543"></property>  
+       
+           <property name="minPoolSize" value="5"></property>
+           <property name="maxPoolSize" value="10"></property>  
+           <property name="maxIdleTime" value="30000"></property>
+       </bean>
+         
+       <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean"> // sessionFactory is the object of LocalSessionFactoryBean.
+           <property name="dataSource" value="myDataSource"></property>
+           <property name="packageToScan" value="com.telusko.springmvc.model"></property>  
+           <property name="hibernateProperties">
+                <props>
+                     <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop> // MySQL Used therfore MySQLDialect
+                     <prop key="hibernate.show_sql">true</prop> // To show sql in console
+                </props>    
+           </property> 
+       </bean>         
+        
+       // We need to create sessionFactory as we work with multiple sessions while working in Hibernate. 
+       <bean id="myTransactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+           <property name="sessionFactory" ref="sessionFactory" /> // We refer because its object is created above.
+       </bean>
+    
+       <tx:annotation-driven transaction-manager="myTransactionManager" />  // Spring will mangae all transaction from database   
+
+       <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">   
+           <property name="prefix" value="/views/"></property>
+           <property name="suffix" value=".jsp"></property> 
+       </bean>
+</beans>  
+
+---> here the <bean> and <property> are the files.
+
+---> Spring ORM = Spring + Hibernate.
+
+------------------------------- SPRING BOOT -----------------------------------
+
+- Spring Data JPA Configuration
+
+---> Download MySQL Connector/J Dependency in pom.xml file. // So SpringBoot will connect our application with MySQL.
+---> Downlaod Spring Boot Data JPA Starter in pom.xml file. // So as to Connect to database using Spring Application.
+
+- application.properties
+
+spring.mvc.prefix=/views/
+spring.mvc.suffix= .jsp
+
+spring.datasource.url=jdbc:mysql://localhost:3306/telusko         // Here telusko is the database name created in the mysql workbench.
+
+spring.datasource.username=root
+spring.datasource.password=12345678
+
+spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.MySQLDialect // So as to tell SpringBoot we are using MySQL
+
+- AlienRepo [Interface] (DAO Layer)
+
+  public interface AlienRepo extends JpaRepository<Alien, Integer> {    // Syntax :- JpaRepository<type of class, Primary Key dataType> 
+
+  }
+
+- HomeController.java
+
+@Controller
+- public class HomeController {
+
+   @Autowired       
+   AlienRepo repo; // Interface spo we need class
+
+   // SpringFramework will call this first after compilation.
+   @ModelAttribute       // This will create model object and add attribute to the model object
+   public void modelData(Model m) {
+
+     m.addAttribute("name","Aliens");
+   }
+ 
+   @RequestMapping("/")  // @RequestMapping is used for mapping web requests onto handler methods in request-handling classes. 
+      along with request value/path as a parameter.here param is '/' denotes home page so it will handle requests coming from home page.
+      public String home() {
+      
+         return "index"; // This will inform dispatch controller to call the specified page to be returned.  
+      }
+
+   @RequestMapping("addAlien") {
+         public  String addAlien(@ModelAttribute("result") Alien a) {
+               
+             dao.addAlien(a);
+           
+             return "showAliens";        
+      }  
+
+    @GetMapping("getAliens")         // Will accept only GET request 
+        public String getAlien(Model m) {
+
+        m.addAttribute("result", repo.findAll());
+        
+        return "showAliens";      // jsp page
+    } 
+    
+    @GetMapping("getAlien") 
+        public String getAlien(@RequestParam int aid, Model m) {
+                          
+            List<Alien> aliens = Arrays.asList(new Alien(101,"Navin"), new ALien(102,"Rose"));
+            m.addAttribute("result", new Alien(aid,"Navin"));
+              
+            return "showAliens";  
+        } 
+}
+
+- Alien.java [Model Package Classes]
+
+ @Entity  // To connect Model Classes with Database Tables.
+ - public class Alien {
+ 
+     @Id
+     private int aid;   
+     private String aname;
+       
+     // When we make a class as Entity then we compulsory need default constructor.    
+     public Alien() { 
+
+     }
+ 
+     public Alien(int aid, String aname) {
+         super();
+         this.aid = aid;
+         this.aname = aname; 
+     }      
+
+     public int getAid() { 
+        return aid;        
+     }     
+
+     public void setAid(int aid) {
+        this.aid = aid;  
+     }
+ 
+     public String SetAname() {
+        return aname;        
+     }     
+     
+     public void getAname(String aname) {
+         this.aname = aname; 
+     }       
+
+     @Override
+     public String toString(){
+         return "Alien [aid=" + aid + ", aname" + aname + "]";  
+     } 
+}
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+
+- JPARepository Add and Fetch
+
+- HomeController.java
+
+@Controller
+- public class HomeController {
+
+   @Autowired       
+   AlienRepo repo; // Interface  variable 
+
+   // SpringFramework will call this first after compilation.
+   @ModelAttribute       // This will create model object and add attribute to the model object
+   public void modelData(Model m) {
+
+     m.addAttribute("name","Aliens");
+   }
+ 
+   @RequestMapping("/")  // @RequestMapping is used for mapping web requests onto handler methods in request-handling classes. 
+      along with request value/path as a parameter.here param is '/' denotes home page so it will handle requests coming from home page.
+      public String home() {
+      
+         return "index"; // This will inform dispatch controller to call the specified page to be returned.  
+      }
+
+   @RequestMapping("addAlien") {
+         public  String addAlien(@ModelAttribute("result") Alien a) {
+               
+             dao.addAlien(a);
+           
+             return "showAliens";        
+      }  
+
+    @GetMapping("getAliens")         // Will accept only GET request 
+        public String getAlien(Model m) {
+
+        m.addAttribute("result", repo.findAll());
+        
+        return "showAliens";      // jsp page
+    } 
+    
+    // Taking ID as Inputs from the user and display its name 
+    @GetMapping("getAlien") 
+        public String getAlien(@RequestParam int aid, Model m) {
+                          
+           
+            m.addAttribute("result", repo.getOne(aid));
+              
+            return "showAliens";  
+        } 
+
+     @PostMapping(value="addAlien") 
+     public String addAlien(@ModelAttribute Alien a) {
+      
+          repo.save(a);
+          return "result";
+     }        
+}
+
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+- Query DSL
+
+- HomeController.java
+
+@Controller
+- public class HomeController {
+
+   @Autowired       
+   AlienRepo repo; // Interface spo we need class
+
+   // SpringFramework will call this first after compilation.
+   @ModelAttribute       // This will create model object and add attribute to the model object
+   public void modelData(Model m) {
+
+     m.addAttribute("name","Aliens");
+   }
+ 
+   @RequestMapping("/")  // @RequestMapping is used for mapping web requests onto handler methods in request-handling classes. 
+      along with request value/path as a parameter.here param is '/' denotes home page so it will handle requests coming from home page.
+      public String home() {
+      
+         return "index"; // This will inform dispatch controller to call the specified page to be returned.  
+      }
+
+   @RequestMapping("addAlien") {
+         public  String addAlien(@ModelAttribute("result") Alien a) {
+               
+             dao.addAlien(a);
+           
+             return "showAliens";        
+      }  
+
+    @GetMapping("getAliens")         // Will accept only GET request 
+        public String getAlien(Model m) {
+
+        m.addAttribute("result", repo.findAll());
+        
+        return "showAliens";      // jsp page
+    } 
+    
+    // Taking ID as Inputs from the user and display its name 
+    @GetMapping("getAlien") 
+        public String getAlien(@RequestParam int aid, Model m) {
+                          
+           
+            m.addAttribute("result", repo.getOne(aid));
+              
+            return "showAliens";  
+        } 
+
+    
+    @GetMapping("getAlienByName") //getAlienByName ---> URL
+        public String getAlienByName(@RequestParam String aname, Model m) {
+                          
+           
+            m.addAttribute("result", repo.findByAname(aname));
+              
+            return "showAliens";  
+        } 
+      
+
+     @PostMapping(value="addAlien") 
+     public String addAlien(@ModelAttribute Alien a) {
+      
+          repo.save(a);
+          return "result";
+     }        
+}
+
+- AlienRepo [Interface] (DAO Layer)
+
+  public interface AlienRepo extends JpaRepository<Alien, Integer> {    // Syntax :- JpaRepository<type of class, Primary Key dataType> 
+
+        List<Alien>findByAname(String aname);     // Query DSL [Domain Specific Language]
+  }
+
+- index.jsp
+
+<%@ page language="java" contentTypes="text/html; charset=UTF-8"
+                         pageEncoding="UTF-8" isELIgnored="false"%> // so it does not ignore the expression. 
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+       Welcome to Telusko
+        
+       <form action="addAlien">    // action is methodName or URL.
+           Enter your id: <input type="text" name="aid"><br>
+           Enter your name: <input ytpe="text" name="aname"><br>
+           <input type="submit">      
+       </form> 
+       <hr>
+       <form action="getAlien" method="get">                  // For Getting a Particular Alien.
+          Enter your id: <input type="text" name="aid"><br>
+          <input type="submit">             
+       </form>     
+        <hr>
+       <form action="getAlienByName" method="get">                  // For Getting a Particular Alien.
+          Enter your name: <input type="text" name="aname"><br>
+          <input type="submit">             
+       </form>          
+</body>  
+</html>
+
+- telusko-servlet.xml [From Spring Project]
+ 
+<beans xmlns="https://www.springframework.org/schema/beans"
+       xmlns:ctx="http://www.springframework.org/schema/context"
+       xmlns:xsi="htpp://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www/springframework.org/schema/beans/spring-beans-2.5.xsd
+       http://www.springframwork.org/schema/mvc
+       http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+       http://www.springframwork.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+
+       <ctx:component-scan base-package="com.telusko"></ctx:component-scan> // To tell the spring in which location we have our controllers written
+       <ctx:annotation-config></ctx:annotation-config> // To tell spring that we have used annotations in controllers/.java file.
+
+       <bean id="myDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+           <property name="driverClass" value="com.mysql.jdbc.Driver"></property>
+           <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/telusko"></property>
+           <property name="user" value="root"></property>  
+           <property name="password" value="526543"></property>  
+       
+           <property name="minPoolSize" value="5"></property>
+           <property name="maxPoolSize" value="10"></property>  
+           <property name="maxIdleTime" value="30000"></property>
+       </bean>
+         
+       <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean"> // sessionFactory is the object of LocalSessionFactoryBean.
+           <property name="dataSource" value="myDataSource"></property>
+           <property name="packageToScan" value="com.telusko.springmvc.model"></property>  
+           <property name="hibernateProperties">
+                <props>
+                     <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop> // MySQL Used therfore MySQLDialect
+                     <prop key="hibernate.show_sql">true</prop> // To show sql in console
+                </props>    
+           </property> 
+       </bean>         
+        
+       // We need to create sessionFactory as we work with multiple sessions while working in Hibernate. 
+       <bean id="myTransactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+           <property name="sessionFactory" ref="sessionFactory" /> // We refer because its object is created above.
+       </bean>
+    
+       <tx:annotation-driven transaction-manager="myTransactionManager" />  // Spring will mangae all transaction from database   
+
+       <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">   
+           <property name="prefix" value="/views/"></property>
+           <property name="suffix" value=".jsp"></property> 
+       </bean>
+</beans>  
+
+- showAliens.jsp
+
+<%@ page language="java" contentTypes="text/html; charset=UTF-8"
+                         pageEncoding="UTF-8" isELIgnored="false"%> // so it does not ignore the expression. 
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+     
+        ${result}          
+ 
+</body>  
+</html>
+
+---> Query DSL Has a Specific Syntax :- findBy/getByVariableName();  // Query DSL 
+---> where VariableName should start with Capital Letter and we can use order by clause also 
+      like findByAnameOrderByAidDesc(String aname); 
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+- Query Annotation 
+
+Use : Fetching In Customizable Way i.e Fetch data but specific data only. 
+
+- AlienRepo [Interface] (DAO Layer)
+
+  public interface AlienRepo extends JpaRepository<Alien, Integer> {    // Syntax :- JpaRepository<type of class, Primary Key dataType> 
+
+        List<Alien>findByAname(String aname);     // Query DSL [Domain Specific Language]
+         
+        @Query("from Alien where aname= :name")  // Here name is the placeholder.i.e whatever will come in aname at run time will be mapped in ":name".
+        List<Alien> find(@Param("name") String aname);  // Use ':' for denoting placeholder.   
+  }
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+- What is Rest [Respresentational State Transfer]
+
+ ---> In this we actually transfer the state of the object therefore it is called Respresentational State Transfer.
+ ---> It can be also thought as URL. 
+ ---> Everything in Rest is Stateless so no session on server. 
+ ---> Servers in Rest Doesn't remember sessions they gives us tokens so we would be remembered by them.
+ ---> Data is called Resources.
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+- Postman Setup
+
+Use : For API Testing.
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+- Rest GetMapping
+
+ ---> @ResponseBody 
+   --> It Sends data as actual data and not as the jsp name. i.e it does not search for jsp page because we have configuredit in application.properties page.
+
+- AlienController.java
+
+ ---> public class AlienController {
+
+         @Autowired
+         AlienRepo repo;
+          
+         @GetMapping("aliens")
+         @ResponseBody
+         public String getAliens() {
+            
+            List<Alien> aliens = repo.findAll();
+            
+            return aliens;
+         }       
+
+      }
+//But this will return data in Text format and we want it in JSON format.
+
+- AlienController.java
+
+      @Controller 
+ ---> public class AlienController {
+
+         @Autowired
+         AlienRepo repo;
+          
+         @GetMapping("aliens")
+         @ResponseBody
+         public List<Alien> getAliens() {
+            
+            List<Alien> aliens = repo.findAll();
+            
+            return aliens;
+         }       
+      }
+// This will return data in JSON Format.
+---> Use findBy for searching and returning multiple records.
+---> Use getOne/getById for searching and returning a particular record.
+
+-------------------------------------------------------------------------------------------------------------------------------------
+
+- Jackson [Data Converter]
+
+ ---> It converts our Java Data into JSON data and vice versa.
+
+------------------------------------------------------------------------------------------------------------------------------------
+
+- Path Variable
+
+ ---> - AlienController.java
+
+      @Controller 
+      public class AlienController {
+
+         @Autowired
+         AlienRepo repo;
+          
+         @GetMapping("alien/104 ")
+         @ResponseBody
+         public List<Alien> getAliens() {
+            
+            List<Alien> aliens = repo.findAll();
+            
+            return aliens;
+         }  
+      
+         @GetMapping("alien/{aid}")
+         @ResponseBody
+         public Alien getAliens(@PathVariable("aid") int aid) {
+            
+            Alien alien = repo.getById(aid).orElse(new Alien(0,"")); // orELse is used if not found return what is in bracket.[Like If else statement]
+            
+            return alien;
+         }  
+      }
+
+// Path Variable is used to transfer value from URL to parameter eg) here aid.
+
+---> Use getOne/getById for searching and returning a particular record.
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+- Rest Controller
+
+---> Use only when all methods in a class are of Rest Type and not MVC type.
+
+
+--->  AlienController.java
+
+      @RestController 
+      public class AlienController {
+
+         @Autowired
+         AlienRepo repo;
+          
+         @GetMapping("alien/104")       // Error
+         public List<Alien> getAliens() {
+            
+            List<Alien> aliens = repo.findAll();
+            
+            return aliens;
+         }  
+      
+         @GetMapping("alien/{aid}")
+         public Alien getAliens(@PathVariable("aid") int aid) {
+            
+            Alien alien = repo.getById(aid).orElse(new Alien(0,"")); // orELse is used if not found return what is in bracket.[Like If else statement]
+            
+            return alien;
+         }  
+      }
+
+ ---> It should be written if we want to avoid writing @ResponseBody Over all methods in a Class 
+      when we know they will be returning output in JSON XML format. 
+ ---> It will let the spring know that it is Rest type of Conrtoller.
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+- PostMapping
+
+--->  AlienController.java
+
+      @RestController 
+      public class AlienController {
+
+         @Autowired
+         AlienRepo repo;
+          
+         @GetMapping("alien/104 ")     
+         public List<Alien> getAliens() {
+            
+            List<Alien> aliens = repo.findAll();
+            
+            return aliens;
+         }  
+      
+         @GetMapping("alien/{aid}"
+         public Alien getAliens(@PathVariable("aid") int aid) {
+            
+            Alien alien = repo.getById(aid).orElse(new Alien(0,"")); // orELse is used if not found return what is in bracket.[Like If else statement]
+            
+            return alien;
+         } 
+
+         --->  AlienController.java
+
+      @RestController 
+      public class AlienController {
+
+         @Autowired
+         AlienRepo repo;
+          
+         @GetMapping("alien/104 ")
+         
+         public List<Alien> getAliens() {
+            
+            List<Alien> aliens = repo.findAll();
+            
+            return aliens;
+         }  
+      
+         @PostMapping("alien")
+         public Alien getAliens(@PathVariable("aid") int aid) {
+            
+            repo.save(alien);
+            
+            return alien;
+         }      
+      }
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+- Jackson XML 
+
+ ---> To get the output in XML format we need to download and add Jackson dataformat xml(XML Converter) dependency to pom.xml file.
+ ---> And then go to Postman->Headers and Add Attribute as
+      Key                    Value      
+     Accept                application/xml (recieving format)    
+ 
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+
+- Produces Attribute
+
+--->  AlienController.java
+
+      @RestController 
+      public class AlienController {
+
+         @Autowired
+         AlienRepo repo;
+          
+         @GetMapping(path="alien", produces= {"application/xml"})  
+         // By writing produces attribute we can restrict in which format to display.
+
+         public List<Alien> getAliens() {
+            
+            List<Alien> aliens = repo.findAll();
+            
+            return aliens;
+         }  
+      
+         @PostMapping("alien")
+         public Alien addAliens(@PathVariable("aid") int aid) {
+            
+            repo.save(alien);
+            
+            return alien;
+         }      
+      }
+
+ ---> By writing produces attribute we can restrict in which format to display eg) xml or JSON.
+
+-------------------------------------------------------------------------------------------------------------------------------
+
+- Request And Consume Attribute
+
+ ---> Go to the postman->Header and specify 
+   Attribute                    Value
+    Accept                     application/json
+    Content-type               application/json     
+ 
+ ---> Go to the postman->Body->form-data and specify 
+   Attribute                    Value
+    aid                          108
+    aname                        Pravin
+// In this way we can add data tpo the database 
+
+--->  AlienController.java
+
+      @RestController 
+      public class AlienController {
+
+         @Autowired
+         AlienRepo repo;
+          
+         @GetMapping(path="alien", produces= {"application/xml"})  
+         // By writing produces attribute we can restrict which format to be display for a particular request.
+
+         public List<Alien> getAliens() {
+            
+            List<Alien> aliens = repo.findAll();
+            
+            return aliens;
+         }  
+      
+         @PostMapping(path="alien", consumes= {"application/json"})
+         public Alien addAliens(@RequestBody Alien alien) {
+            
+            repo.save(alien);
+            
+            return alien;
+         }      
+      }
+   // consumes attribute is used to restrict which format to be accepted by the request.           
+
+===================================================================================================================================================
+
+- Why AOP? [Like Exception Handling Type]
+
+ ---> For Handling transactions, Security and maintaining Logs.
+ ---> Cross Cutting Concerns
+   --> Concerns which are actual logic but these are applicable for all different methods.
+       we should take it common and write in separate class.
+ ---> But how this separate class will be called in the controller there we have to use AOP
+      Aspect Oriented Programming.   
+
+- Aspect
+
+ ---> Aspect are implemented through regular class or regular class annotated with @Aspect. 
+      So it can one class which will have all methods cross cutting concerns(common logic) 
+      and it can treated as Aspect by annotating it with @Aspect.   
+
+- Join Point
+     
+ ---> When we connect a method with log(croos cutting concern) then point of execution of the method is called join point.
+ eg) getAliens() is a method and log() is an cross cutting concern for it so i want to connect it
+    then here getAliens() is called join point and log() is called as advice(action).
+
+- Advice
+
+ ---> Actions taken by the Aspect at a particular join point(method).
+      Like before,after,etc.
+
+- Poincut
+ 
+ ---> The wildcard expression which we want to execute when we call getALien is called Point cut.
+ eg) Before("expression") // So here the Expression denotes Point Cut and Before denotes the Advice.
+
+- Weaving
+
+ ---> Connecting actual method with the advice is done through weaving[RunTime].
+ ---> Weaving is the process of linking aspects with other outsider application types or objects to create an advised object. 
+ ---> apply your aspects “to objects created outside the Spring IoC container“. In that case, you have to use the AspectJ framework 
+      in your Spring application and use its weaving feature.
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
+- Aspect And Before Annotation
+
+- LoggingAspect.java
+       
+      @Aspect
+      @Component 
+ ---> public class LoggingAspect {
+ 
+          @Before("execution(public List<Alien> com.telusko.springmvcboot.AlienController,getAliens())")
+          // Syntax :- Before("execution(public return type packagename.classname.methodname") 
+          public void log() {
+             System.out.println("getAliens method called");
+          }         
+      }
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+
+- Logger
+
+- LoggingAspect.java
+       
+      @Aspect
+      @Component 
+ ---> public class LoggingAspect {
+ 
+          private static final Logger LOGGER = LoggerFactory.getLogger(LoggingAspect.class); 
+          // To create Object of Logger for LoggingAspect Class
+ 
+          
+          @Before("execution(public List<Alien> com.telusko.springmvcboot.AlienController,getAliens())")
+          // Syntax :- Before("execution(public return type packagename.classname.methodname") 
+          @Before("execution(public * com.telusko.springmvcboot.AlienController,getAliens())")
+          // Syntax :- Before("execution(public return type packagename.classname.methodname") 
+
+          public void log() {
+             LOGGER.info("getAliens method called");
+             // Will Display Info about Log in the Terminal.
+          }         
+      }
+
+- application.properties
+
+ ---> spring.mvc.view.prefix=/views/
+      spring.mvc.view.suffix= .jsp
+
+      spring.datasource.url = jdbc:mysql://localhost:3306/telusko
+
+      spring.datasource.username = root
+      spring.datasource.password = 12345678
+
+      spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.MySQLDialect
+
+      logging.level.root = info
+      logging.file = app.log  // Creates a file called app.log which contains all logs.
+
+----------------------------------------------------------------------------------------------------------------------------------------------
+
+- After Finally
+
+- LoggingAspect.java
+       
+      @Aspect
+      @Component 
+ ---> public class LoggingAspect {
+ 
+          private static final Logger LOGGER = LoggerFactory.getLogger(LoggingAspect.class); 
+          // To create Object of Logger for LoggingAspect Class
+ 
+          
+          @Before("execution(public List<Alien> com.telusko.springmvcboot.AlienController,getAliens())")
+          // Syntax :- Before("execution(public return type packagename.classname.methodname") 
+          @Before("execution(public * com.telusko.springmvcboot.AlienController,getAliens())")
+          // Syntax :- Before("execution(public return type packagename.classname.methodname") 
+
+          public void logBefore() {
+             LOGGER.info("getAliens method called from aspect");
+             // Will Display Info about Log in the Terminal.
+          }
+            
+          @After("execution(public * com.telusko.springmvcboot.AlienController,getAliens())")      
+          public void logAfter() {
+             LOGGER.info("getAliens method called from aspect");
+          }  
+          // This method will get executed irrespectively of the exception to this.
+          // Acts Like Finally block in java.      
+      }
+
+--->  AlienController.java
+
+      @RestController 
+      public class AlienController {
+
+         @Autowired
+         AlienRepo repo;
+          
+         @GetMapping(path="alien", produces= {"application/xml"})  
+         // By writing produces attribute we can restrict which format to be display for a particular request.
+
+         public List<Alien> getAliens() {
+            
+            List<Alien> aliens = repo.findAll();
+
+            System.out.println("fetching aliens");
+            
+            return aliens;
+         }  
+
+         @GetMapping("aline/{aid}")   
+         public List<Alien> getAliens(@PathVariable("aid") int aid) {
+            
+            List<Alien> aliens = repo.findById(aid).orElse(new Alien(0,""));
+            
+            return aliens;
+         }  
+      
+         @PostMapping(path="alien", consumes= {"application/json"})
+         public Alien addAliens(@RequestBody Alien alien) {
+            
+            repo.save(alien);
+            
+            return alien;
+         }      
+      }
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+- AfterReturning and Throwing
+
+- LoggingAspect.java
+       
+      @Aspect
+      @Component 
+ ---> public class LoggingAspect {
+ 
+          private static final Logger LOGGER = LoggerFactory.getLogger(LoggingAspect.class); 
+          // To create Object of Logger for LoggingAspect Class
+ 
+          
+          @Before("execution(public List<Alien> com.telusko.springmvcboot.AlienController,getAliens())")
+          // Syntax :- Before("execution(public return type packagename.classname.methodname") 
+          @Before("execution(public * com.telusko.springmvcboot.AlienController,getAliens())")
+          // Syntax :- Before("execution(public return type packagename.classname.methodname") 
+
+          public void logBefore() {
+             LOGGER.info("getAliens method called from aspect");
+             // Will Display Info about Log in the Terminal.
+          }
+            
+          @AfterReturning("execution(public * com.telusko.springmvcboot.AlienController,getAliens())")      
+          public void logAfter() {
+             LOGGER.info("getAliens method called from aspect");
+          }  
+          // This method will get executed after successfull execution of fetching(transactions). 
+         
+            
+          @AfterThrowing("execution(public * com.telusko.springmvcboot.AlienController,getAliens())")      
+          public void logException() {
+             LOGGER.info("Issue");
+          }   
+          // This method will get executed when there is an exception raised only.
+      }
+
+--->  AlienController.java
+
+      @RestController 
+      public class AlienController {
+
+         @Autowired
+         AlienRepo repo;
+          
+         @GetMapping(path="alien", produces= {"application/xml"})  
+         // By writing produces attribute we can restrict which format to be display for a particular request.
+
+         public List<Alien> getAliens() {
+            
+            List<Alien> aliens = repo.findAll();
+
+            System.out.println("fetching aliens");
+            
+            return aliens;
+         }  
+
+         @GetMapping("alien/{aid}")   
+         public List<Alien> getAliens(@PathVariable("aid") int aid) {
+            
+            List<Alien> aliens = repo.findById(aid).orElse(new Alien(0,""));
+            
+            return aliens;
+         }  
+      
+         @PostMapping(path="alien", consumes= {"application/json"})
+         public Alien addAliens(@RequestBody Alien alien) {
+            
+            repo.save(alien);
+            
+            return alien;
+         }      
+      }
+ 
+=========================================================================================================================================================
+
+- What is Spring Security?
+
+ ---> Creating a Web Project Levere.
+
+- HomeCntroller.java
+
+- public class HomeController {
+
+      @RequestMapping("/")
+      public String home() {
+
+          return "home.jsp";
+      } 
+  }
+
+ ---> Create webpage folder and create/store jsp pages here.
+ ---> Download Tomcat jasper Dependency from mvn repository and add it to pom.xml file.
+
+- home.jsp
+
+- result.jsp
+
+<%@ page language="java" contentTypes="text/html; charset=UTF-8"
+                         pageEncoding="UTF-8" isELIgnored="false"%> // so it does not ignore the expression. 
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>f title here</title>
+</head>
+<body>
+        Welcome ALiens...      
+
+</body>  
+</html> 
+
+---> Download Spring Boot Security Starter Dependency and add it to pom.xml file.
+
+- AppSecurityConfig.java
+
+  @Configuration
+  @EnableWebSecurity          // For enabling web security for application
+- public class AppSecurityConfig extends WebSecurityConfigureAdapter { // To get Configuration feature
+
+    @Bean          // For creating object of UserDetailsService
+    @Override
+    protected UserDetailsService userDetailsService() {
+   
+        // In-Built class UserDetails        
+        List<UserDetails> users = new ArrayList<>();
+        users.add(User.withDefaultPasswordEncoder().username("navin").password("1234").roles("USER").build());
+        // User is in-built class and withDefaultPasswordEncoder() is deprecated method.                   
+          
+        return new InMemoryUserDeatilsManager(users);  // Manages the userDetails in memory.  
+    }        
+  }
+
+------------------------------------------------------------------------------------------------------------------------------------
+
+- Spring Security (MySQL) Part 4
+
+---> Username and password will be verified from Database.
+---> Downlaod SpringBoot Data JPA and MySQL Connector Dependency and add it to pom.xml file.
+---> FLow :- Controller-->Configuration-->Service-->DAO-->Database.
+---> We create a separate repository class/interface for every table we have.
+
+- AppSecurityConfig.java
+
+  @Configuration
+  @EnableWebSecurity          // For enabling web security for application
+- public class AppSecurityConfig extends WebSecurityConfigureAdapter { // To get Configuration feature
+   
+      @Autowired
+      private UserDetailsService userDeatilsService;  
+      // As UserDetailsService is a interface we have created a class named as MyUserDetailsService for implementation.
+       
+      @Bean
+      public AuthenticationProvider authProvider() {
+
+           DaoAuthenticationProvider provider = new DaoAutheticationProvider();
+           // The implementation of AuthentoicationProvider is in DaoAuthenticationProvider
+           // And it retrives data from the Database.   
+ 
+           provider.setUserDeatilsService(userDeatilsService); // userDeatilsService :- responsibl;e to fetch deatils from database.
+           provider.setPasswordEncoder(NoOpPasswordEncoder.getInstance()); // Deprecated method which saves password in plain text. 
+            
+           return provider; // We are returning the object of type AuthenticationProvider.
+      }          
+  }
+ 
+- application.properties
+
+ ---> spring.datasource.url=jdbc://mysql://localhost:3306/telusko // Here telusko is the package name
+      spring.datasource.username=root
+      spring.datasource.password=1234
+      spring.datasource.driver-class-name=com.mysql.jdbc.Driver // Driver Class Name
+ 
+- User.java // Model Class To Map To Database
+       
+     @Entity 
+---> public class User {
+
+        @Id  
+        private long id;
+        private String username;
+        private String password;
+         
+        public void setId(long id) {
+            this.id = id;
+        } 
+ 
+        public getId() {
+            return id;
+        }
+
+        public void setUsername(String username){
+            this.username = username;
+        }
+
+        public String getUsername() {
+            return username;
+        }   
+     
+        public String setPassword(String password) {
+            this.password = password;     
+        }
+           
+        public void getPassword() {
+            return password; 
+        } 
+     } 
+
+- MyUserDetailsService.java
+
+     @Service   
+---> public class MyUserDetailsService implements UserDetailsService {
+ 
+         private UserRepository repo;
+
+         @Override 
+         public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+         // UserDetails is an Interface for which a class is created named as UserPrinciple.              
+  
+             User user = repo.findByUsername(username);
+             if(user==null)                            
+                  throw new UsernameNotFoundException("User 404");               
+
+             return UserPrinciple(user); // UserPrinciple is a class which implements UserDetails Interface.
+         } 
+     }
+
+- UserRepository.java [Fetching Data from the database]
+
+---> public interface UserRepository extends JPARepository<User, Long> {
+
+            User findByname(String username);
+     }
+
+- UserPrinciple.java
+
+---> public class UserPrinciple implements userDetails {
+          
+        private User user;    // We are creating object here as we want to access it here but it is empty
+          
+        public UserPrinciple(User user) { // So to intantiate the user empty object we are using constructor
+            super();
+            this.user = user;
+        } 
+
+        @Override
+        public Collection<? extends GrantedAuthority> getAuthorities() {
+           
+            return Collection.singleton(new SimpleGrantedAuthority("USER"));
+            // singleton for single fetching.
+        }        
+        
+        @Override
+        public String getPassword() {
+            
+            return user.getPassword();  
+        } 
+     
+        @Override
+        public String getUsername() {
+            
+            return user.getUsername();  
+        } 
+     }
+
+- SecureAppApplication {
+      
+      public static void main() {
+         SpringApplication.run(SecureAppApplication.class, args);    
+      }  
+  }
+
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+- Spring Security BCrypt Password Encoder
+
+- AppSecurityConfig.java
+
+  @Configuration
+  @EnableWebSecurity          // For enabling web security for application
+- public class AppSecurityConfig extends WebSecurityConfigureAdapter { // To get Configuration feature
+   
+      @Autowired
+      private UserDetailsService userDeatilsService;  
+      // As UserDetailsService is a interface we have created a class named as MyUserDetailsService for implementation.
+       
+      @Bean
+      public AuthenticationProvider authProvider() {
+
+           DaoAuthenticationProvider provider = new DaoAutheticationProvider();
+           // The implementation of AuthentoicationProvider is in DaoAuthenticationProvider
+           // And it retrives data from the Database.   
+ 
+           provider.setUserDeatilsService(userDeatilsService); // userDeatilsService :- responsibl;e to fetch deatils from database.
+           provider.setPasswordEncoder(new BCryptPasswordEncoder()); // Stores the Password in BCrypt HassCode Format in Database. 
+            
+           return provider; // We are returning the object of type AuthenticationProvider.
+      }          
+  }
+ 
+- Spring Boot Security OAuth2
+
+---> Download Spring Security OAuth2 AutoConfigure Dependency and add it to pom.xml file.
+
+- AppSecurityConfig.java
+
+  @Configuration
+  @EnableWebSecurity          // For enabling web security for application
+  @EnableOAuth2Sso           // For idicating we are using Spring Boot Security OAuth2
+- public class AppSecurityConfig extends WebSecurityConfigureAdapter { // To get Configuration feature
+   
+        @Override
+        protected void configure(HttpSecurity http) throw Exception {
+           
+          hhtp
+              .csrf().disable()
+              .authorizeRequests().antMatchers("/login").permitAll()
+              .anyRequest().authenticated();               
+        }          
+  }
+  
+- application.properties
+
+ ---> spring.datasource.url=jdbc://mysql://localhost:3306/telusko // Here telusko is the package name
+      spring.datasource.username=root
+      spring.datasource.password=1234
+      spring.datasource.driver-class-name=com.mysql.jdbc.Driver // Driver Class Name
+
+      security.oauth2.client.clientId = <client_Id>
+      security.oauth2.client.clientSecret = <client_Secret>
+      security.oauth2.client.accessTokenUri = https://www.googleapis.com/oauth2/v3/token
+      security.oauth2.client.userAuthorizationUri = https://accounts.google.com/o/oauth2/auth
+      security.oauth2.client.tokenName = oauth_token
+      security.oauth2.client.clientAuthenticationScheme = form
+      security.oauth2.client.scope = profile email // Things which can be accessed after login.
+
+      security.oauth2.resource.userInfoUri = https://www.googleapis.com/userinfo/v2/me
+      security.oauth2.resource.preferTokenInfo = false  
+ 
+- HomeController.java
+
+---> public class HomeController {
+     
+        @RequestMapping("/")
+        public String home() {
+             
+            return "home.jsp";
+        }  
+      
+        @RequestMapping("/login")
+        public String loginPage() {
+             
+            return "login.jsp";
+        }   
+       
+        @RequestMapping("/logout-success")
+        public String logoutPage() {
+             
+            return "logout.jsp";
+        }   
+
+        @RequestMapping("user")
+        @ResponseBody
+        public Principle user(Principle principle) {
+       
+            return principle;   
+        }
+     }

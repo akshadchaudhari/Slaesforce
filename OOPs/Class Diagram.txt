@@ -1,0 +1,56 @@
+- class will a template which will have certain fields which the objects have to acquire.
+- attribute set is the specific type of data every object should need to be entered in it.
+--------------------------- 
+  class name
+---------------------------
+  attribute sets                  ----> always use common primitive data types to make the stakeholders familiar with it.
+---------------------------
+ operation declarations
+---------------------------
+
+- attributes are in written in (key,value) pair.
+- for representing enumeration we use stereo type syntacx -->  "<<enumeration>>".
+- enumerations have fixed or possible values that can be shown.
+- composite data types and enumerations are represented by a separate class showing line between them as composite relationship
+  eg)vehicle --- engine
+
+- Association relationship-
+
+1. Association between two class when one class is not dependent on another class (i.e if one class is deleted another is not effected).
+2. classes are associated together for specific purpose to acheive higher level behaviour.
+3. multiplicity --> 0....1. {only even-->Constraint here} (* means any number of things) all this values should come from rquirements collection only for proof purpose. 
+  Do not assume any value by yourself never.
+4. Association end name is the role the object is playing with the other object.
+
+- Aggregation relation-
+
+1. it is represented by a line having a diamond shape at its end.
+2. aggregation = association + concrete understanding.  (diamond shape towards derived)
+3. link means a simple straight line between  two objects in object diagram.
+
+- Composition- 
+1. In composition the child class cannot override the parent class method it has to inherit as it is.
+2. Dependent relationship between two object class.
+3. if Container deleted contained objects also get deleted.
+4. Contained doesn't exist outside Conatiner.
+eg) rows in chess board doesn't exist without chess board.
+5. represented by solid diamond.
+6. An Engine is not a vehicle but is present in vehicle.
+
+-Inheritance-
+1. eg) every scooter is a two wheeler.
+2. is-a relationship.
+3. Derived classes inherit base class features.(code reusability).
+4. Generalization-Specilization Relationship.
+   Generalization - as we go up in inheritance.
+   Specilization - as we go down in inheritance.
+5. Represented as hollow triangle towards base class.
+
+-Visibility-
+
+- indicates private attribute.
++ indicates public attribute.
+# indicates protected attribute.
+and no symbol indicates default attribute (packages level) 
+visible in same class as well as in the class present in same package.
+

@@ -1,0 +1,14 @@
+Two types of decomposition in software world.
+1. OO decomposition. (Object Oriented)
+2. AA decomposition. (Algorithmic or Arithmetic)
+
+1.Object Oriented Decomposition-
+
+- Distribute functionality to autonomous agents caleed objects.
+- Object Should have their own data and operations to be performed on data to run it.
+- Objects send messages to other objects to get their work done.(Onject Collaboration)
+- Objects need references of other objects to pass messages.
+
+2. Algorithmic Or Arithmetic Decomposition-
+- functionaliyt of a application is split into several functional units.
+- and organize them in an sequential occurence.(i.e order of execution).

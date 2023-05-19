@@ -1,0 +1,62 @@
+- Apex Testing
+
+--> Apex code can only be written in a sandbox environment or a Developer org, not in production. Apex code can be deployed to a production org from a sandbox.
+--> Before each major service upgrade, Salesforce runs all Apex tests on your behalf through a process called Apex Hammer. The Hammer process runs in the 
+    current version and next release and compares the test results. This process ensures that the behavior in your custom code hasn’t been altered as a result 
+    of service upgrades.The Hammer process picks orgs selectively and doesn’t run in all orgs. Issues found are triaged based on certain criteria.
+
+- Code Coverage Requirement for Deployment
+
+--> Before you can deploy your code or package it for the Lightning Platform AppExchange, at least 75% of Apex code must be covered by tests, and all
+    those tests must pass. In addition, each trigger must have some coverage.
+
+- Test Method Syntax
+
+@isTest static void testName() {
+    // code_block
+}
+
+--> The @isTest annotation takes multiple modifiers within parentheses and separated by blanks. 
+--> This sample class shows a definition of a test class with one test method.
+eg)
+@isTest
+private class MyTestClass {
+    @isTest static void myTest() {
+        // code_block
+    }
+}
+
+--> Test classes can be either private or public. If you’re using a test class for unit testing only, declare it as private. Public test classes are 
+    typically used for test data factory classes.
+
+--> A known issue with the Developer Console prevents it from updating code coverage correctly when running a subset of tests.
+    To update your code coverage results, use Test | Run All rather than Test | New Run.
+
+
+- Create and Execute a Test Suite
+
+-> In the Developer Console, select Test | New Suite.
+Enter TempConverterTaskUtilSuite for the suite name, and then click OK.
+Select TaskUtilTest, hold down the Ctrl key, and then select TemperatureConverterTest.
+To add the selected test classes to the suite, click >. Test suite editing window with two selected test classes
+Click Save.
+Select Test | New Suite Run.
+Select TempConverterTaskUtilSuite, and then click > to move TempConverterTaskUtilSuite to the Selected Test Suites column.
+Click Run Suites.
+On the Tests tab, monitor the status of your tests as they’re running. Expand the test run, and expand again until you see the list of individual tests that were run. 
+Like in a run of individual test methods, you can double-click method names to see detailed test results.
+
+--> Even though it is not a best practice to do so, there are times when a test method needs access to pre-existing data.
+    To access org data, annotate the test method with @isTest(SeeAllData=true).
+
+
+- Important Points
+
+-> You can save up to 6 MB of Apex code in each org. Test classes annotated with @isTest don’t count toward this limit.
+Even though test data rolls back, no separate database is used for testing. As a result, for some sObjects that have fields with unique constraints, inserting duplicate sObject records results in an error.
+Test methods don’t send emails.
+Test methods can’t make callouts to external services. You can use mock callouts in tests.
+SOSL searches performed in a test return empty results. To ensure predictable results, use Test.setFixedSearchResults() to define the records to be returned by the search.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+

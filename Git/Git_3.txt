@@ -1,0 +1,245 @@
+- LOCAL BRANCHING -
+
+1. They allow us to create sparate contexts(place) where we can try new things or even work on multiple ideas in parallel.
+if we make changes on one branch they do not impact the other branches(unless we merge the changes).
+
+- Master/Main Branch -
+1. The default branch name is 'master' (main branch/official branch).
+2. Master is a pointer which has the reference of the latest commit and HEAD is a pointer which contains reference of master pointer.
+
+use >>git branch to view existing branches.
+'*' represent the branch we are currently on.
+
+- Creating Branch -
+
+>>git branch branchname-->makes new branch based on the location of head but does not switch to it.
+>>git checkout -b [branch-name] (create and switch).
+-->It creates and switches to the new branch.
+>> git checkout -- <path_to_file> can be used to reset files to certain revisions.
+>>git switch -c [branch-name] (create and switch).
+1. A branch can contain multiple files/folders,git wil upadte,etc depending upon branch.
+
+- Switch Branch -
+
+>>git switch [branch-name]
+When we switch to new branch the contents of any branch along with it gets copied
+with in new branch [if both branches are pointing to same commit].
+So it matters from where you branch.
+
+- Another way to switch branch -
+
+>>git checkout [branch-name].
+>>git switch [branch-name].
+
+- Switching Branches With Unstagged Changes -
+
+1. Always add and commit changes before switching branches.
+>>git checkout [branch-name].
+>>git switch [branch-name].
+
+- Deleting Branches -
+
+>>git branch -d [branch-name].
+1. We should not be on the deleting branch.
+sol : switch to master branch and then delete branch.
+
+>>git branch -D [branch-name]
+1. To delete unmerged branches forcefully.
+
+- Renaming Branches -
+
+>>git branch -m [newbranch-name]/git branch -m old_branch_name new_branch_name..
+1. It renames the branch-name.
+
+- How Git Stores HEAD & Branches -
+
+1. If HEAD is pointing to master branch then 
+cat HEAD --> refs/heads/master (HEAD is pointing to master branch).
+
+- Merging Branches -
+
+2 Merging Concepts -
+
+1. We merge branches,not specific commits.
+2. We always merge to the current HEAD branch.
+
+Steps -
+1. Switch to the branch you want to merge the changes into.
+2. use git merge command to merge changes from a specific branch into the current branch.
+
+- Fast Froward Merge -
+
+1. Switch to the branch you want to merge the changes into.
+2. use git merge command to merge changes from a specific branch into the current branch.
+
+- Generating Merge Commit -[Not Fast Forward]
+
+1. Not simple fast forward merge but here a new commit is created on the master branch.
+git prompts meassage.Commits can have multiple parents.
+1. Switch to the branch you want to merge the changes into.
+2. use git merge command to merge changes from a specific branch into the current branch.
+But here we have to give commit message in editor.
+
+- Conflict -
+1. When a conflict occurs git warns us.t also changes the content of files to indicate
+the conflicts that it wants you to resolve.
+2. It occurs when we try to write in same file and at line.
+
+<<<<<<<<HEAD --> indicates the branch we are trying to merge content into.
+euheuc
+jebcduc
+=========
+jbackcj
+>>>>>>>>bug-fix --> indicates the branch we are trying to merge content from.
+
+Resolve Conflicts -
+1. open file with merge conflict.
+2. edit and decide which branch content want to keep.
+3. remove conflict markers in the file.
+4. add changes to make commit.f
+
+- Git Stash -
+
+Need?
+--> To save changes without comitting them,at a place(stash) so git would let me switch between branches.
+
+Scenarios while switching branches -
+1. My changes come with me to the destination branch.
+2. Git won't let me switch if it detects potential conflicts.
+
+Stashing -
+>>git stash/git stash save 
+Helps us to save changes that you are not yet ready to commit.You can stash changes and back to them later.
+Will take all the uncommitted changes(staged and unstaged) and stash them(hides them),reverting the changes in your working directory.
+
+>>git stash pop 
+It removes the most recently stashed changes in your stash and re-apply them to our work.
+>>git stash apply
+It advantage is it re-apply the chnages in our stash to the work tree but the changes are not removed from stash and are still present
+which allows us to apply them to multiple branches.
+
+- Working wiht multiple stashes(Stash stack) -
+1. Add multiple stashes in the form of stack frames and create a stack of stash.
+It stashes in the order you added them.
+
+>>git stash list
+Used to view all stashes.
+
+Applying Specific Stashes -
+>>git stash apply stash@{2}
+
+Drop Stashes -
+>>git stash drop stash@{2}
+
+Empty the stash -
+>>git stash clear
+
+- Git Rebase -
+1. It is alternative to Merging.
+Two ways to use git rebase command:
+- as an alternative to merging.
+- as a cleanup tool.
+
+2. rewriting history(log commits in linear form).
+3. In this we completely move the another branch(eg)feature branch) to the tip of the master branch and it forms a linear structure.
+it creates new commit for each original feature branch commit.
+
+>>git switch feature
+>>git rebase master
+forms a linear structure. 
+
+- Golden Rule to use rebase -
+1. Never rebase master branch onto feature or other branches.
+   Always rebase feature or other branches onto master branch.
+
+- Handling Conflicts and Rebasing -
+1. repeat resolve conflict procedure and stage them.
+2. >>git rebase --continue
+
+- Rewriting history -
+1. write,delete,rename,reorder commits(before sharing them) we can do this by using git rebase.
+2. >>git rebase -i HEAD~2
+Rebasing on series of commits onto the HEAD they currently are based on. and not on another branch.
+
+- Rewriting commits with rebase -i -
+1. >>git rebase -i HEAD~3. open editor with list of commits but in reverse order.
+if we rename a commit then every subsequent/successive commit get rewritten.
+
+- Fixing and Squashing with rebase  -i -
+>>git rebase -i HEAD~4
+Combine two commits in such a way that the selected commit gets combined with the previous commit
+and the commit message of the selected commit gets deleted.
+use 'fixup'
+
+- Dropping Commits with rebase -i -
+1. >>git rebase -i HEAD~4
+use 'drop'
+
+- Editing Commits -
+>>git commit --amend (For recent commit only).
+>>git rebase -i HEAD~4 (For particular location based commit).
+
+- Tags -
+1. These are pointers which refer to the particular points in git history.
+acts as a label to a commit. used to mark versions releases in projects.
+tags refers to same commit.
+
+Two types of tags -
+1.Lightweight tags -->just name/label that points to a particular commit.
+2.Annotated tags -->store extra meta data includes author's name,email,date,and tagging message(like a commit message).
+
+- Semantic Versioning -
+1.2.4.1 -->major releases.minor releases.patch releases.
+patch release -->signifies bug fixes and other changes that do not impact how the code is used.
+minor release -->signifies new featurea or functionality have been added but project is backward compatible.
+new functionality is optional.if minor release then set patch to zero.
+major release -->signifies significant changes that is not backward compatible.
+features may be removed or changed substantially.and other two back to zero.
+
+- Viewing And Searching Tags -
+1. git tag -->prints list of all the tags in the current repository.
+2. git tag -l "wildcard" here wildcard can be any pattern/name.
+
+- Travel in tags -
+>>git checkout tag/v4.2.3
+>>git diff v1.2.3 v4.5.6
+
+- Creating Lightweight Tag - 
+>>git tag [tagname]
+git will create the tag referring to the commit that HEAD is referencing.
+
+- Annotated Tags -
+>>git tag -a -->create new annotated tag.it will open editor and prompt additional information.
+>>git tag -am -->pass message directly and forgot the opening of the text editor.
+
+- Tagging previous commit -
+>>git tag [tagname] [commit-hash] -->Lightweight tag
+>>git tag -a [tagname] [commit-hash] -->Annotated tag
+
+- Forcing Tags -
+>>git tag -f [tagname]
+>>git tag [tagname] [commit-hash] -f
+
+- Deleting Tags -
+>>git tag -d [tagname] 
+
+- Which is true regarding Git fails to start the merge?
+1.A merge will fail to start when Git sees there are changes in either the working directory or staging area of the current project..
+2.Git fails to start the merge because these pending changes could be written over by the commits that are being merged in..
+3.When this happens, it is not because of conflicts with other developer's, but conflicts with pending local changes.
+4.All of the listed options.
+
+- git config --global merge.tool is used to set merge tool on project level?
+-->True.
+
+- Which one of these statements about a merge involving a merge commit is true?
+-->Git places the result of the merge into a new commit.
+
+- What does the git merge option -s abbreviate?
+--> --strategy.
+
+- When should you avoid rebasing a branch?
+--> if you hav eshared the branch.
+
+- Which of these two statements makes git use the file from the conflicting commit you are merging from?
+-->git checkout --theirs index.html.

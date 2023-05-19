@@ -1,0 +1,304 @@
+- Apex
+
+---> We have to define datatypes of the variables before using them.  
+---> When to Use Salesforce?
+  ---> Apex should be used when we are not able to implement the complex functionality using the pre-built 
+  and existing out of the box functionalities. 
+
+- Declaring A Variable
+
+---> Before we can use a variable in Apex,we need to declare the variable.
+---> Declaring a variable means defining its type,and optionally,setting an initial value.
+---> Every variable in apex must have a name and its data type.
+---> Data type means what type of data,the variable will store.
+---> Anything enclosed within single cotted is considered as String.
+eg) String name = 'Akshad';
+
+- Printing In Apex 
+
+---> System.debug("firstname"+name); [In apex] /  System.out.println("Hii!!!");  [In Java]
+
+---> '//' is the single line comment in the apex.
+---> '/*'  '*/' is the multiline comment in the apex.
+---> If variables are not initialized then output is null if tried to print it.
+---> Any Object in Salesforce is called as 'sObject'.
+
+- Date Datatype In Apex
+
+- Declare date variable
+
+---> Date newDate = Date.newInsatnce(2022,8,3);
+     System.debug('Date is'+newDate);
+
+- Add today date
+
+---> Date newDate = Date.today();
+     System.debug('Today date is'+newDate);
+
+- Add years to date
+
+---> Date newDate1 = newDate.addYears(2);
+System.debug('newDate is 1'+newdate1);
+
+- Add months to date
+
+---> Date newDate1 = newDate.addMonths(4);
+     System.debug('New Date is'+newDate);
+
+- Calculate Days between Two Dates
+
+Date date1 = Date.newInstance(2019,1,1);
+Date date2 = Date.newInstance(2019,1,31);
+System.debug('date1 is ='+date1);
+System.debug('date2 is ='+date2);
+
+Integer daysdue = (obj)date1.daysBetween(date2);
+System.debug('days between'+daysdue);
+
+- Printing years,months
+
+Date dt1 = Date.newInstance(2019,4,21);
+System.debug('Date is '+dt1);
+System.debug('Month is '+dt1.month);
+System.debug('Year is '+dt1.years);
+
+- To Check Leap Year
+
+Boolean isLeapYr = Date.isLeapYear(dt1.year());
+System.debug('is 2019 a leap year '+isLeapYr);
+
+- Time Data Type in Apex
+
+- Declare Time Variable
+
+---> Time mytime = Time.newInstance(6,12,4,40);
+     System.debug('Time is '+mytime);
+     Time mytime2 = mytime.addHours(4); 
+     System.debug('new time after adding 4 hours '+mytime2);
+     Time mytime3 = mytime.addMinutes(20);
+     System.debug('new time after adding 20 minutes '+mytime3);
+     Time mytime4 = mytime.addMilliseconds(30);
+     System.debug('new time after adding 30 milliseconds '+mytime4);
+  
+- Datetime datatype in Apex
+
+---> Format() -- It converts the local time zone and returns the converted date as a formatted string
+using the locale of the context user.If the time zone cannot be determined,GMT is used. 
+---> Datetime mydatetime = Datetime.newInstance(2018,7,15,5,22,4);
+     String mydate = mydatetime.format();
+
+- Adding days hours months in Apex
+
+---> Datetime mydatetime1 = Datetime.newInsatnce(2019,3,12,8,10,00);
+     System.debug('mydatetime1 = '+mydatetime1);
+     Datetime mydatetime2 = mydatetime1.addHours(20);
+     System.debug('mydatetime2 = '+mydatetime2);
+     Datetime mydatetime3 = mydatetime1.addDays(4);
+     System.debug('mydatetime3 = '+mydatetime3);  
+     Datetime mydatetime4 = mydatetime1.addYears(2);
+     System.debug('myDatetime4 = '+mydatetime4);
+     Datetime mydatetime5 = mydatetime1.addMonths(5);
+     System.debug('myDatetime5 = '+mydatetime5);
+
+- Only Date to be Retrived from Datetime datatype
+
+     Date mydate1 = mydatetime1.Date();
+     System.debug('Only date '+mydate1);
+
+- Format() 
+
+    Datetime newdate1 = Datetime.newInstance(2019,4,14,5,10,15);
+    System.debug('NewDate1 is '+newdate1);
+    String formattedDatetime = newdate1.format();
+    System.debug('FormattedDateTime is '+formattedDatetime);
+ 
+- String Data type in Apex
+
+- indexOf()  
+
+---> Gives index of string character[specified character].        
+
+- equals() [Case Sensitive]
+
+String s1 = 'Hello';
+String s2 = 'HELLO';
+
+Boolean s3 = s1.equals(s2);
+System.debug(s3);
+O/P : false
+
+- compareTo()
+
+ String s1 = 'abcde';
+ String s2 = 'fghij';
+
+ Integer compareResult = s1.compareTo(s2);
+ System.debug('CompareResult1 = '+compareResult); // -5
+ Integer compareResult1 = s2.compareTo(s1);
+ System.debug('CompareResult1 = '+compareResult1); // 5
+
+ ---> A negative integer if all the firstString that called the method lexicographically precedes secondString.
+ ---> A positive integer if all the secondString that called the method lexicographically fllows succeeds secondString.    
+ ---> Zero if all Strings are equal.
+
+- String Methods
+
+ String s = 'Akshad Chaudhari';
+ Integer i = s.indexOf('au');
+ System.debug('Index of String au'+i);
+ System.debug('Index of String ar'+s.indexOf('ar'));
+ String str = 'gaurav shinde';
+ String s2 = str.capitalize(); ---> It capitalizes the first letter only of the given string.
+ System.debug('s2 = '+s2);
+ String s3 = 'abcd';
+ String s4 = 'efgh';
+ Integer iy = s3.compareTo(s4); ---> compares two strings lexicographically i.e alphabetically.
+ System.debug(iy);
+ Integer ig = s4.compareTo(s3);
+ System.debug(ig);
+ String str1 = 'Mango';
+ String str2 = 'Mangoes';
+ Boolean res = str1.equals(str2); ---> compares length and cases as well.
+ System.debug('is Str1 == Str2 '+res); 
+ 
+
+- String Class in Salesforce
+
+---> equalsIgnoreCase(); ---> sames as equals method but igores the cases and compares only lengths of the string.
+---> toUpperCase(); ---> It converts all letters of the string to Upper Case.
+---> toLowerCase(); ---> It converts all letters of the string to Lower Case
+---> contains(); ---> It tell us where a part of string is present in the original string or not.
+
+ String name1 = 'akshad';
+ System.debug('using contains method '+name1.contains('ks')); // true
+ String name2 = 'Chaudhari';
+ Boolean res = name1.contains(name2);
+ System.debug('name1 contains(name2)'+res);
+
+=============================================================================================================================
+
+- Operators in Apex
+
+1. '=' Assignment operator 
+
+ x = y;   ---> Assigns value from right to left.
+
+2. '+=' Shorthand addition equal to operator
+ 
+x += y; ---> similar to x = x + y;
+
+3. '*='   
+
+x *= y; ---> similar to x = x*y;
+
+4. '-='
+
+x -= y; ---> similar to x = x-y;
+
+5. '/='
+
+x /= y; ---> similar to x = x/y;
+
+6. '|=' [F|F --->false else true]
+
+x = x|y; ---> similar to x = x|y;
+
+7. '&=' [T&T --->true else false]
+
+x &=y; ---> similar to x = x&y;
+
+8. && [requires booleans values at left and right side of operator]
+
+x && y; ---> if x is true then only y value will be evaluated.
+i.e T&&T ---> true else false 
+
+9. '||' [requires booleans values at left and right side of operator]
+x || y; --->  if x is flase then only y value will be evaluated.
+i.e F||F ---> false esle true
+
+10. '==' [requires booleans values at left and right side of operator]
+x == y; ---> if the value of x equals to value of y,the result is true.
+The string comparision is case insensitive.[check length of the string]
+
+11. '===' [Used when we want to check addresses]
+
+x === y; ---> If x and y refer to the same location then the result of the expression is 
+true.
+otherwise false.
+
+12. '++' 
+
+x ++ y; ---> increment operator
+
+13. '--'
+
+x -- y; ---> decrement operator
+
+- Switch Statement in Apex
+
+ integer num = -3;
+ switch on num {
+   
+   when 2 {                             when in apex is similar to case in c++
+     System.debug('num is 2');    
+   }
+   when -3 {
+     System.debug('num is -3');
+   }
+   when else{                           when else in apex is similar to default in c++
+     System.debug('num is neither 2 nor 3');
+   }
+ } 
+
+---> range in when is as
+
+ when 90,85,80,75,70 {
+      
+       System.debug();
+ }
+
+- For Loop in Apex
+
+- The list or set iteration for loop
+
+  for(variable : list_or_set) {  [list --> dupliacte elements allowed and order of insertion maintained]
+       code_block                [set --> duplicate elements not allowed and order of insertion not maintained]  
+  }
+
+- The SOQL for loop
+
+  for(variable : [soql_query]) {
+      code_block
+  }
+
+---> List<String> empNames = new List<String>{'Deepika','Vivek','John','Dev','Sam'};
+     for(String empName:empNames) {
+        System.debug('Name = '+empName);
+     }
+
+===========================================================================================================
+
+- Inheritance In Apex
+
+ public virtual class Vehicle { [Specify 'virtual keyword' if we are going to ovveride the functions of the class in future]
+   
+   public void model() {
+      System.debug('Model method of vehicle class'); 
+   }
+   public virtual void speed() { [Specify 'virtual' keyword if we are going to override the function in future]
+      System.debug('Speed of the vehicle depends on the type of the vehicle');
+   }
+ }
+ 
+ public class Truck extends Vehicle {
+
+       public override void speed() {       [Specify 'override' keyword if we are overriding the function]
+          System.debug('Truck has a speed limit of 50 Miles/hr');    
+       }
+ }
+
+---> In apex for Collections topic 
+
+Map <String,String> mp = new Map<String,String>{'a'=>'apple','b'=>'boy','c'=>'cat'};
+System.debug('Elements of the Maps are '+mp);
+System.debug('Elements of the Maps are '+mp.get('a'));

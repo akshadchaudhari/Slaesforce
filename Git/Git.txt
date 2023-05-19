@@ -1,0 +1,196 @@
+- Git is VCS(Version Control System).
+- Github is web service which hosts git rpositories in the cloud.
+
+Git commands - 
+1. git --version.
+ to check gti version.
+
+- To config Git -
+1. Use command git config --global user.name "[name]" (git config globally).
+ similarly email,..etc.
+2. To see the list of configurations -
+ >> git config --list 
+3. git config user.name "anjbkuauskc" (git config specific to current directory).
+
+- Repositories - 
+1. a git "repo" is workplace/directory which tracks and manages files within 
+   a folder.
+- To delete git repository 
+>> rm -rf .git (should be present in the git folder).
+
+>> git status --> gives information on the current status of a git repository and its contents.
+>> git init --> used to create a new git repository or reinitializes an existing one.f
+
+- .Git Folder --> contian .git which is  not visible.
+  It tracks everything inside repo(git folder) and its sub folders.
+
+- Do not use git init (initialize git repository inside another repository) use git status to 
+  see if u r in git repo.
+- Use ls -a to see hidden folders.
+
+- Commiting Workflow Overview - 
+
+Work on stuff(workspace) --> Add changes(Stagging area) --> Commit
+
+Work On Stuff -
+1. Make files,edit,delete files,etc.
+
+Add Changes - 
+1. Group specific changes together 
+
+Commit - 
+1. Commit i.e make permanent changes which were added.
+
+>> git add --> used to add files from working space to stagging area.
+>> git commit -m "" --> used to make parmanent changes to files stored on repository and with commit.
+>> git add file1 file2... -->add multiple files at once.
+>> git log --> shows the history of commits.
+>> git add . --> add all files from work tree to stgging area.
+
+--> Git Docs -
+www.git-scm.com
+
+- Atomic Commits - 
+- Keep your commits atomic means focus on single things 
+eg) feature and not file.
+
+Helps us if we wants to undo commit,it is easy to review code and to undo also.
+while if we do multi-purpose commit then it becomes headche to undo them.
+
+- Amend Commit - 
+1. Used to correct a commit message instead of separate commit,use --amend .
+
+- .gitignore file - 
+--> Create .gitignore file and then place the file in it we want to ignore. 
+1. hide files,repositories,or to hide files we will never commit.
+eg) - Secrets,API keys,credentials,etc.
+    - Operating System files(.DS_Store on Mac)
+    - Log files
+    - Dependencies & Packages
+
+2. >DS_Store will ignore files named .DS_Store.
+3. folderName/ will ignore an entire directory.
+4. .log will ignore any files with the .log extension.
+
+**To know which files to ignore in a project**
+--> use gitignore.io website.
+
+- Git Diff -
+1. we use this command to see the changes/difference between branches,files,our working
+ directory and more.
+2. Only shows difference in our working tree but this command has no effect on any stage.
+3. Compares stagging area and working directory.
+
+--- a/gh.txt --> --- indicates changes.
++++ b/gh.txt --> +++ indicates changes.
+
+@@ -3,4 +3,5 @@
+@@ -3-->from,4-->number of lines extracted +3-->from,5-->number of lines extracted @@
+Each chunk starts with a chunk header,found between @@ and @@.
+- purple --> changes in previous file(file A)
++ indigo --> changes in new file(file B)
++ violet 
+
+- Viewing Unstaged Changes - 
+
+***** Git diff different versions*****
+1. git diff -->lists all changes in working directory that are not staged for the next commit (includes unstaged changes).)
+i.e shows difference between working directory and stagging area.
+Use - to see unstaged chnages.
+
+2. git diff HEAD -->lists all changes in working directory since last commit (includes unstaged and staged changes).
+i.e shows difference between HEAD and stagging area.
+Use - to see both staged and unstaged changes.
+
+3. git diff --staged or cached -->lists changes between the stagging area and our last commit (includes staged changes).
+Use - to see staged changes. 
+
+4. git diff HEAD HEAD~1 -->lists changes between the cuurent HEAD and its previous commit.
+
+- Switch command - 
+>> git switch [brnach name]
+
+- To Use diff to see difference in single file -
+
+Syntax:-
+
+1. git diff HEAD [filename ...].
+2. git diff --staged [filename ...].
+
+- Comapring Changes Accross commits - 
+
+1. we can comapre two commits using git diff command as
+>> git diff commit1...commit2./git diff commit1  commit2 (with space also it works).
+eg) >>git diff 4ad87f9f...7bdje7gd9h.
+
+- Comapring Changes Accross Branches -
+
+1. We can comapre two branches using git diff command as
+eg) >>git diff branch1...branch2/git diff branch1  branch2.
+
+- Checkout command - 
+
+1. HEAD is a pointer and its points to the current branch reference(Mater pointer).
+2. Master is a pointer that points to the last/latest commit of a particular branch.
+
+When we make new commit the master gets updated and HEAD also as it points to the Master(Branch reference).
+And if we checkout brach then HEAD refers to the particular branch reference(another branch) and not the commit.
+So we are not on a branch showing us detached HEAD status.
+
+- Make A branch intro -
+>> git switch -c branchname.
+>> git checkout -c branchname.
+- If we want to make new branch having number name
+eg)404,etc. 
+Use - git switch -c 404
+
+- What can we do and cannot do in Deatched HEAD condition - 
+
+1. To examine contents of the old commit.view files,etc((past)Time travel backward).
+2. Leave and go back(future.time travel forward).
+3. Create new branch,make and save changes.i.e do edits in past but in new branch.
+Whenever we make a new branch the content of the master branch are copied into it.
+
+- Referencing Commit with the help of HEAD pointer - 
+>> git checkout HEAD~1 -->[HEAD - 1] goes to previous commit.
+
+- Discarding Changes(Undo Changes) - 
+
+>> git checkout HEAD [filename] / git checkout -- file.
+1. Undo changes of the particular file till last commit only.
+
+- Git Restore (An alternative to some uses of checkout command) - 
+
+1. This command effect is not undoable.
+- Two types -
+>>git restore(go back to previous).
+>>git restore --source HEAD~2 filename.
+eg)i. git restore --source HEAD~1 filename.
+   ii. git restore --source hashcode filename.
+
+- Unstagging Changes using restore -  
+
+1. >>git restore --staged filename.
+-> Used to unstage a file from stagging area to move it to working tree.
+
+- Git Reset -
+
+- Types of reset -
+
+1.>>git reset hashcode.
+-->It goes to the specified commit and we lose the commits above specified commit to be reset.
+***But the changes in the file are not reseted.
+i.e it deletes commits in repository but no change in working tree.
+ Use - when we commit in wrong branch.and we want to undo changes in repository only.
+
+2.>>git reset --hard [commit hash]/git reset HEAD~2 
+  when we want to undo in both the repository and working tree we
+  use this command.
+
+- Git Revert -
+
+1. >>git revert [commit hashcode]
+ This command preserves the history and creates new commit which contains the content after undo.
+ In this way the commit is not directly deleted and we can go back to it in future.    
+ 
+-  Always use revert and not reset.

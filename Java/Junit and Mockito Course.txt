@@ -1,0 +1,495 @@
+- Testing Framework
+
+ --> Any Unit Testing Framework gives us three things :
+  1. An easy API to write tests.
+  2. A way to assert for the results.
+  3. Run and report results.
+
+- Writing Tests :
+ 
+ --> JUnit 3 ---> junit.framework.TestCase [Extends a Test Case Class].
+     JUnit 4 ---> Annotations
+
+ --> @Test 
+   -> which we used to mark each and every test method with.  
+ --> @Before
+   -> The @Before annotation is used to mark our setup methods where-in will be creating all the objects
+      that we need for our test and all the data that we want to setup for a particular test will
+      put that in a method and mark that method with the @Before annotation.Will be run before each test method
+      that we write in a test class.Can be used to setup data for each test method.    
+ --> @After 
+   -> Similarly any method that we mark with @After annotation will be run after every test method.
+ --> @BeforeClass  
+   -> As the name itself says the @Before class annotation so we mark a method with this annotation
+      that method will be run only once for the entire test class right at the beginning.
+ --> @Ignore
+   -> if you mark your test with this annotation those test will be ignored when you run them from your ides
+      or when you run them from your build tools like Maven or ANT those tests will be ignored.
+ 
+ --> For example,the assertNotNull will take an object and if that object is null
+     that assertion will fail right there and our test will also fail.
+ --> Similarly, the assertEquals checks for the values of two objects.The assertSame checks for the references of
+     two objects.There are several other assertion methods on in the assertAPI
+     which you can play around with to compare the actual result versus the expected results.
+
+--> BlockJunit4ClassRunner.class is used for running Test classes.Build tools like ANT and Maven which internally use the 
+    BlockJunit4ClassRunner.class. 
+--> BlockJunit4ClassRunner.class is the default JUnit test runner.SpringJUnit4ClassRunner  extends BlockJunit4ClassRunner.class and it implements JUnitRunner framework
+    for it writing integration test while working with spring based applications and the @RunWith annotation
+    can be used to configure a runner when we run our test. 
+
+===================================================================================================================================================================================
+
+---> Create a Project HelloJUnit and then a source folder names as test.
+---> Now create interface and implementation class for it.
+---> Create a JUnit Test class for the Implementation class by right click on implementation class
+     and choosing JUnit Test Case.
+---> Then Create the Implementation class object and assign it to interface instance variable and
+     call the methods of implementation class through interface instance variable.  
+
+- Testing For Exceptions
+
+ --> Create an exception in Implementation class and in Test class write test method for it.
+     
+--> @RunWith(SpringJUnit4ClassRunner.class) '@RunWith()'  to do configurations when running test classes.
+--> Order of execution of the Test method is not known.
+--> Write separate test for each scenario.
+
+--> assertThrows(NullPointerException.class, () ->  greet.greeting(""), "Exception to be not thrown"); 
+    // Here the '() ->' internally implements try catch block for us.
+
+- @Before And @After Annotation
+
+--> @Before is used to setup data for each test purpose(common data).
+--> @After is used to clear data after each test completion(common data).
+
+-----------------------------------------------------------------------------------------------------------------------------
+
+- Migratinf from JUnit 4 to JUnit 5
+
+ --> Feature
+   1. Modularized -> We need to import only specified module and not the entire library.
+ --> JUnit Platform is the (Core)module we need to import if writing tests in JUnit 5.
+ --> Junit Vintage is the module we need to import if we want support for JUnit 4 tests in JUnit 5. 
+
+     JUnit 4                    JUnit 5
+
+ --> Before                      BeforeEach
+     After                       AfterEach    
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+- Maven
+
+ --> Build Tool
+ --> Project Management Tool
+
+ --> Build Tool
+   ->Building a project means compiling the source code running the tests which could be unit tests as well as integration tests packaging the
+     compiled code into jar files bundling these jar files into a web archive or a war file deploying these wars on to the
+     servers and several other tasks all these tasks can be automated using tools such as maven and etc.
+ 
+ --> Maven uses convention over configuration that is if we follow a certain project structure when we create our projects such as
+  
+      // Archetypes [Templates]
+      myproject [base project directory]
+        |
+        |--> src/main/java -> source code should go
+        |--> src/main/resources -> where any resources such as property files or XML configuration that we use in our Java classes should go
+        |--> src/test/java ->  is where all our unit and integration tests should be placed
+        |--> src/test/resources -> is where all the property files or XML configuration that we use on our tests should be placed 
+
+ --> once we use this folder structure we can simply execute a maven command such as "maven install" and maven will compile the source code under the
+     SRC main Java run the unit tests under SRC test Java and if the tests pass it will bundle or package the compiledclasses into a jar file if it is 
+     a standalone java application if it is a web application it will bundle it into a war file and it can also deploy  the war file onto a web application.
+
+ --> There are several Archetypes[Templates] wehich makes the folders  for us.
+  eg) 1.standalone
+      2.webapp
+      3.ear   
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+--> Create a maven Project in eclipse.
+--> Download junit-jupiter-engine and junit-vintage-engine(optional) dependencies and place them in src/main/resources. 
+--> Group Id -> package name where all folders will be created and it where files are stored locally and globally.
+--> Artifact is the name of the project.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+- Fix the Annotation
+
+--> @Before -> BeforeEach (It will be executed for every test before its execution)[individual execution]
+               BeforeAll  (It will be executed only once for all the test before its execution) [Separate execution]
+--> We have to use Assertions.assertthrow.... in JUnit 5 as per new syntax.
+ 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+- Assert Exception
+
+ --> expected no longer is supported in JUnit 5 we use assertthrow() assesrtion.
+  
+  Assertions.assertThrows(expected, executable);
+  Assertions.assertThrows(IllegalArgumentException, ()->{
+      greeting.greet(""); 
+  })
+
+ --> Lambda Expression syntax 
+     ()-> {Code which will throw exception}
+
+ --> To run the test right click on project name and choose run as maven clean.
+    // Due to this all classes will be compiled and cleaned and stored in the target folder.
+ --> Click on project name and choose run as install maven.
+
+ -->Install is the maven goal or command that's going to compile our classes run our tests and even prepare
+    a jar file so it's compiling the source code.
+ --> All our test passed successfully only the test pass it will automatically build our project and the
+     jar files under the target directory.
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+- Mocking Introduction
+
+ --> Mock -> To mock means to mimic or to imitate.
+ --> Mocking  ---------->   Testing in Isolation.
+ --> Mocking -> In the world of programming we do it for very serious unit testing if class-A depends on users Class B and if we are unit testing Class-A
+     then we will mockout class B and all the methods on class B that class A uses.
+ --> The mark object will then take the place of the real object be the idea of unit testing is to test our code without testing its
+     dependencies(methods) the pier is that each unit is tested on its own and when they all are integrated they will work great.
+ 
+ --> Eg)ReservationController
+               |
+               |
+               |
+          ReservationBO
+   	         | 
+               |
+               |
+          ReservationDAO --------->  DB
+
+ --> Let's consider a java EE example wherein we have the reservation controller or UI component calling into the reservation BO so the reservation controller
+     depends on the reservation BO which post the business logic in the BO calls into a DAO which does the database operations for us using DBC hibernate extra. 
+     Now if we are testing the reservation controller unit testing it with mock out the reservation BO and all the methods on that reservation BO                          
+     which the reservation controllers method are using and test all the public methods on the reservation controller in isolation.                                                                                          
+
+ 
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+- Use Mockito With JUnit 5
+
+---> mocking is creating objects that mimic the behavior of real objects.
+
+ --> @ExtendWith() 
+   -> allows other libraries like Mockito to extend the J unit framework and we can mark our test classes and test methods if required
+      with this extent, with annotation and use a class from that library in this case will be using a Mockito
+      extension, which is from Mockito Library.
+   -> And this Mockito extension knows how to provide mocking functionality while writing unit tests.
+   -> If you simply mark any object declaration with @ mock annotation, this Mockito extension class will
+      mock that object for you.You can then inject that object into the class under test using @ inject Mock's annotation.
+   -> All that will come for free if we use this Mockito extension.So it'll mock this object.It will inject that into this greeting implementation,
+      which is being tested in the process.It will create an instance of this for us.We don't have to use the new operator, create the instance.
+      It will create an instance.Then it will use reflexion to inject this guy into this greeting.                                                             
+ 
+--> Mocking involves three important steps stubbing, Setting the expectations and then Verifying.We first stubout the reservation BO class or mock 
+    the reservation BO class and set the expectations on what the methods of the reservation BO should do when the reservation controllers unit test 
+    are run and the restoration controller method calls into the reservationBOs method.we are going to tell what those(Reservation BOs methdods) methods or
+    how those methods should behave using a mocking framework.
+--> Finally we will verify using the mocking frameworks API we will verify that the reservation controller is in fact calling into the methods of the reservation BO as we
+    have expected. Those are the mockout methods.
+
+--> Mockito provides us Stubing(Mocking) , Setting Expectations , Verificaion through :
+    @Mock -> which we can use like mock which will stub(Mock [Mimic]) out the dependent objects for us.
+--> Then we can use the when methods the thenReturn the thenThrow and there are a lot of other methods which we can use to set
+    the expectations or to stubout all the methods on the dependant classes.
+--> Finally, we can verify if the mockedout methods are being called by using verify , matchers and so on.
+
+   Stub and Setting    --------------> @Mock 
+     Expectation                       when 
+                                       thenReturn 
+                                       thenThrow 
+   
+   Verification        --------------> verify, matchers, etc.
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+- Update Usecase
+
+ --> Watch video from udemy course. 
+ 
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+- Setup Mocks
+
+- Greeting.java
+ 
+ --> public interface Greeting {
+       String greet(String name);
+     }
+
+- Greeting Service.java [interface]
+
+--> public interface GreetingService {
+
+	public String greet(String name);
+    }
+
+
+- GreetingServiceImp.java
+
+ -->public class GreetingServiceImp implements GreetingService {
+
+	  @Override
+	  public String greet(String name) {
+		if(name == null || name.length() == 0 )
+	         throw new IllegalArgumentException(); 
+			
+	      return "Hello "+name;
+	  }
+     }
+
+
+- GreetingImpTest.java
+
+ --> package com.akshad.junit5.hellojunit5;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+@ExtendWith(MockitoExtension.class)  // Use when we wnat to use Mockito.
+class GreetingImpTest {
+    
+      @Mock                       // Object we want to mock
+	private GreetingService service;
+	
+      @InjectMocks           // Inject the mocked things into this
+	private GreetingImp greeting; 
+	
+	@Test
+	public void greetingTest() {
+	  System.out.println("greetingTest");
+	  String result = greeting.greet("Junit"); 
+	  assertNotNull(result);
+	  assertEquals("Hello Junit", result); 
+	}
+	
+	@Test
+	public void ExceptionTest() {
+		System.out.println("ExceptionTest");	
+		Assertions.assertThrows(IllegalArgumentException.class, () ->  greeting.greet(""), "Exception to be not thrown"); 
+	    
+	}	
+}
+
+
+ // Use @RunWith(JUnitPlatform.class) if we wnat to run Junit 5 Tests.[The JUnitPlatform.class is called as Runner].
+
+--> When program executes it creates object of GreetingImp and sees implementation into it and founds service() implementaion
+    and mocks it and injects GreetingService(Mocked Out method in it) into the GreetingImp.  
+    
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+
+- Test Positive Scenarios
+
+- Greeting.java
+ 
+ --> public interface Greeting {
+       String greet(String name);
+     }
+
+- Greeting Service.java [interface]
+
+--> public interface GreetingService {
+
+	public String greet(String name);
+    }
+
+
+- GreetingServiceImp.java
+
+ -->public class GreetingServiceImp implements GreetingService {
+
+	  @Override
+	  public String greet(String name) {
+		if(name == null || name.length() == 0 )
+	         throw new IllegalArgumentException(); 
+			
+	      return "Hello "+name;
+	  }
+     }
+
+
+- GreetingImpTest.java
+
+--> package com.akshad.junit5.hellojunit5;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+@ExtendWith(MockitoExtension.class)  // Use when we wnat to use Mockito.
+class GreetingImpTest {
+    
+      @Mock                       // Object we want to mock
+	private GreetingService service;
+	
+      @InjectMocks           // Inject the mocked things into this
+	private GreetingImp greeting; 
+	
+	@Test
+	public void greetingTest() {
+	  System.out.println("greetingTest");    
+	  String result = greeting.greet("Junit"); 
+	  assertNotNull(result);
+	  assertEquals("Hello Junit", result); 
+	}
+       
+      @Test
+      public void greetShouldThrowAnException() {
+         System.out.println("greetShouldThrowAnException");        
+         Assertions.assertThrows(IllegalArgumentException.class, ()-> {greeting.greet(null)});
+      } 
+	
+	@Test
+	public void ExceptionTest() {
+		System.out.println("ExceptionTest");
+		Assertions.assertThrows(IllegalArgumentException.class, () ->  greeting.greet(""), "Exception to be not thrown"); 
+	    
+	}	
+}
+ 
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+- Test Negative Scenario
+
+- GreetingImpTest.java
+
+--> package com.akshad.junit5.hellojunit5;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+@ExtendWith(MockitoExtension.class)  // Use when we wnat to use Mockito.
+class GreetingImpTest {
+    
+      @Mock                       // Object we want to mock
+	private GreetingService service;
+	
+      @InjectMocks           // Inject the mocked things into this
+	private GreetingImp greeting; 
+	
+	@Test
+	public void greetingTest() {
+	  System.out.println("greetingTest");
+        when(service.greet("Junit")thenReturn("Hello Junit")); 
+	  String result = greeting.greet("Junit"); 
+	  assertNotNull(result);
+	  assertEquals("Hello Junit", result); 
+	}
+       
+      @Test
+      public void greetShouldThrowAnException() {
+         System.out.println("greetShouldThrowAnException");
+         doThrow(IllegalArgumentException.class).when(service).greet(null);
+         Assertions.assertThrows(IllegalArgumentException.class, ()-> {greeting.greet(null)});
+      } 
+	
+	@Test
+	public void ExceptionTest() {
+		System.out.println("ExceptionTest");
+            doThrow(IllegalArgumentException.class).when(service).greet("");	
+		Assertions.assertThrows(IllegalArgumentException.class, () ->  greeting.greet(""), "Exception to be not thrown"); 
+	    
+	}	
+}
+
+// Added doTrhow in Last Two @Test methods.
+
+-----------------------------------------------------------------------------------------------------------------------------------------------
+
+- Code Coverage / Test Coverage 
+
+- Introduction
+
+ --> Code Coverage is the number of lines of our source code that is tested when our unit tests are run against the source code.
+     This includes conditional statement looping statement the number of parameters that we pass into a method the type of parameters we pass into the
+     method and everything that has to do with our source code. 
+ --> we'll be marking our junit test with a run with annotation because we need a special junit runner here called parameterized.class.
+
+------------------------------------------------------------------------------------------------------------------------------------------------
+
+- Create the Fields and Constructor
+
+- Calculator.java
+
+ --> public interface Calculator {
+          
+         public int add(num1, num2); 
+     }
+
+- CalculatorImp.java
+
+ --> public class CalculatorImp implements Calculator {
+         
+           public int add() {
+
+               return num1 + num2;
+           }
+     }
+
+- CalculatorImpTest.java
+
+     @RunWith(Paramterized.class) // This runner is used to provide @Parameters annotation definition
+ --> public class CalculatorImpTest {
+
+         private int num1;
+         private int num2;
+         private int expectedResult;
+          
+         public CalculatorImpTest(int num1, int num2, int result) {
+             
+             this.num1 = num1;
+             this.num2 = num2;
+             this.expectedResult = result;
+
+         }
+                 
+         @Parameters                // Static methods used to provide data to the Test methods and Annotated with @Parameters
+         public static Collection<Integerp[]> data() {
+             return Arrays.asList(new Integer[][]{{ -1, 2, 1 }, { 1, 2, 3 }, { 6, 7, 13 } }); 
+         }
+
+         @Test 
+         public void addShouldReturnAResult() {
+              Calculator c = new CalculatorImp();
+              int result = c.add(num1, num2);
+              assertEquals(expectedResult, result);  // This result variable is the result variable in above line of same addShouldReturnAResult() and not the constructor.   
+         
+         }  
+     } 
+
+- Flow Of Paramterized Test
+
+ --> how exact the parameterized test work so when we run our test at runtime the junit will immediately know that it should use the parameterized class to run this test
+     we use it and this parameterized class knows to invoke a static method which is marked with the @parameters annotation.That is the first thing it does and it gets this
+     data set.It then uses this data set to create an intance of our class or it calls this particular constructor and then when it executes this test method automatically       
+     these 3 values will be substituted in here.So it first does it with this data set it creates or it calls this constructor and then it calls the constructor again with 
+     this data set runs this set again it does the same thing for the last and final data set.So that is the power pf parameterized test we can execute one single test multiple
+     times with different data sets by simply coming up with a static method first we have created the fields at the test class level then we have come up with the constructor 
+     when we have a static method that provides different data sets.we have to mark this static method with the @parameters annotation and we have to use the parameterized runner.
+
+

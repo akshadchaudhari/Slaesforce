@@ -1,0 +1,686 @@
+- JavaScript For LWC
+
+- Core Topics to Master in LWC of Javascript
+
+1.Variables   2.Data Types  3. null vs Ubdefined
+4. Arrow Function 5. Spread Operator 6.Destructing 
+7. String Interpolation 8. String Methods 9.Object Methods
+10.Array Methods  11.Promises  12.Modules import and export
+13.Events 14. setTimeout vs setIntervals 15.QuerySelector.
+
+--> Functions are declared as 
+ Syntax :- function shooting() {
+
+           }
+--> Function are called as 
+ Syntax :- shooting()
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+1. Variables in JavaScript
+
+i. var Keyword
+
+ --> It can be updated and also re-declared.
+ --> var keyword has two types of scope global(window) and function.
+ --> not block level scope.
+ --> Every variable in JS is binded to the window object by default.i.e we can access it through 
+     window like console.log(window.variablename).
+ --> If we variable is declared inside a function then its accessibilty(scope) is limited to inside function only\
+     and not outside function.Similarly for global scope.
+ --> var keyword doesn't support block scope and gets binded to window object by default.
+     if written in block scope it is accessible outside block also. 
+
+ii. let Keyword
+
+ --> It can be updated but cannot be re-declared.
+ --> let keyword supports block and function scope.
+ --> It does support global/window level scope but does not create property on Window Object.i.e we cannot access variable
+     through window object.[like console.log(window.variablename)].
+ 
+---> In LWC we never use var keyword we use let and const keyword.
+
+iii. const Keyword
+
+ --> It cannot be uspadted and re-declared.
+ --> const keyword supports function and block scope. It does support global level scope 
+     but does not create property on Window Object.
+
+- Table Of Scope
+
+  Keyword                  const            let            var
+ 
+ 1. Golbal scope            Yes              Yes            Yes
+   [Creates Property        Yes              No             No   
+   On Global/Window Object] 
+ 2. Function scope          Yes              Yes            Yes
+ 3. Block scope             Yes              Yes            No
+ 4. Can be Reassigned       No               Yes            Yes
+
+--> let variables canbe updated but not re-assigned.
+--> const variables cn neither be updated nor be re-assigned.
+--> Creates property on Global/Window Object 
+eg) 
+     var x = 'global'; 
+     let y = 'global';
+     const z = 'global';
+
+     console.log(x); // global // Created property on Global/Window Object 
+     console.log(y); // undefined // Did Not Created property on Global/Window Object 
+     console.log(z); // undefined // Did Not Created property on Global/Window Object 
+
+--------------------------------------------------------------------------------------------------------------------
+
+- Data Types 
+
+---> There are 8 basic data types in Javascript.
+  1.number    2.string  3.boolean  4.bigInt
+  5.undefined 6.null    7.object   8.Symbol
+
+---> Rest all types are Object in some form
+  1. Array  2.Date 3.Math 4.String 5.etc.
+
+---> String can be in Single cot '' or Double cot "" .
+---> Undefined is like unassigned value.
+---> Symbol is used for unique identifier.
+---> string is data type and String is a Object.
+   
+ // number
+ --> var x = 10.56 // +-(253^-1) 
+     console.log(tyopof x) // number   
+
+ // bigInt
+ --> var y = 10n   // if n appended with number then it is bigint.
+      console.log(tyopof x) // bigint               
+
+ // string
+ --> var name = "nikhil"
+     console.log(typeof name) // string
+ 
+ // boolean
+ --> var isMonday = true       // With "" , '' it becomes string.
+     console.log(typeof isMonday) //  boolean
+
+ // undefined
+ --> var z
+     console.log(typeof z); // undefined
+
+ // object
+ --> var objname={}  <-- Syntax of creating object in Javascript
+     console.log(typeof objname) // object
+ 
+ --> var arr = []
+     console.log(typeof arr) // object
+
+ // Symbol
+ --> var sym = Symbol("id")
+     console.log(typeof sym) // symbol
+
+ // null
+ --> var x1 = 10
+     x1 = null
+     console.log(typeof x1) // object 
+
+ // String() , Boolean()
+ --> console.log(typeof new String("hey")) // object
+
+----------------------------------------------------------------------------------------------------------------------------------------
+
+- null vs undefined [Important for interview point of view]
+
+SrNo        undefined                                     null
+ 1.    If A variable is declared,but notinitialized   It'' a special data type which represents "nothing" or "empty" or
+       or assigned any value then JS automatically    "value unknown" It is Assigned explicitly. 
+       initialized it with undefined.  
+ 
+ 2.    typeof undefined is undefined.                  typeof null is object.
+    
+ 3.    undefined == null is true.                      undefined === null is false.
+ 
+- Equality Comparision
+
+1. Normal Comparision [==] [Never Prefer]
+2. Strict Compariosion [===] [Always Prefered in LWC]
+
+ --> '==' -> This operator does value comparision.Eg) 100 == "100".
+ --> '==='-> This operator does value plus data type comparision.Eg) 100 === "100".
+
+---------------------------------------------------------------------------------------------------------------------------------------
+
+- Spread Operator
+
+ --> The Operator's shape is three consecutive dots and is written as: '...'
+ --> Usage of spread operator
+
+ 1. Expanding String -> Convert string into list of array.
+ 2. Combining Arrays -> Combine array or add value to array.
+ 3. Combining Object -> Combine Object or add value to Object.
+ 4. Creating New Shallow Copy or Arrays and Objects.
+
+ // Array
+ var arr = ["a", "b", "c"] 
+ console.log(arr)  // ["a", "b", "c"]
+ arr.push("3")
+ console.log(arr)  // ["a", "b", "c", "3"]
+ console.log(arr[0]) // a 
+
+ // Object  [Always works in key value pair]
+ var obj = {
+     "name" : "salesforce" // property : value
+     "age"  : 23 
+     "full name" : "zero to hero"  
+ } 
+ // When assigning multiple value to a single variable use Object.
+
+ console.log(obj.name)  // salesforce
+ console.log(obj.age)   // 23
+ console.log(obj["age"])[Array Way]  // 23 
+
+ --> Use . operator to access when you have no space in between property name.
+ --> use [] when you have space in between property name
+ 
+eg) var obj={
+         "full name" : "zero to hero"   
+    }
+    console.log(obj["full name"]) // Use [] as there is space between property name.
+    console.log(obj.full name) // Error :- Missing ) after argument list.
+
+- Add avlue to Object
+
+--> obj.hobbies = "cricket"
+    console.log(obj) // name : "salesforce" // property : value
+                        age  : 23 
+                        full name : "zero to hero" 
+                        hobbies : "cricket" 
+
+ 1. Expanding  of String -> Convert String into List of Array
+
+ --> let greeting = "Hello Everyone"
+     let charList = [...greeting]
+     console.log(charList)  // Displays ["H","e","l","l","o"....]   
+ 
+ 2. Combining of Array
+    
+ ---> let arr1 = ["amazon","google"]
+      let arr2 = ["facebook","instagram"]
+      let arr3 = [...arr1, ...arr2]
+      console.log(arr3)  // ['amazon', 'google', 'facebook', 'instagram']    
+ 
+ 3. Adding values to an Array
+
+ ---> let arr4 = ["a","b","c","d"]
+      let arr5 = [...arr4, "nikhil"] 
+      console.log(arr5) // ['a', 'b', 'c', 'd', 'nikhil']
+      let arr6 = ["nikhil", ...arr4] 
+      console.log(arr6) // ['nikhil', 'a', 'b', 'c', 'd']
+ 
+ 4. Combining Objects
+ 
+ ---> let obj1 = { name:"salesforce", age:23, date:"23/09/1999" }
+      let obj2 = { name:"facebook", age:55, "next":"hello"}
+      let obj3 = {...obj1, ...obj2}                     // {} Used
+      console.log(obj3) // {name: 'facebook', age: 55, date: '23/09/1999', next: 'hello'}
+    
+      // Notice that if two objects have same properties then the unique properties are overrided by the 
+         2nd object and only properites of 2nd object are displayed otherwise properties of both 
+         objects are displayed. 
+ 
+ 5. Shallow Copy
+    
+ ---> Never use push,pop,shift operator as they create shallow copy i.e both the 
+      arrays point to same reference due to which chnage in one array is reflected 
+      in another array.To avoid this use shallow copy.
+ eg) var arr10 = ["x","y","z"]
+     arr10.push(20)
+
+     var arr11 = arr10
+     arr11.push("nikhil")
+     console.log(arr11) // ["x","y","z",20,"nikhil"] 
+     console.log(arr10) // ["x","y","z",20,"nikhil"] 
+  
+  ---> To avoid this use Shallow Copy
+
+       var arr12 = ["x","y","z"]
+       var arr13 = [...arr12]
+       arr13.push("nikhil")
+       console.log(arr12)  // ['x', 'y', 'z']
+       console.log(arr13)  // ['x', 'y', 'z', 'nikhil']
+   
+  6. Nested Copy
+ 
+  ---> ... (spread operator) cannot be used for nested copy as it works for 1 level data structure only.
+       while here we have two level data structure.   
+  ---> var arrobj = [
+          {name:"nikhil"},
+          {name:"salesforce"}     
+       ]
+      // Hack for Shallow Copy in Nested Copy
+
+       var arrobj1 = JSON.parse(JSON.stringify(arrobj))
+       arrobj1[0].name="superman"
+       console.log(arrobj1) // {name: 'superman'} 
+                               {name: 'salesforce'}
+       console.log(arrobj)  // {name: 'nikhil'}
+                               {name: 'salesforce'}
+     
+ // NOTE:- let arr = {}     // One Level Data Structure
+           let arr1 = [ {}, {} ] // Two Level Data Structure       
+ // Difference in above object making is number of initializer list passed to the object.
+ 
+ // NOTE:- While initializing arrays, objects use ':' operator eg) name : "Akshad"
+           And While Reassigning Value in arrays, objects use '=' eg) obj.name = "Dhruv"   
+ 
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+- Destructuring [Extracting Some Data]
+
+ --> Destucturing is special that allow us to unpack the area, the object into a bunch of variable, as sometimes
+     that's more convenient without distracting you can work on.
+  1. Array  Destructuring
+  2. Object Destructuring
+
+  1. Array  Destructuring
+     
+     let arrr = ["amazon", "google"]
+     let [company1, company2] = arrr  [Array Destructing]
+          (ShortHand Notation)      // Syntax :- let [property Name] = arrr(Data Structure)    
+     console.log(company1) // amazon
+     console.log(company2) // google
+ 
+  2. Object Destructing (Used a lot of times in LWC)
+
+     let options = {
+          title : "zero to hero",
+          age : 23,
+          type : "CRM"   
+     }
+     // If you want to create a variable with the same name as property, use object destruction.
+ 
+     let { title, age, type } = options    [Object Destructing] 
+          (ShortHand Notation)          // Syntax :- let [property Names,....] = options(Object)    
+   
+     console.log(title) // zero to hero
+     console.log(age)   // 23 
+     console.log(type)  // CRM
+
+-------------------------------------------------------------------------------------------------------------------------------
+
+- String Interpolation
+ 
+ --> String interpolation allows us to embed expressions in the string
+ --> Template string use back-ticks('') [Single Cot with left side inclined] rather than the single or double-quotes.
+
+ var name = "nikhil"
+ var age = 23
+ console.log(`my name is ${name}`)  // my name is nikhil
+ var a = 10
+ var b = 20
+ console.log(`The Sum of ${a} ${b} is ${a+b}`) // The Sum of 10 20 is 30
+ var recordid = 996678322
+ console.log(`http://salesforce.com/${recordid}`)  //http://salesforce.com/996678322
+
+ 
+- String Methods
+
+ --> Javascript provides many methods to play with strings.
+   1. includes()      2.indexOf()     3.startsWith()
+   4. slice()         5.toLowerCase() 6.toUpperCase()
+   7. trim()    
+
+ let str = "Hello guys i hope your are doing good"
+ 
+ 1. includes() 
+   
+  --> includes() determines whether a string contains the characters of specified string.
+  
+    let check = str.includes("hope")
+    console.log(check)                // true
+
+ 2. indexOf()
+  
+  --> indexOf() returns the position of the first occurance of a specified value in a string.
+
+    let index = str.indexOf("doing")
+    console.log(index)                // 27 [Scenario is that it only returns the first occurance of the string]
+                                      // -1 [Not Avialable]
+
+ 3. startsWith()
+ 
+  --> startsWith() determines whether a string begins with the charcaters of a specified string.
+
+     console.log(str.startsWith("Hello"))  // true [It is Case Sensitive]
+  
+ 4. slice()
+  
+  --> slice() extracts parts of string and returns the extracted parts in a new string.
+    
+     let newstr = str.slice(0, 5)
+     console.log(newstr)             // Hello [includes 0 but excludes 5 index]
+   
+ 5. toLowerCase()
+
+  --> toLowerCase() converts string to lowerCase letter. 
+ 
+     let x = "My Name is Nikhil" 
+     console.log(x.toLowerCase())      //  my name is nikhil
+ 
+ 6. toUpperCase()
+ 
+  --> toUpperCase() converts string to UpperCase letter.
+
+     let x = "my name is nikhil" 
+     console.log(x.toUpperCase())      // MY NAME IS NIKHIL
+
+ 7. trim()
+
+  --> trim() removes whitespaces from both sides of string
+      
+     let searchText = "      salesforce lwc         "  
+     console.log(searchText.trim())                      // salesforce lwc [without whitespaces]
+
+-----------------------------------------------------------------------------------------------------------------------------
+
+- Object / JSON Operations
+
+ 1. Object.keys()            2. Object.values()  
+ 3. JSON.stringify()         4. JSON.parse()
+
+ let obj = {
+     name : "Salesforce",
+     age  :  23,    
+     dob  :  '23/10/1990'
+ }
+ 
+ 1. Object.keys()
+     
+    console.log(Object.keys(obj))    // ["name", "age", "dob"]
+ 
+ 2. Object.values()  
+           
+    console.log(Object.values(obj))  // ["Salesforce", 23, "23/10/1990"]
+
+ 3. JSON.stringify()  [Converts JSON Object into JSON string]
+
+    let str = JSON.stringify(obj)  
+    console.log(str)                 // ["name" : "Salesforce","age" : 23,"dob" : "23/10/1990"]
+
+ 4. JSON.parse  [Converts JSON string into JSON Object]
+ 
+    console.log(JSON.parse(str))     // [name : "Salesforce",age : 23,dob : "23/10/1990"]
+
+- Array Methods
+
+ 1. map()  
+   
+   --> Loop over the array and return new array based on the value returned.
+   Use :- To Transform the array into own structure / in own way.  
+ 
+ 2. every()
+ 
+   --> return true or false if every element in the array satisfy the condition.
+
+ 3. filter()
+
+   --> return new array with all elements that satisfy the condition.
+ 
+ 4. some()
+  
+   --> return true if at least one element in the array satisfy the condition.
+ 
+ 5. sort()
+
+   --> sort the elements of an array
+
+ 6. reduce()
+
+   --> this method reduces the array to a single value (left to right).f
+
+ 7. forEach() 
+
+   --> this method calls for each array element. 
+
+ let arr = [2, 3, 5, 7, 9, 10]
+
+ 1. map() [Always returns an Array]
+
+                          // funciton --> Callback function
+  Synrax :- arr.methodName(function(currentitem, index, actualArray)){
+            
+            }
+  let newArray = arr.map(function(currentItem, index, array) {
+                 console.log(`cuurentItem is ${currentItem} index ${index}, array ${array}`)   
+                 return currentItem*2 
+                 })
+   
+  console.log(arr)          //  [2, 3, 5, 7, 9, 10]
+  console.log(newArray)     //  [4, 6, 10, 14, 18, 20]
+    
+ 2. filter()
+
+   let filteredValues = arr.filter(function(currentItem, index, array) {
+         return currentItem > 5    
+   })  
+   console.log(filteredValues)        // [7, 9, 10]
+
+ 3. every() 
+   
+   let age = [32, 33, 18, 40]
+   let isAllAdult = age.every(function(currentItem) {
+         return currentItem > 18
+   })
+   console.log(isAllAdult)                       // false
+
+ 4. some() 
+   
+     let ageList = [32, 33, 18, 40]
+     let isAdult = age.some(function(currentItem) {
+          return currentItem > 32
+     })
+     console.log(isAdult)                        //    true
+
+ 5. sort() 
+   
+     var names = ["nikhil", "john", "smith"]
+     console.log(names.sort())                   //     ["john", "nikhil", "smith"]
+
+    // sorting for number
+     var points = [10, 39, 12, 80, 54]
+     let sortedValue = points.sort(function(a, b) {
+         return a-b; / return b-a;  
+     })     
+     console.log(sortedValue)                 // [10, 12, 39, 54, 80] [a-b]
+     console.log(sortedValue)                 // [80, 54, 39, 12, 10] [b-a]
+      
+     // Working  when a-b [Ascending Order]
+        if a-b is +ve swap them otherwise check next number
+     // Working when b-a  [Descending Order]
+        id b-a is +ve swap them otherwise check next number
+
+  6. reduce()
+   
+     Syntax :-  
+              array.reduce(function(total, currentItem, index, array) {
+                        
+              }, initialValue)    // initialValue == total
+
+      let num = [12, 78, 30]
+      let sum = num.reduce(function(total, currentItem) {
+                return total+currentItem  
+      },0)   
+      console.log(sum)                                       // 120
+      // Here initialValue(0) == total(0)
+         
+  7. forEach()
+
+     num.forEach(function(currentItem) {
+          console.log(currentItem)               // 12
+     })                                             78
+                                                    30
+
+ 
+-----------------------------------------------------------------------------------------------------------------------
+
+- Promise
+  
+ --> Promise is an object that may produce a single value sometimes in the future.
+ --> Promises are used to handle asynchronous operations in the JavaScript.
+       (like calling the server we don't know how much time it will take)
+
+ --> A Promise has three states
+  
+   1. pending() 
+   2. fulfilled()
+   3. rejected()
+  
+  Use case for LWC point of View
+  1.Fetching data from Server  like calling apex methods in LWC   
+  2.Loading file form System   like loading the file from static resources  
+
+  fetch('githuburl').then(function(result) {       // Server Call [if contents another promise : then use another 'then']
+     return result.json()          // Converts result into json     
+  }).then(function(response) { [another 'then' used to capture the promise under another promise]
+      console.log(response)
+  })
+ 
+  // 'then' always returns 'Promise' and we need another 'then' to recieve answer.
+ --> To Extract the data from the promise we use the 'then' method.
+
+ function checkIsSuccess(data) {
+     return new Promise(function(resolve,reject){
+         if(data === "success") {
+             return resolve("successfully executed")
+         } else {
+             return reject("unsuccessfully executed") 
+         }        
+     })  
+ }
+ 
+
+ // Calling function
+ checkIsSuccess('success').then(function(result){ // Used the 'then()' to capture the result of the function for displaying.
+      console.log(result)
+ })catch(function(error) { // Used to catch the error 
+     console.log(error)    
+ })
+
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+- Exports in JavaScript
+
+ --> Exporting - Use 'export' keyword to export many variables or many method from a file.
+
+ Variable : 
+   export cont name = "nikhil"
+
+ Function : 
+   export function getName() {
+       return "nikhil"  
+   }
+
+ --> Default export - Use 'export default' keyword to export 'only one' variable or method from a file.
+
+   export default user = "salesforce"
+
+- Imports In JavaScript
+
+ --> Importing - Use 'import' keyword to import variable or method from a given file path or module.
+  
+ - Multiple imports 
+     import {name,getName} from './filepath'
+
+ - Imports all exported members
+     import * as Utils form './filepath'     // here 'Utils' acts as Alias
+
+ - Imports a module with default member\
+     import user from './filepath'
+
+ --> To make our script able to import variables or modules from other files.
+  do :- 
+    <script type="module" src="./script.js"></script>
+ --> This gives our 'script.js' library the power to import variables and methods from the other files.
+ 
+--> Only one default member can exist in a js file.
+
+- utils.js
+
+// Normal import 
+
+ const PI_DATA = 3.14
+
+ function add(a,b) {
+    console.log(a+b)
+ }
+
+// export together
+  export {PI, add}
+
+// export with alias
+  export {PI_DATA as PI, add}
+
+// export with default 
+
+ export default function minus(a,b) {
+     console.log(a-b)
+ }
+
+- script.js
+
+import minus, {PI,add} from './utils.js'
+console.log(PI)
+console.log(add(2,3))
+console.log(minus(10,5))
+
+--> To import Everything from utils we write
+ import * as UTILS(alias) From './utils.js'
+
+ 
+- Query Selector [How to fetch Data From HTML]
+
+--> Has two methods 
+  1.querySelector
+    -> The querySelector() returns the first element that matches a specified CSS selector(s)
+       in the document.
+ 
+ Syntax:-
+    document.querySelector(selector);
+
+  2.querySelectorAll
+    -> The querySelectorAll() returns all elements in the document that matches a specified
+       CSS selector(s), as a static NodeList Object. 
+   NOTE :- It does not return array at all.
+  
+ Syntax :-
+    document.querySelectorAll(selector);
+
+index.html
+ 
+<html>
+   <head>
+       <title>First HTML Page</title>    
+   </head> 
+   <body>
+      <div class="abc">Hello Everyone</div>
+      <div>Hello LWC Developer</div> 
+      <div>Hello Ohana</div>
+
+      <script type="module" src="./script.js"</script>   
+   </body>
+</html>  
+
+script.js
+--> let element = document.querySelector('.abc')
+    console.log(elemnet.innerText)     // To display the innner content of .abc class 
+    
+    let elementAll = document.querySelectorAll('div')
+    Array.from(elementAll).map(function(item)){
+      return item.style.color = "green"
+    }) 
+
+    document.querySelector('.abc') // In JavaScript
+
+    this.template.querySelector(''abc')    // In LWC Salesforce
+
+
+    
+

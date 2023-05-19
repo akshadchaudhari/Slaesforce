@@ -1,0 +1,117 @@
+- LWC [Learn Bootstrap Framework  of CSS]
+
+ - What is Single Page Application?
+ ---> Url remains same,no need to navigate,page is not getting reloaded(i.e with eaxh click Request is not going to server).
+      Working of Single page Application : In the initial request itself the resources like html,js,css are getting downloaded or cached at client side
+                                           so from next request those resources will get re-rendered at client-side itself no need to request. 
+ ---> When we need to connect to server is when we want to fetch changes using Asynchronous calls and we upload on changes on pages without reloading the pages.
+ 
+ ---> SLDS is similar to bootstrap also it has its own added features in lighntning we can design responsive web pages using SLDS.
+ ---> It consist of built in set of components for layouting and also it has its own built in classes for styling.
+ ---> lightning-button in LWC
+      lightning:button in Aura
+  
+      input
+      layout
+      layout-item              // These are built in compnents within SLDS
+      accordian
+      lighnting-card
+
+---> Lightning is a GUI which provides tools like schema builder and process biulder for performing
+     other tasks.
+---> Lightning is an event driven architecture and achieve responsiveness using SLDS and also cross browser compatibility.
+
+- If Aura then WHY LWC?
+ 
+ ---> 1.Aura is more salesfroce propriety(dependent).
+      LWC is web component,more of web standards and less salesforce proprietry.Most of the implementation in LWC is using Javascript.
+    
+      2.Aura is completely new learning.i.e implementation of classes,inetfaces, inheritance is completely deifferent in Aura
+        but LWC is implemented using Javascript so easy to learn,it has supports from all browsers.
+
+ ---> LWC is completely new programming and it come up with model web Standards.i.e ES6/ES7 specification.
+     // here model we standards means modules,custom elements,templates(for rendering custom elements),etc.
+ ---> Benefits of LWC are:
+     1. Reusability of components
+     2. Most of the things can be done in browser itself as it uses web standards.
+     3. If in some scenario LWC doesn't support some Aura feature then implemntation can be done in Aura and we can have 
+        communication between Aura and LWC components and in this way things can be done.
+     
+ ---> ECMA script - specification and standards used by Javascript.
+      
+      ES5 - is used to implement plain vanilla JS and has support from all browsers.
+      ES6 - similar to ES7
+      ES7 - they supports OOPS feature,popular among developers. 
+ 
+ ---> Aura can be implemented using Developer Console but LWC cannot be implemented using Developer Console.       
+  
+ - Implementing LWC 
+
+ ---> Go to command pallete and command 'create project with manifest'.[all LWC implementation will be written here]
+      and choose standard project template from this give name and directory for project.
+  
+ - USE OF  PACKAGE.XML FILE
+ 
+  ---> We can configure third party libraries here With keeping LLS(Lightning Locker Service ON) and it will be visible throughout the project
+       and use any explicit features in the  application to add new features and that is why we should create project in manifest.
+  
+---> Aura component are created using Developer only.
+
+-  Authorize the Project with the Org
+
+ ---> To do so go to command pallete and command 'Authorize an Org' and click Project default and paste the URL of the Org.
+      Then right click in the package.xml file and select retrive source in manifest from Org.
+ ---> And then deploy it to org from package.xml and go to Org developer console click on file and go to lightning component resources.
+  
+-  Create App 
+
+ ---> Go to App Manager. To create Lightning App with NO authentication and authorization use 'New Lightning App'.
+      To create Lightning App with token based authentication or authorization use the 'New Connected App'.
+
+ ---> LWC is itself is a MVC. Model view architecture.
+ ---> LWC has 3 files
+      1. html - v - view.[UI]
+      2. .js - c - controller.
+      3. .xml - component configuration file.
+ ---> In .js we define modeli.e data entity.
+
+- helloLWC.html
+
+ ---> <template>
+         <lightning-card title="Hello World">
+            <lighntning-input> label="Message" value="{greetings}"</lightning-input>
+            <div class="slds-m-around_medium"> // slds built in class for styling.
+             <!-- data entity from controller i.e .js is represented on UI using expression syntax -->
+            <p>Hello {greeting}</p> // displaying data entity on UI
+            </div>
+         </lighntning-card>
+      </template>  
+
+- helloLWC.js
+
+ ---> import { lighntningElement } from 'lwc';
+
+      export default class HelloLWC extends LightningElement {
+                
+         // model - data entity
+         greeting : "World" 
+      }  
+  
+- helloLWC.js-meta.xml
+
+ ---> <?xml version="1.0" encoding="UTF-8"?>
+      <LightningComponentBundle xmlns="https://soap.sforce.com/2006/04/metadata"> 
+           <apiVersion>55.0</apiVersion>
+           <isExposed>true</isExposed>
+           <targets>
+               <target>lightning__AppPage</target>
+               <target>lightning__HomePage</target>  // here names are case sensitive 
+               <target>lightning__RecordPage</target> 
+           </targets>        
+       </LightningComponentBundle>     
+---> A lightning-card is used to apply a stylized container around a grouping of information. The information could be a single item or a group of items such as a related list.
+     A lightning-card can contain a title, body, actions, and a footer. The title, actions, and footer are optional. You can also provide an icon in the header in front of the title.
+     Use the actions slot to pass content such as lightning-button-icon or lightning-button to perform an action when clicked. Actions are displayed on the top corner of the card opposite the title.       
+
+---> To see any custom component which we ahve built go to Org and edit on home page.
+     Search for that component name under Components. 
